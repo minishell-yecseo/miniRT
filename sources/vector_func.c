@@ -81,7 +81,7 @@ t_vector	vec_unit(t_vector vec)
 	len = vec_len(vec);
 	if (len == 0)
 	{
-		printf("Error\n:Devider is 0");
+		printf("Error: div 0\n");
 		exit(0);
 	}
 	vec.x /= len;

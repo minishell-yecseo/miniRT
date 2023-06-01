@@ -16,3 +16,17 @@ t_vector	ray_at(t_ray ray, double t)
 	new = vec_add(ray.origin, vec_mul(ray.dir, t));
 	return (new);
 }
+
+t_camera	camera(t_vector origin)
+{
+	t_camera cam;
+
+	cam.viewport_h = HEIGHT;
+	cam.viewport_w = WIDTH;
+	cam.focal_len = 1.0;
+	cam.origin = origin;
+	cam.horizontal = vector(cam.viewport_w, 0, 0);
+	cam.vertical = vector(0, cam.viewport_h, 0);
+    cam.lower_left_corner = vec_sub(cam.origin, vec_add(vec_add(vec_mul(cam.horizontal, 0.5), vec_mul(cam.vertical, 0.5)), vector(0, 0, cam.focal_len)));
+	return (cam);
+}
