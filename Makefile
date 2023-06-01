@@ -2,11 +2,11 @@ NAME		= miniRT
 BONUS		= miniRT_bonus
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= #-Wall -Wextra -Werror
 
 SRC_DIR		= sources/
 
-SRC			= main.c
+SRC			= main.c paint.c key_hook.c
 SRC_BONUS	= main_bonus.c
 
 SRCS		= $(addprefix $(SRC_DIR), $(SRC))
@@ -32,7 +32,7 @@ $(NAME): $(OBJS_MAND)
 	$(CC) $(CFLAGS) $(INC) $(MLX) $^ -o $@
 
 clean:
-	rm -rf $(OBJS) $(OBJS_BONUS)
+	rm -rf $(OBJS_MAND) $(OBJS_BONUS)
 
 fclean: clean
 	rm -rf $(NAME)
