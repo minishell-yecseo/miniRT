@@ -47,6 +47,16 @@ t_vector	vec_sub(t_vector vec1, t_vector vec2)
 	return (vec);
 }
 
+t_vector	vec_mul(t_vector vec1, double t)
+{
+	t_vector	vec;
+
+	vec.x = vec1.x * t;
+	vec.y = vec1.y * t;
+	vec.z = vec1.z * t;
+	return (vec);
+}
+
 // 내적 
 double	vec_dot(t_vector vec1, t_vector vec2)
 {

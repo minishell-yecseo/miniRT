@@ -21,5 +21,6 @@ t_vector	vec_sub(t_vector vec1, t_vector vec2);
 double		vec_dot(t_vector vec1, t_vector vec2);
 t_vector	vec_cross(t_vector vec1, t_vector vec2);
 t_vector	vec_unit(t_vector vec);
+t_vector	vec_mul(t_vector vec1, double t);
 
 #endif

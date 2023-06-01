@@ -6,6 +6,8 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include "../mlx/mlx.h"
+# include "ray.h"
+# include "vector.h"
 
 # define WIDTH 1200
 # define HEIGHT 800
