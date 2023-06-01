@@ -4,7 +4,7 @@
 t_vector ray_color(t_ray r)
 {
     t_vector	unit_direction = vec_unit(r.dir);
-    double t = 0.5 * (unit_direction.y + 1.0);
+    double t = 0.5 * (unit_direction.y + 1);
     
 	return vec_add(vec_mul(vector(1, 1, 1), (1 - t)), vec_mul(vector(0.5, 0.7, 1), t));
 }
@@ -26,7 +26,6 @@ void	test(t_img *img, t_vars *vars)
 	t_camera	cam;
 
 	cam = camera(vector(0, 0, 0));
-
 	mlx_clear_window(vars->mlx, vars->win);
 	y = -1;
 	while (++y < HEIGHT)
@@ -34,8 +33,8 @@ void	test(t_img *img, t_vars *vars)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			double u = (double)x / (WIDTH);
-			double v = (double)y / (HEIGHT);
+			double u = (double)x / (double)(WIDTH);
+			double v = (double)y / (double)(HEIGHT);
 			t_ray r = ray(cam.origin, vec_sub(vec_add(vec_mul(cam.horizontal, u), vec_add(cam.lower_left_corner, vec_mul(cam.vertical, v))), cam.origin));
 			t_vector color = ray_color(r);
 			paint(img, x, y, test_color(color));
