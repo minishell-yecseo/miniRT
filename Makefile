@@ -7,7 +7,7 @@ CFLAGS		= #-Wall -Wextra -Werror
 SRC_DIR		= sources/
 
 SRC			= main.c paint.c key_hook.c vector_func.c
-SRC_BONUS	= main_bonus.c
+SRC_BONUS	= #bonus files
 
 SRCS		= $(addprefix $(SRC_DIR), $(SRC))
 SRCS_BONUS	= $(addprefix $(SRC_DIR), $(SRC_BONUS))
