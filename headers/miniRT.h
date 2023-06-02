@@ -7,6 +7,7 @@
 # include <fcntl.h>
 # include "../mlx/mlx.h"
 # include "vector.h"
+# include "object.h"
 
 # define WIDTH 1200
 # define HEIGHT 800
