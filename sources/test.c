@@ -21,7 +21,7 @@ t_vector ray_color(t_ray r)
 	if (t > 0)
 	{
 		t_vector N = vec_unit(vec_sub(ray_at(r, t), vector(0,0,-1)));
-		return vec_mul(vector(N.x + 1, N.y + 1, N.z + 1), 0.5);
+		return vec_mul(vector(100, 0, N.z + 100), 0.5);
 	}
 
 	//sky
