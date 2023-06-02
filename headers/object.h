@@ -21,4 +21,7 @@ typedef struct s_object
 	double				height;
 }	t_object;
 
+double	hit_obj(t_object *obj, t_ray r);
+double	hit_sphere(t_object *sp, t_ray r);
+
 #endif
