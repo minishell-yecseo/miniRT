@@ -6,13 +6,13 @@ double	hit_sphere(t_vector center, double radius, t_ray r)
 {
 	t_vector oc = vec_sub(r.origin, center);
 	double a = vec_dot(r.dir, r.dir);
-	double b = 2 * vec_dot(oc, r.dir);
-	double c = vec_dot(oc, oc) - radius * radius;
-	double discriminant = b * b - 4 * a * c;
+	double half_b = vec_dot(oc, r.dir);
+	double c = vec_len_square(oc) - radius * radius;
+	double discriminant = half_b * half_b - a * c;
 	if (discriminant < 0)
 		return -1;
 	else
-		return (-b -sqrt(discriminant)) / (2 * a);
+		return (-half_b - sqrt(discriminant) / a);
 }
 
 t_vector ray_color(t_ray r)
@@ -21,7 +21,7 @@ t_vector ray_color(t_ray r)
 	if (t > 0)
 	{
 		t_vector N = vec_unit(vec_sub(ray_at(r, t), vector(0,0,-1)));
-		return vec_mul(vector(N.x + 1, N.y + 1, N.z + 1), 0.5);
+		return vec_mul(vector(100, 0, N.z + 100), 0.5);
 	}
 
 	//sky
