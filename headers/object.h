@@ -9,7 +9,7 @@ enum object_type
 	pl,
 	sy,
 	other
-}
+};
 
 typedef struct s_object
 {
