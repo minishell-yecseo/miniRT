@@ -21,8 +21,8 @@ t_camera	camera(t_vector origin)
 {
 	t_camera cam;
 
-	cam.viewport_w = 2;
-	cam.viewport_h = 2 * WIDTH / HEIGHT;
+	cam.viewport_h = 2;
+	cam.viewport_w = cam.viewport_h * WIDTH / HEIGHT;
 	cam.focal_len = 1;
 	cam.origin = origin;
 	cam.horizontal = vector(cam.viewport_w, 0, 0);
