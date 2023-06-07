@@ -15,9 +15,11 @@ typedef struct	s_camera
 	double		viewport_h;
 	double		viewport_w;
 	double		focal_len;
+	double		fov;
 	t_vector	origin;
-	t_vector	horizontal;
-	t_vector	vertical;
+	t_vector	dir;
+	t_vector	right;
+	t_vector	up;
 	t_vector	lower_left_corner;
 }	t_camera;
 
