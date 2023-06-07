@@ -1,23 +1,17 @@
 #include "miniRT.h"
 #include "ray.h"
+#include "object.h"
 
-
-double	hit_sphere(t_vector center, double radius, t_ray r)
-{
-	t_vector oc = vec_sub(r.origin, center);
-	double a = vec_dot(r.dir, r.dir);
-	double half_b = vec_dot(oc, r.dir);
-	double c = vec_len_square(oc) - radius * radius;
-	double discriminant = half_b * half_b - a * c;
-	if (discriminant < 0)
-		return -1;
-	else
-		return (-half_b - sqrt(discriminant) / a);
-}
 
 t_vector ray_color(t_ray r)
 {
-	double t = hit_sphere(vector(0, 0, -1), 0.5, r);
+	t_object sp;
+
+	sp.type = 0;
+	sp.center = vector(0, 0, -1);
+	sp.diameter = 0.5;
+
+	double t = hit_sphere(&sp, r);
 	if (t > 0)
 	{
 		t_vector N = vec_unit(vec_sub(ray_at(r, t), vector(0,0,-1)));
