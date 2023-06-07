@@ -7,7 +7,6 @@
 # include <fcntl.h>
 # include "../mlx/mlx.h"
 # include "vector.h"
-# include "object.h"
 
 # define WIDTH 1200
 # define HEIGHT 800
@@ -41,5 +40,7 @@ void	paint(t_img *img, int x, int y, int color);
 
 int		destroy_window(t_vars *vars);
 int		key_hook_esc(int keycode, t_vars *vars);
+
+void	test(t_img *img, t_vars *vars);
 
 #endif
