@@ -14,6 +14,7 @@ double	hit_obj(t_object *obj, t_ray r)
 	else
 		return (0.0);
 	*/
+	return 0;
 }
 
 double	hit_sphere(t_object *sp, t_ray r)

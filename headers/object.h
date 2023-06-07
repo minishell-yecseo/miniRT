@@ -2,6 +2,7 @@
 # define OBJECT_H
 
 #include "vector.h"
+#include "ray.h"
 
 enum object_type
 {
