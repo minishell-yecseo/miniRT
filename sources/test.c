@@ -8,7 +8,7 @@ t_vector ray_color(t_ray r)
 	t_object sp;
 
 	sp.type = 0;
-	sp.center = vector(0, 0, -1);
+	sp.center = vector(0, 1, -2);
 	sp.diameter = 0.5;
 
 	double t = hit_sphere(&sp, r);
@@ -50,7 +50,7 @@ void	test(t_img *img, t_vars *vars)
 		{
 			double u = (double)x / (double)(WIDTH);
 			double v = (double)y / (double)(HEIGHT);
-			t_ray r = ray(cam.origin, vec_sub(vec_add(vec_mul(cam.horizontal, u), vec_add(cam.lower_left_corner, vec_mul(cam.vertical, v))), cam.origin));
+			t_ray r = ray(cam.origin, vec_sub(vec_add(vec_mul(cam.right, u), vec_add(cam.lower_left_corner, vec_mul(cam.up, v))), cam.origin));
 			t_vector color = ray_color(r);
 			paint(img, x, y, test_color(color));
 		}
