@@ -32,14 +32,14 @@ void	set_two_spheres(t_object *objs)
 {
 	// make two spheres
 	objs[0].type = sp;
-	objs[0].center = vector(0, 1, -2);
-	objs[0].color = vector(18, 10, 100);
+	objs[0].center = vector(0, -3, -2);
+	objs[0].color = vector(256, 0, 0);
 	objs[0].diameter = 0.5;
 
 	objs[1].type = sp;
-	objs[1].center = vector(1, 1, -2);
+	objs[1].center = vector(0, -2, -2);
 	objs[1].color = vector(10, 255, 100);
-	objs[1].diameter = 0.3;
+	objs[1].diameter = 1.0;
 }
 
 void	test(t_img *img, t_vars *vars)
@@ -54,15 +54,16 @@ void	test(t_img *img, t_vars *vars)
 	mlx_clear_window(vars->mlx, vars->win);
 
 	set_two_spheres(objs);
-	y = -1;
-	while (++y < HEIGHT)
+	y = HEIGHT - 1;
+	while (--y >= 0)
 	{
 		x = -1;
 		while (++x < WIDTH)
 		{
-			double u = (double)x / (double)(WIDTH);
-			double v = (double)y / (double)(HEIGHT);
-			t_ray r = ray(cam.origin, vec_sub(vec_add(vec_mul(cam.right, u), vec_add(cam.lower_left_corner, vec_mul(cam.up, v))), cam.origin));
+			double u = (double) x;
+			double v = (double) y;
+			t_ray r = ray(cam.origin, vec_unit(vec_sub(vec_add(vec_mul(cam.right, u), vec_add(cam.lower_left_corner, vec_mul(cam.up, v))), cam.origin)));
+			//printf("(%d, %d)-ray dir : (%f, %f, %f)\n", x, y, r.dir.x, r.dir.y, r.dir.z);
 			t_vector color = ray_color(objs, r);
 			paint(img, x, y, test_color(color));
 		}
