@@ -9,22 +9,26 @@ void	set_face_normal(t_ray r, t_hit_rec *rec)
 		rec->normal = vec_mul(rec->normal, -1);
 }
 
-int	hit_cy(t_object *pl, t_ray r, t_hit_rec *rec)
+int	hit_cy(t_object *cy, t_ray r, t_hit_rec *rec)
 {
-	double	numrator;
-	double	denominator;
+	double	a;
+	double	half_b;
+	double	c;
+	double	discriminant;
 	double	root;
 
-	denominator = vec_dot(r.dir, pl->norm);
-	if (fabs(denominator) < 0.0000000001 )
+	a = vec_len_square(vec_cross(r.dir, cy->norm));
+	half_b = vec_dot(vec_cross(r.dir, cy->norm), vec_cross(vec_sub(r.origin, cy->center), cy->norm));
+	c = vec_len_square(vec_cross(vec_sub(r.origin, cy->center), cy->norm)) - cy->diameter * cy->diameter;
+	discriminant = half_b * half_b - a * c;
+	if (discriminant < 0)
 		return (0);
-	numrator = vec_dot(vec_sub(pl->center, r.origin), pl->norm);
-	root = numrator / denominator;
+	root = (-half_b - sqrt(discriminant)) / a;
 	if (root < rec->tmin || root > rec->tmax)
 		return (0);
 	rec->t = root;
 	rec->point = ray_at(r, root);
-	rec->normal = pl->norm;
+	rec->normal = cy->norm;
 	set_face_normal(r, rec);
 	return (1);
 }

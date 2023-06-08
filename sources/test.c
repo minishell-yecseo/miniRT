@@ -32,10 +32,12 @@ void	set_two_spheres(t_object *objs)
 	objs[0].color = vector(0, 0.4, 0.4);
 	objs[0].norm = vector(0, 90, 1);
 
-	objs[1].type = sp;
-	objs[1].center = vector(0, 0, -2);
-	objs[1].color = vector(0, 0.2, 0);
-	objs[1].diameter = 0.5;
+	objs[1].type = cy;
+	objs[1].center = vector(0, 0, -10);
+	objs[1].color = vector(1, 1, 1);
+	objs[1].diameter = 4;
+	objs[1].norm = vector(0, 1, 0);
+
 
 	//objs[1].type = sp;
 	//objs[1].center = vector(0.3, 0, -2);
