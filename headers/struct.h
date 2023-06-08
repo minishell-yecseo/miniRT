@@ -72,4 +72,16 @@ typedef struct s_object
 	double				height;
 }	t_object;
 
+//hit_rec
+typedef struct s_hit_rec
+{
+	t_vector	point;
+	t_vector	normal;
+	double		tmin;
+	double		tmax;
+	double		t;
+	int			front_face;
+	t_vector	color;
+}	t_hit_rec;
+
 #endif

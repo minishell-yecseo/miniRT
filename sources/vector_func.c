@@ -89,3 +89,22 @@ t_vector	vec_unit(t_vector vec)
 	vec.z /= len;
 	return (vec);
 }
+
+t_vector	vec_min(t_vector vec1, t_vector vec2)
+{
+	t_vector	new;
+
+	if (vec1.x > vec2.x)
+		new.x = vec2.x;
+	else
+		new.x = vec1.x;
+	if (vec1.y > vec2.y)
+		new.y = vec2.y;
+	else
+		new.y = vec1.y;
+	if (vec1.z > vec2.z)
+		new.z = vec2.z;
+	else
+		new.z = vec1.z;
+	return (new);
+}
