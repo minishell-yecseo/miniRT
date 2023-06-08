@@ -1,9 +1,11 @@
 #ifndef OBJECT_H
 # define OBJECT_H
 
-#include "vector.h"
-#include "ray.h"
+# include "struct.h"
+# include "vector.h"
+# include "ray.h"
 
+/*
 enum object_type
 {
 	sp,
@@ -21,6 +23,7 @@ typedef struct s_object
 	double				diameter;
 	double				height;
 }	t_object;
+*/
 
 double	hit_obj(t_object *obj, t_ray r);
 double	hit_sphere(t_object *sp, t_ray r);
