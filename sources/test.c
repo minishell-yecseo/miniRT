@@ -6,7 +6,7 @@
 t_vector ray_color(t_object *objs, t_ray r, t_hit_rec *rec)
 {
 	if (is_hit(objs, r, rec))
-		return (vec_mul(vec_add(rec->normal, vector(1, 1, 1)), 0.5));
+		return rec->color; //return (vec_mul(vec_add(rec->normal, vector(1, 1, 1)), 0.5));
 
 	//sky
 	double t;
@@ -26,18 +26,36 @@ int	test_color(t_vector color)
 
 void	set_two_spheres(t_object *objs)
 {
-	// make two spheres
-	objs[0].type = sp;
-	objs[0].center = vector(-0.5, 0, -1);
-	objs[0].color = vector(256, 0, 0);
-	objs[0].diameter = 0.5;
+	//plane
+	objs[0].type = pl;
+	objs[0].center = vector(0, 0, -100000);
+	objs[0].color = vector(0, 0.4, 0.4);
+	objs[0].norm = vector(0, 90, 1);
 
 	objs[1].type = sp;
-	objs[1].center = vector(0.5, 0, -1);
-	objs[1].color = vector(10, 255, 100);
+	objs[1].center = vector(0, 0, -2);
+	objs[1].color = vector(0, 0.2, 0);
 	objs[1].diameter = 0.5;
 
+	//objs[1].type = sp;
+	//objs[1].center = vector(0.3, 0, -2);
+	//objs[1].color = vector(10, 255, 100);
+	//objs[1].diameter = 0.5;
 	objs[2].type = -1;
+
+	// make two spheres
+
+	//objs[0].type = sp;
+	//objs[0].center = vector(-0.5, 0, -1);
+	//objs[0].color = vector(256, 0, 0);
+	//objs[0].diameter = 0.5;
+
+	//objs[1].type = sp;
+	//objs[1].center = vector(0.3, 0, -2);
+	//objs[1].color = vector(10, 255, 100);
+	//objs[1].diameter = 0.5;
+
+	//objs[2].type = -1;
 }
 
 void	test(t_img *img, t_vars *vars)
@@ -61,7 +79,7 @@ void	test(t_img *img, t_vars *vars)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			rec.tmax = 100000000;
+			rec.tmax = 1.7976931348623158e+308;
 			double u = (double) x;
 			double v = (double) y;
 			t_ray r = ray(cam.origin, vec_unit(vec_sub(vec_add(vec_mul(cam.right, u), vec_add(cam.lower_left_corner, vec_mul(cam.up, v))), cam.origin)));

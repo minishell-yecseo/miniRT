@@ -3,24 +3,50 @@
 void	set_face_normal(t_ray r, t_hit_rec *rec)
 {
 	rec->front_face = vec_dot(r.dir, rec->normal) < 0;
-	rec->normal = (rec->front_face) ? rec->normal : vec_mul(rec->normal, -1);
+	if (rec->front_face)
+		rec->normal = rec->normal;
+	else
+		rec->normal = vec_mul(rec->normal, -1);
 }
 
-int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
+int	hit_cy(t_object *pl, t_ray r, t_hit_rec *rec)
 {
-	if (obj->type == sp)
-		return (hit_sphere(obj, r, rec));
-	/*
-	else if (obj->type == pl)
-		return (hit_plane(obj, r));
-	else if (obj->type == sy)
-		return (hit_sy(obj, r));
-	else if (obj->type == other)
-		return (hit_other(obj, r));
-	else
-		return (0.0);
-	*/
-	return 0;
+	double	numrator;
+	double	denominator;
+	double	root;
+
+	denominator = vec_dot(r.dir, pl->norm);
+	if (fabs(denominator) < 0.0000000001 )
+		return (0);
+	numrator = vec_dot(vec_sub(pl->center, r.origin), pl->norm);
+	root = numrator / denominator;
+	if (root < rec->tmin || root > rec->tmax)
+		return (0);
+	rec->t = root;
+	rec->point = ray_at(r, root);
+	rec->normal = pl->norm;
+	set_face_normal(r, rec);
+	return (1);
+}
+
+int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
+{
+	double	numrator;
+	double	denominator;
+	double	root;
+
+	denominator = vec_dot(r.dir, pl->norm);
+	if (fabs(denominator) < 0.0000000001 )
+		return (0);
+	numrator = vec_dot(vec_sub(pl->center, r.origin), pl->norm);
+	root = numrator / denominator;
+	if (root < rec->tmin || root > rec->tmax)
+		return (0);
+	rec->t = root;
+	rec->point = ray_at(r, root);
+	rec->normal = pl->norm;
+	set_face_normal(r, rec);
+	return (1);
 }
 
 int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
@@ -49,12 +75,28 @@ int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
 		if (root < rec->tmin || rec->tmax < root)
 			return (0);
 	}
-	rec->tmax = root;
 	rec->t = root;
 	rec->point = ray_at(r, root);
 	rec->normal = vec_mul(vec_sub(rec->point, sp->center), 1 / (sp->diameter));
 	set_face_normal(r, rec);
 	return (1);
+}
+
+int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
+{
+	if (obj->type == sp)
+		return (hit_sphere(obj, r, rec));
+	else if (obj->type == pl)
+		return (hit_plane(obj, r, rec));
+	else if (obj->type == cy)
+		return (hit_cy(obj, r, rec));
+	/*
+	else if (obj->type == other)
+		return (hit_other(obj, r));
+	else
+		return (0.0);
+	*/
+	return 0;
 }
 
 int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
@@ -66,7 +108,11 @@ int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
 	while(objs[i].type != -1)
 	{
 		if (hit_obj(&objs[i], r, rec))
+		{
 			is_hit = 1;
+			rec->color = objs[i].color;
+			rec->tmax = rec->t;
+		}
 		i++;
 	}
 	return is_hit;

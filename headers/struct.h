@@ -58,7 +58,7 @@ enum object_type
 {
 	sp,
 	pl,
-	sy,
+	cy,
 	other
 };
 
