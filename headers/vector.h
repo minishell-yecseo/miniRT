@@ -1,16 +1,19 @@
 #ifndef VECTOR_H
 # define VECTOR_H
 
+# include "struct.h"
 # include <stdio.h>
 # include <math.h>
 # include <stdlib.h>
 
+/*
 typedef struct s_vector
 {
 	double	x;
 	double	y;
 	double	z;
 }	t_vector;
+*/
 
 t_vector	vector(double x, double y, double z);
 void		vec_set_value(t_vector *vec, double x, double y, double z);
