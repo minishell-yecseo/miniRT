@@ -6,7 +6,7 @@
 t_vector ray_color(t_object *objs, t_ray r, t_hit_rec *rec)
 {
 	if (is_hit(objs, r, rec))
-		return rec->color; //return (vec_mul(vec_add(rec->normal, vector(1, 1, 1)), 0.5));
+		return lighting(objs, r, rec); //return (vec_mul(vec_add(rec->normal, vector(1, 1, 1)), 0.5));
 
 	//sky
 	double t;
@@ -33,17 +33,23 @@ void	set_two_spheres(t_object *objs)
 	objs[0].norm = vector(0, 90, 1);
 
 	objs[1].type = cy;
-	objs[1].center = vector(0, 0, -10);
+	objs[1].center = vector(-3, 0, -5);
 	objs[1].color = vector(1, 1, 1);
-	objs[1].diameter = 4;
-	objs[1].norm = vector(0, 1, 0);
+	objs[1].diameter = 1;
+	objs[1].norm = vec_unit(vector(0.5, 0, -1));
+	objs[1].height = 2;
 
+	objs[2].type = sp;
+	objs[2].center = vector(0, 0, -1.5);
+	objs[2].color = vector(1, 0, 1);
+	objs[2].diameter = 0.5;
 
-	//objs[1].type = sp;
-	//objs[1].center = vector(0.3, 0, -2);
-	//objs[1].color = vector(10, 255, 100);
-	//objs[1].diameter = 0.5;
-	objs[2].type = -1;
+	objs[3].type = sp;
+	objs[3].center = vector(0.4, 0, -1);
+	objs[3].color = vector(0.1, 0.2, 0.6);
+	objs[3].diameter = 0.25;
+	
+	objs[4].type = -1;
 
 	// make two spheres
 
@@ -60,13 +66,28 @@ void	set_two_spheres(t_object *objs)
 	//objs[2].type = -1;
 }
 
+void	set_light(t_light *lights)
+{
+	lights[0].type = ambient;
+	lights[0].color = vector(1, 1, 1);
+	lights[0].ratio = 0.2;
+
+	lights[1].type = light;
+	lights[1].origin = vector(0, 5, 0);
+	lights[1].ratio = 0.5;
+	lights[1].color = vector(1, 1, 1);
+
+	lights[2].type = -1;
+}
+
 void	test(t_img *img, t_vars *vars)
 {
 	int			x;
 	int			y;
 	int			color;
 	t_camera	cam;
-	t_object	objs[3];
+	t_object	objs[100];
+	t_light		lights[100];
 	t_hit_rec	rec;
 
 	rec.tmin = 0.00000001;
@@ -75,6 +96,9 @@ void	test(t_img *img, t_vars *vars)
 	mlx_clear_window(vars->mlx, vars->win);
 
 	set_two_spheres(objs);
+	set_light(lights);
+
+	rec.lights = lights;
 	y = HEIGHT - 1;
 	while (--y >= 0)
 	{

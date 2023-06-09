@@ -108,3 +108,13 @@ t_vector	vec_min(t_vector vec1, t_vector vec2)
 		new.z = vec1.z;
 	return (new);
 }
+
+t_vector	vec2_mul(t_vector vec1, t_vector vec2)
+{
+	t_vector	vec;
+
+	vec.x = vec1.x * vec2.x;
+	vec.y = vec1.y * vec2.y;
+	vec.z = vec1.z * vec2.z;
+	return (vec);
+}
