@@ -23,7 +23,7 @@ t_camera	camera(t_vector origin)
 	t_camera cam;
 	t_vector tmp;
 
-	cam.dir = vector(0.5, -0.7, -1);
+	cam.dir = vector(0, 0, -1);
 	cam.fov = 100;
 	cam.focal_len = (float)WIDTH / 2 / tan((cam.fov / 2 * M_PI / 180));
 	printf("focal_len : %f\n", cam.focal_len);

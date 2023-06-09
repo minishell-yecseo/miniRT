@@ -58,7 +58,7 @@ enum object_type
 {
 	sp,
 	pl,
-	sy,
+	cy,
 	other
 };
 
@@ -70,6 +70,36 @@ typedef struct s_object
 	t_vector			color;
 	double				diameter;
 	double				height;
+	t_vector			albedo;
 }	t_object;
+
+//light
+enum light_type
+{
+	ambient,
+	light
+};
+
+typedef struct s_light
+{
+	enum light_type	type;
+	t_vector		origin;
+	t_vector		color;
+	double			ratio;
+}	t_light;
+
+//hit_rec
+typedef struct s_hit_rec
+{
+	t_vector	point;
+	t_vector	normal;
+	double		tmin;
+	double		tmax;
+	double		t;
+	int			front_face;
+	t_vector	color;
+	t_vector	albedo;
+	t_light		*lights;
+}	t_hit_rec;
 
 #endif
