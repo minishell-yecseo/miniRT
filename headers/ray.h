@@ -1,8 +1,6 @@
 #ifndef RAY_H
 # define RAY_H
 
-# include "struct.h"
-# include "vector.h"
 # include "miniRT.h"
 
 /*
