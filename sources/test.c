@@ -50,20 +50,6 @@ void	set_two_spheres(t_object *objs)
 	objs[3].diameter = 0.25;
 	
 	objs[4].type = -1;
-
-	// make two spheres
-
-	//objs[0].type = sp;
-	//objs[0].center = vector(-0.5, 0, -1);
-	//objs[0].color = vector(256, 0, 0);
-	//objs[0].diameter = 0.5;
-
-	//objs[1].type = sp;
-	//objs[1].center = vector(0.3, 0, -2);
-	//objs[1].color = vector(10, 255, 100);
-	//objs[1].diameter = 0.5;
-
-	//objs[2].type = -1;
 }
 
 void	set_light(t_light *lights)
