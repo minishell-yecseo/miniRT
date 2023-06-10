@@ -78,7 +78,7 @@ void	test(t_img *img, t_vars *vars)
 
 	rec.tmin = 0.00000001;
 
-	cam = camera(vector(0, 0, 0));
+	cam = camera(vector(0, 0, 0), vector(0, 0, -1), 100);
 	mlx_clear_window(vars->mlx, vars->win);
 
 	set_two_spheres(objs);

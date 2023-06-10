@@ -26,6 +26,6 @@ typedef struct	s_camera
 
 t_ray		ray(t_vector origin, t_vector dir);
 t_vector	ray_at(t_ray ray, double t);
-t_camera	camera(t_vector origin);
+t_camera	camera(t_vector origin, t_vector direction, double fov);
 
 #endif
