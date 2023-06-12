@@ -1,7 +1,7 @@
 #ifndef RAY_H
 # define RAY_H
 
-# include "miniRT.h"
+#include "struct.h"
 
 /*
 typedef struct	s_ray

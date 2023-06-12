@@ -9,6 +9,8 @@
 # include "mlx.h"
 # include "struct.h"
 # include "vector.h"
+# include "ray.h"
+#include "object.h"
 
 # define WIDTH 1200
 # define HEIGHT 800
@@ -21,5 +23,6 @@ int		destroy_window(t_vars *vars);
 int		key_hook_esc(int keycode, t_vars *vars);
 
 void	test(t_img *img, t_vars *vars);
+int	hit_cylinder(t_object *cy, t_ray *ray, t_hit_rec *rec);
 
 #endif

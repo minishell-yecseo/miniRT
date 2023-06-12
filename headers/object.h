@@ -29,4 +29,6 @@ int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec);
 int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec);
 int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec);
 
+void	set_face_normal(t_ray r, t_hit_rec *rec);
+
 #endif
