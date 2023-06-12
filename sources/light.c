@@ -28,7 +28,7 @@ t_vector	light_get(t_object *objs, t_ray r, t_hit_rec *rec, t_light light)
 
 	if (shadow(objs, r, light, rec->point))
 	{
-		return (vector(0,0,0));
+		return (vector(0, 0, 0));
 	}
 	light_dir = vec_unit(vec_sub(light.origin, rec->point));
 	k = fmax(vec_dot(rec->normal, light_dir), 0.0); //* (1 / vec_len(vec_sub(light.origin, rec->point)));
@@ -40,7 +40,7 @@ t_vector	light_get(t_object *objs, t_ray r, t_hit_rec *rec, t_light light)
 	spec_strength = 1; // vec_len(vec_sub(light.origin, rec->point));
 	spec = pow(fmax(vec_dot(v, re), 0.0), k);
 	specular = vec_mul(vec_mul(light.color, spec_strength), spec);
-	return (vec_add(diffuse, specular));
+	return (vec2_mul(vec_add(diffuse, specular), light.color));
 }
 
 t_vector	lighting(t_object *objs, t_ray r, t_hit_rec *rec)

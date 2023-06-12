@@ -29,7 +29,7 @@ void	set_two_spheres(t_object *objs)
 	//plane
 	objs[0].type = pl;
 	objs[0].center = vector(0, -2, 0);
-	objs[0].color = vector(0.5, 0.5, 1);
+	objs[0].color = vector(1, 1, 1);
 	objs[0].norm = vector(0, 2, 0.1);
 
 	objs[1].type = sp;
@@ -52,14 +52,14 @@ void	set_light(t_light *lights)
 	lights[0].ratio = 0.2;
 
 	lights[1].type = light;
-	lights[1].origin = vector(1, 0, -5);
+	lights[1].origin = vector(1, 1, 1);
 	lights[1].ratio = 0.5;
 	lights[1].color = vector(1, 1, 1);
 
 	lights[2].type = light;
 	lights[2].origin = vector(-1, 1, 1);
-	lights[2].ratio = 0.5;
-	lights[2].color = vector(1, 1, 1);
+	lights[2].ratio = 1;
+	lights[2].color = vector(1, 0, 0);
 
 	lights[3].type = -1;
 }
