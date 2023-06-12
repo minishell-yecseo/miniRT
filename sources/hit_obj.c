@@ -35,7 +35,7 @@ int	cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 		return (0);
 	t_vector	P = vec_add(r.origin, vec_mul(r.dir, root));
 	double		pc = vec_len(vec_sub(P, c));
-	if (pc > cy->diameter || pc < 0.0)
+	if (pc > cy->radius || pc < 0.0)
 		return (0);
 	rec->t = root;
 	rec->point = ray_at(r, root);
@@ -53,7 +53,7 @@ int	cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
 
 	a = vec_len_square(vec_cross(r.dir, cy->norm));
 	half_b = vec_dot(vec_cross(r.dir, cy->norm), vec_cross(vec_sub(r.origin, cy->center), cy->norm));
-	c = vec_len_square(vec_cross(vec_sub(r.origin, cy->center), cy->norm)) - cy->diameter * cy->diameter;
+	c = vec_len_square(vec_cross(vec_sub(r.origin, cy->center), cy->norm)) - (cy->radius) * (cy->radius);
 	discriminant = half_b * half_b - a * c;
 	if (discriminant < 0)
 		return (0);
@@ -130,7 +130,7 @@ int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
 	oc = vec_sub(r.origin, sp->center);
 	a = vec_len_square(r.dir);
 	half_b = vec_dot(oc, r.dir);
-	c = vec_len_square(oc) - sp->diameter * sp->diameter;
+	c = vec_len_square(oc) - (sp->radius) * (sp->radius);
 	discriminant = half_b * half_b - a * c;
 	if (discriminant < 0)
 		return (0);
@@ -145,7 +145,7 @@ int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
 	}
 	rec->t = root;
 	rec->point = ray_at(r, root);
-	rec->normal = vec_mul(vec_sub(rec->point, sp->center), 1 / (sp->diameter));
+	rec->normal = vec_mul(vec_sub(rec->point, sp->center), 1 / (sp->radius));
 	set_face_normal(r, rec);
 	return (1);
 }
