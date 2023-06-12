@@ -10,7 +10,7 @@
 # include "struct.h"
 # include "vector.h"
 # include "ray.h"
-#include "object.h"
+# include "object.h"
 
 # define WIDTH 1200
 # define HEIGHT 800
