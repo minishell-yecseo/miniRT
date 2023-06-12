@@ -157,7 +157,7 @@ int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
 	else if (obj->type == pl)
 		return (hit_plane(obj, r, rec));
 	else if (obj->type == cy)
-		return (hit_cy(obj, r, rec));
+		return (hit_cylinder(obj, &r, rec));
 	/*
 	else if (obj->type == other)
 		return (hit_other(obj, r));
