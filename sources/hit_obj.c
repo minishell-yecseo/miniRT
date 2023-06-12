@@ -1,4 +1,5 @@
 #include "object.h"
+#include "miniRT.h"
 
 void	set_face_normal(t_ray r, t_hit_rec *rec)
 {
@@ -38,6 +39,7 @@ int	cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 	if (pc > cy->radius || pc < 0.0)
 		return (0);
 	rec->t = root;
+	rec->tmax = root;
 	rec->point = ray_at(r, root);
 	rec->normal = cy->norm;
 	return (1);
@@ -70,6 +72,7 @@ int	cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
 	if (qc > cy->height || qc < 0.0)
 		return (0);
 	rec->t = root;
+	rec->tmax = root;
 	rec->point = ray_at(r, root);
 	rec->normal = get_cy_norm(cy, rec->point, qc);
 	set_face_normal(r, rec);
@@ -157,7 +160,7 @@ int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
 	else if (obj->type == pl)
 		return (hit_plane(obj, r, rec));
 	else if (obj->type == cy)
-		return (hit_cylinder(obj, &r, rec));
+		return (hit_cy(obj, r, rec));
 	/*
 	else if (obj->type == other)
 		return (hit_other(obj, r));
