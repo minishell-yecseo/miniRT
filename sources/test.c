@@ -35,35 +35,21 @@ void	set_two_spheres(t_object *objs)
 	objs[1].type = cy;
 	objs[1].center = vector(-3, 0, -5);
 	objs[1].color = vector(1, 1, 1);
-	objs[1].diameter = 1;
+	objs[1].radius = 1;
 	objs[1].norm = vec_unit(vector(0.5, 0, -1));
 	objs[1].height = 2;
 
 	objs[2].type = sp;
 	objs[2].center = vector(0, 0, -1.5);
 	objs[2].color = vector(1, 0, 1);
-	objs[2].diameter = 0.5;
+	objs[2].radius = 1;
 
 	objs[3].type = sp;
 	objs[3].center = vector(0.4, 0, -1);
 	objs[3].color = vector(0.1, 0.2, 0.6);
-	objs[3].diameter = 0.25;
+	objs[3].radius = 1;
 	
 	objs[4].type = -1;
-
-	// make two spheres
-
-	//objs[0].type = sp;
-	//objs[0].center = vector(-0.5, 0, -1);
-	//objs[0].color = vector(256, 0, 0);
-	//objs[0].diameter = 0.5;
-
-	//objs[1].type = sp;
-	//objs[1].center = vector(0.3, 0, -2);
-	//objs[1].color = vector(10, 255, 100);
-	//objs[1].diameter = 0.5;
-
-	//objs[2].type = -1;
 }
 
 void	set_light(t_light *lights)
@@ -92,7 +78,7 @@ void	test(t_img *img, t_vars *vars)
 
 	rec.tmin = 0.00000001;
 
-	cam = camera(vector(0, 0, 0));
+	cam = camera(vector(-13, 3, 7), vector(1, -0.3, -0.87), 50);
 	mlx_clear_window(vars->mlx, vars->win);
 
 	set_two_spheres(objs);

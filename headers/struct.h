@@ -68,7 +68,7 @@ typedef struct s_object
 	t_vector			center;
 	t_vector			norm;
 	t_vector			color;
-	double				diameter;
+	double				radius;
 	double				height;
 	t_vector			albedo;
 }	t_object;

@@ -18,15 +18,14 @@ t_vector	ray_at(t_ray ray, double t)
 	return (new);
 }
 
-t_camera	camera(t_vector origin)
+t_camera	camera(t_vector origin, t_vector direction, double fov)
 {
 	t_camera cam;
 	t_vector tmp;
 
-	cam.dir = vector(0, 0, -1);
-	cam.fov = 100;
+	cam.dir = direction;
+	cam.fov = fov;
 	cam.focal_len = (float)WIDTH / 2 / tan((cam.fov / 2 * M_PI / 180));
-	printf("focal_len : %f\n", cam.focal_len);
 	cam.origin = origin;
 	if (vec_len(vec_cross(cam.dir, vector(0, 1, 0))))
 		cam.right = vec_unit(vec_cross(cam.dir, vector(0, 1, 0)));
