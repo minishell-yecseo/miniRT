@@ -33,6 +33,16 @@ typedef struct s_vector
 	double	z;
 }	t_vector;
 
+//checker
+typedef struct s_checker
+{
+	int			is_checker;
+	int			x;
+	int			y;
+	t_vector	color1;
+	t_vector	color2;
+}	t_checker;
+
 //for ray, camera
 typedef struct	s_ray
 {
@@ -70,7 +80,7 @@ typedef struct s_object
 	t_vector			color;
 	double				radius;
 	double				height;
-	t_vector			albedo;
+	t_checker			checker;
 }	t_object;
 
 //light
@@ -99,6 +109,8 @@ typedef struct s_hit_rec
 	int			front_face;
 	t_vector	color;
 	t_vector	albedo;
+	double		u;
+	double		v;
 	t_light		*lights;
 }	t_hit_rec;
 

@@ -31,15 +31,14 @@ t_vector	light_get(t_object *objs, t_ray r, t_hit_rec *rec, t_light light)
 		return (vector(0, 0, 0));
 	}
 	light_dir = vec_unit(vec_sub(light.origin, rec->point));
-	k = fmax(vec_dot(rec->normal, light_dir), 0.0); //* (1 / vec_len(vec_sub(light.origin, rec->point)));
+	k = fmax(vec_dot(rec->normal, light_dir) * (0.5 + 1 / vec_len(vec_sub(light.origin, rec->point))), 0.0);
 	diffuse = vec_mul(light.color, k);
 
 	v = vec_unit(vec_mul(r.dir, -1));
 	re = vec_add(vec_mul(light_dir, -1), vec_mul(rec->normal ,vec_dot(light_dir, rec->normal) * 2));
-	k = 128; // shininess value
-	spec_strength = 1; // vec_len(vec_sub(light.origin, rec->point));
+	k = 64; // shininess value
 	spec = pow(fmax(vec_dot(v, re), 0.0), k);
-	specular = vec_mul(vec_mul(light.color, spec_strength), spec);
+	specular = vec_mul(vec_mul(light.color, 0.8), spec);
 	return (vec2_mul(vec_add(diffuse, specular), light.color));
 }
 
@@ -65,10 +64,6 @@ t_vector	lighting(t_object *objs, t_ray r, t_hit_rec *rec)
 		}
 		i++;
 	}
-	//if (is_shadow == 1)
-	//{
-	//	return (vector(0, 0, 0));
-	//}
 
 	return (vec_min(vec2_mul(light_color, rec->albedo), vector(1, 1, 1)));
 }
