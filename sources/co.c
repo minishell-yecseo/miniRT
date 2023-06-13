@@ -80,7 +80,10 @@ int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
 	t_vector	Q = vec_add(co->center, vec_mul(co->norm, test));
 	t_vector	HP = vec_sub(P, H);
 	t_vector	QP = vec_sub(P, Q);
-	rec->normal = vec_unit(vec_cross(HP, vec_cross(HP, QP)));
+	if (vec_len(HP) < EPSILON)
+		rec->normal = co->norm;
+	else
+		rec->normal = vec_unit(vec_cross(HP, vec_cross(HP, QP)));
 	set_face_normal(r, rec);
 	return (1);
 }
