@@ -1,4 +1,5 @@
 #include "miniRT.h"
+#include <math.h>
 
 void	set_face_normal(t_ray r, t_hit_rec *rec)
 {
@@ -148,6 +149,8 @@ int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
 	rec->t = root;
 	rec->point = ray_at(r, root);
 	rec->normal = vec_mul(vec_sub(rec->point, sp->center), 1 / (sp->radius));
+	rec->u = (atan2(-1 * rec->point.z, rec->point.x) + M_PI) * (1 / (M_PI)) * (1 / 2);
+	rec->v = acos(-1 * rec->point.y) * (1 / M_PI);
 	set_face_normal(r, rec);
 	return (1);
 }
@@ -178,7 +181,17 @@ int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
 			is_hit = 1;
 			rec->color = objs[i].color;
 			rec->tmax = rec->t;
-			rec->albedo = objs[i].color;
+			if (objs[i].checker.is_checker == 0)
+				rec->albedo = objs[i].color;
+			else
+			{
+				if (((((int)round(rec->u * objs[i].checker.x)) + (int)(round(rec->v * objs[i].checker.y)))) % 2 == 0)
+					rec->albedo = objs[i].checker.color1;
+				else
+				{
+					rec->albedo = objs[i].checker.color2;
+				}
+			}
 		}
 		i++;
 	}
