@@ -27,7 +27,7 @@ int	cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 	double	root;
 
 	denominator = vec_dot(r.dir, vec_unit(cy->norm));
-	if (fabs(denominator) < 0.0000000001 )
+	if (fabs(denominator) < EPSILON )
 		return (0);
 	numrator = vec_dot(vec_sub(c, r.origin), vec_unit(cy->norm));
 	root = numrator / denominator;
@@ -106,7 +106,7 @@ int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
 	double	root;
 
 	denominator = vec_dot(r.dir, pl->norm);
-	if (fabs(denominator) < 0.0000000001 )
+	if (fabs(denominator) < EPSILON )
 		return (0);
 	numrator = vec_dot(vec_sub(pl->center, r.origin), pl->norm);
 	root = numrator / denominator;

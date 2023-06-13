@@ -25,7 +25,7 @@ int	co_cap(t_object *co, t_ray r, t_hit_rec *rec)
 	t_vector	p;
 
 	denominator = vec_dot(r.dir, co->norm);
-	if (fabs(denominator) < 0.0000001)
+	if (fabs(denominator) < EPSILON)
 		return (0);
 	numrator = -vec_dot(vec_sub(r.origin, co->center), co->norm);
 	root = numrator / denominator;
