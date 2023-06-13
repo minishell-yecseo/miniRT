@@ -1,6 +1,4 @@
 #include "miniRT.h"
-#include "ray.h"
-#include <math.h>
 
 t_ray	ray(t_vector origin, t_vector dir)
 {

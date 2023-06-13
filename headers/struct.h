@@ -1,6 +1,7 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
+# define EPSILON 1.11e-16
 //for mlx window drawing
 typedef struct s_color
 {
@@ -69,7 +70,7 @@ enum object_type
 	sp,
 	pl,
 	cy,
-	other
+	co
 };
 
 typedef struct s_object

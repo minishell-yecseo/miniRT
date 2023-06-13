@@ -1,4 +1,3 @@
-#include "object.h"
 #include "miniRT.h"
 #include <math.h>
 
@@ -29,7 +28,7 @@ int	cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 	double	root;
 
 	denominator = vec_dot(r.dir, vec_unit(cy->norm));
-	if (fabs(denominator) < 0.0000000001 )
+	if (fabs(denominator) < EPSILON )
 		return (0);
 	numrator = vec_dot(vec_sub(c, r.origin), vec_unit(cy->norm));
 	root = numrator / denominator;
@@ -108,7 +107,7 @@ int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
 	double	root;
 
 	denominator = vec_dot(r.dir, pl->norm);
-	if (fabs(denominator) < 0.0000000001 )
+	if (fabs(denominator) < EPSILON )
 		return (0);
 	numrator = vec_dot(vec_sub(pl->center, r.origin), pl->norm);
 	root = numrator / denominator;
@@ -164,13 +163,9 @@ int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
 		return (hit_plane(obj, r, rec));
 	else if (obj->type == cy)
 		return (hit_cy(obj, r, rec));
-	/*
-	else if (obj->type == other)
-		return (hit_other(obj, r));
-	else
-		return (0.0);
-	*/
-	return 0;
+	else if (obj->type == co)
+		return (hit_co(obj, r, rec));
+	return (0);
 }
 
 int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
