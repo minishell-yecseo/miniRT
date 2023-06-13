@@ -24,6 +24,11 @@ double	vec_len_square(t_vector vec)
 
 double	vec_len(t_vector vec)
 {
+	double	square;
+
+	square = vec_len_square(vec);
+	if (fabs(square - 1) < EPSILON)
+		return (1);
 	return (sqrt(vec_len_square(vec)));
 }
 
