@@ -22,14 +22,12 @@ int	co_cap(t_object *co, t_ray r, t_hit_rec *rec)
 	double		numrator;
 	double		root;
 	double		pc;
-	t_vector	cor;
 	t_vector	p;
 
-	cor = vec_sub(co->center, r.origin);
-	denominator = vec_dot(cor, co->norm);
+	denominator = vec_dot(r.dir, co->norm);
 	if (fabs(denominator) < 0.0000001)
 		return (0);
-	numrator = vec_dot(r.dir, co->norm);
+	numrator = -vec_dot(vec_sub(r.origin, co->center), co->norm);
 	root = numrator / denominator;
 	if (root < rec->tmin || root > rec->tmax)
 		return (0);

@@ -27,15 +27,15 @@ int	test_color(t_vector color)
 void	set_two_spheres(t_object *objs)
 {
 	objs[0].type = co;
-	objs[0].center = vector(0, 0, -15);
-	objs[0].norm = vector(0, 0.4, 1);
+	objs[0].center = vector(0, 0, -5);
+	objs[0].norm = vec_unit(vector(0.4, 1, -0.5));
 	objs[0].color = vector(0.5, 0.5, 1);
-	objs[0].radius = 1;
-	objs[0].height = 5;
+	objs[0].radius = 2;
+	objs[0].height = 6;
 
 	objs[1].type = cy;
-	objs[1].center = vector(3, 0, -7);
-	objs[1].norm = vector(0, 1, -0.5);
+	objs[1].center = vector(4, 0, -3);
+	objs[1].norm = vec_unit(vector(0, 1, 0));
 	objs[1].color = vector(0, 0, 1);
 	objs[1].radius = 0.5;
 	objs[1].height = 2;
@@ -74,7 +74,7 @@ void	test(t_img *img, t_vars *vars)
 
 	rec.tmin = 0.00000001;
 
-	cam = camera(vector(0, 0, 0), vector(0, 0, -1), 100);
+	cam = camera(vector(0, 0, 10), vector(0.1, 0.1, -1), 40);
 	mlx_clear_window(vars->mlx, vars->win);
 
 	set_two_spheres(objs);
