@@ -1,4 +1,3 @@
-#include "object.h"
 #include "miniRT.h"
 
 void	set_face_normal(t_ray r, t_hit_rec *rec)
@@ -161,13 +160,9 @@ int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
 		return (hit_plane(obj, r, rec));
 	else if (obj->type == cy)
 		return (hit_cy(obj, r, rec));
-	/*
-	else if (obj->type == other)
-		return (hit_other(obj, r));
-	else
-		return (0.0);
-	*/
-	return 0;
+	else if (obj->type == co)
+		return (hit_co(obj, r, rec));
+	return (0);
 }
 
 int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
