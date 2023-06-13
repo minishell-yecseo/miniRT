@@ -84,7 +84,7 @@ t_vector	vec_unit(t_vector vec)
 	double	len;
 
 	len = vec_len(vec);
-	if (len == 0)
+	if (len < EPSILON)
 	{
 		printf("Error: div 0\n");
 		exit(0);
