@@ -72,14 +72,17 @@ int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
 		if (root < rec->tmin || rec->tmax < root)
 			return (0);
 	}
-	t_vector	P = vec_add(r.origin, vec_mul(r.dir, root));
+	t_vector	P = ray_at(r, root);
 	double		test = vec_dot(vec_sub(P, co->center), co->norm);
 	if (test > co->height || test < 0.0)
 		return (0);
 	rec->t = root;
 	rec->point = ray_at(r, root);
 	rec->tmax = root;
-	rec->normal = vec_unit(vec_sub(rec->point, co->center));
+	t_vector	Q = vec_add(co->center, vec_mul(co->norm, test));
+	t_vector	HP = vec_sub(P, H);
+	t_vector	QP = vec_sub(P, Q);
+	rec->normal = vec_unit(vec_cross(HP, vec_cross(HP, QP)));
 	set_face_normal(r, rec);
 	return (1);
 }

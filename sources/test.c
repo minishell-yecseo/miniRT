@@ -28,10 +28,10 @@ void	set_two_spheres(t_object *objs)
 {
 	objs[0].type = co;
 	objs[0].center = vector(0, 0, -15);
-	objs[0].norm = vector(0, 1, 0);
+	objs[0].norm = vector(0, 0.4, 1);
 	objs[0].color = vector(0.5, 0.5, 1);
 	objs[0].radius = 1;
-	objs[0].height = 3;
+	objs[0].height = 5;
 
 	objs[1].type = cy;
 	objs[1].center = vector(3, 0, -7);
@@ -74,7 +74,7 @@ void	test(t_img *img, t_vars *vars)
 
 	rec.tmin = 0.00000001;
 
-	cam = camera(vector(-1, -6, -0.5), vector(0.3, 0.7, -1), 70);
+	cam = camera(vector(0, 0, 0), vector(0, 0, -1), 100);
 	mlx_clear_window(vars->mlx, vars->win);
 
 	set_two_spheres(objs);
