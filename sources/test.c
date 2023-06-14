@@ -119,7 +119,7 @@ void	test(t_img *img, t_vars *vars)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			rec.tmax = 1.7976931348623158e+308;
+			rec.tmax = MAX;
 			double u = (double) x;
 			double v = (double) y;
 			t_ray r = ray(cam.origin, vec_unit(vec_sub(vec_add(vec_mul(cam.right, u), vec_add(cam.lower_left_corner, vec_mul(cam.up, v))), cam.origin)));
