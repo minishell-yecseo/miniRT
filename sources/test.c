@@ -104,7 +104,7 @@ void	test(t_img *img, t_vars *vars)
 	t_light		lights[100];
 	t_hit_rec	rec;
 
-	rec.tmin = 0.00000001;
+	rec.tmin = EPSILON;
 
 	cam = camera(vector(0, 0, 0), vector(0, 0, -1), 80);
 	mlx_clear_window(vars->mlx, vars->win);
