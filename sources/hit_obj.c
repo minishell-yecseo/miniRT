@@ -1,4 +1,5 @@
 #include "miniRT.h"
+#include <math.h>
 
 void	set_face_normal(t_ray r, t_hit_rec *rec)
 {
@@ -115,6 +116,17 @@ int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
 	rec->t = root;
 	rec->point = ray_at(r, root);
 	rec->normal = pl->norm;
+
+	t_vector u;
+	t_vector v;
+	if (vec_len(vec_cross(pl->norm, vector(0, 1, 0))))
+		u = vec_unit(vec_cross(pl->norm, vector(0, 1, 0)));
+	else
+		u = vec_unit(vec_cross(pl->norm, vector(0, 0, -1)));
+	v = vec_unit(vec_cross(u, pl->norm));
+
+	rec->u = fmod(vec_dot(rec->point, u), 1);
+	rec->v = fmod(vec_dot(rec->point, v), 1);
 	set_face_normal(r, rec);
 	return (1);
 }
@@ -148,6 +160,14 @@ int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
 	rec->t = root;
 	rec->point = ray_at(r, root);
 	rec->normal = vec_mul(vec_sub(rec->point, sp->center), 1 / (sp->radius));
+	
+	t_vector norm = rec->normal;
+	
+	rec->u = (atan2(-norm.z, norm.x) + M_PI) / (2 * M_PI);
+	rec->v = acos(-norm.y) / M_PI;
+
+	//rec->u = 1 - ((atan2(rec->point.x, rec->point.z)) / (2 * M_PI) + 0.5);
+	//rec->v = 1 - acos(rec->point.y / sp->radius) / M_PI;
 	set_face_normal(r, rec);
 	return (1);
 }
@@ -178,7 +198,17 @@ int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
 			is_hit = 1;
 			rec->color = objs[i].color;
 			rec->tmax = rec->t;
-			rec->albedo = objs[i].color;
+			if (objs[i].checker.is_checker == 0)
+				rec->albedo = objs[i].color;
+			else
+			{
+				if (((int)floor(rec->u * objs[i].checker.x) + (int)floor(rec->v * objs[i].checker.y)) % 2 == 0)
+					rec->albedo = objs[i].checker.color1;
+				else
+				{
+					rec->albedo = objs[i].checker.color2;
+				}
+			}
 		}
 		i++;
 	}

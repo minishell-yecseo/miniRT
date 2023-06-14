@@ -13,6 +13,7 @@ t_vector ray_color(t_object *objs, t_ray r, t_hit_rec *rec)
     t_vector	unit_direction = vec_unit(r.dir);
     t = 0.5 * (unit_direction.y + 1);
 	return vec_add(vec_mul(vector(1, 1, 1), (1 - t)), vec_mul(vector(0.5, 0.7, 1), t));
+	return vector(0,0,0);
 }
 
 int	test_color(t_vector color)
@@ -26,37 +27,68 @@ int	test_color(t_vector color)
 
 void	set_two_spheres(t_object *objs)
 {
-	objs[0].type = co;
-	objs[0].center = vector(0, 0, -5);
-	objs[0].norm = vec_unit(vector(0.4, 1, -0.5));
-	objs[0].color = vector(0.5, 0.5, 1);
-	objs[0].radius = 2;
-	objs[0].height = 6;
+	//objs[0].type = sp;
+	//objs[0].center = vector(0, 0, -3);
+	//objs[0].color = vector(0, 0, 0);
+	//objs[0].norm = vector(0, 2, 0.1);
+	//objs[0].radius = 1;
+	//objs[0].checker.is_checker = 1;
+	//objs[0].checker.color1 = vector(0, 0, 0);
+	//objs[0].checker.color1 = vector(1, 1, 1);
+	//objs[0].checker.x = 2;
+	//objs[0].checker.y = 2;
 
-	objs[1].type = cy;
-	objs[1].center = vector(4, 0, -3);
-	objs[1].norm = vec_unit(vector(0, 1, 0));
-	objs[1].color = vector(0, 0, 1);
-	objs[1].radius = 0.5;
-	objs[1].height = 2;
+	//objs[1].type = -1;
 
+	objs[0].type = pl;
+	objs[0].center = vector(0, -2, 0);
+	objs[0].color = vector(1, 1, 1);
+	objs[0].norm = vector(0, 2, 0.1);
+	objs[0].checker.is_checker = 1;
+	objs[0].checker.color1 = vector(0, 0, 0);
+	objs[0].checker.color1 = vector(1, 1, 1);
+	objs[0].checker.x = 2;
+	objs[0].checker.y = 2;
+
+
+	objs[1].type = sp;
+	objs[1].center = vector(0, 0, -3);
+	objs[1].color = vector(0, 0, 0);
+	objs[1].norm = vector(0, 2, 0.1);
+	objs[1].radius = 1;
+	objs[1].checker.is_checker = 1;
+	objs[1].checker.color1 = vector(0, 0, 0);
+	objs[1].checker.color1 = vector(1, 1, 1);
+	objs[1].checker.x = 10;
+	objs[1].checker.y = 20;
+	
 	objs[2].type = -1;
+	objs[2].center = vector(1, 0, -5);
+	objs[2].color = vector(1, 0, 1);
+	objs[2].radius = 1;
+
+	objs[3].type = pl;
+	objs[3].center = vector(0, 0, -15);
+	objs[3].color = vector(1, 1, 0.7);
+	objs[3].norm = vector(0, 0, 1);
+	
+	objs[4].type = -1;
 }
 
 void	set_light(t_light *lights)
 {
 	lights[0].type = ambient;
 	lights[0].color = vector(1, 1, 1);
-	lights[0].ratio = 0.2;
+	lights[0].ratio = 0;
 
 	lights[1].type = light;
-	lights[1].origin = vector(1, 0, -5);
-	lights[1].ratio = 0.5;
-	lights[1].color = vector(1, 0, 0);
+	lights[1].origin = vector(0, 0, -1);
+	lights[1].ratio = 1;
+	lights[1].color = vector(1, 1, 1);
 
-	lights[2].type = light;
-	lights[2].origin = vector(-1, 1, 1);
-	lights[2].ratio = 0.5;
+	lights[2].type = -1;
+	lights[2].origin = vector(-1, 0, -1);
+	lights[2].ratio = 1;
 	lights[2].color = vector(1, 1, 1);
 
 	lights[3].type = -1;
@@ -74,7 +106,7 @@ void	test(t_img *img, t_vars *vars)
 
 	rec.tmin = 0.00000001;
 
-	cam = camera(vector(0, 0, 10), vector(0.1, 0.1, -1), 40);
+	cam = camera(vector(0, 0, 0), vector(0, 0, -1), 80);
 	mlx_clear_window(vars->mlx, vars->win);
 
 	set_two_spheres(objs);
