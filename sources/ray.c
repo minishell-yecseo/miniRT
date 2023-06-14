@@ -22,7 +22,7 @@ t_camera	camera(t_vector origin, t_vector direction, double fov)
 	t_camera cam;
 	t_vector tmp;
 
-	cam.dir = direction;
+	cam.dir = vec_unit(direction);
 	cam.fov = fov;
 	cam.focal_len = (float)WIDTH / 2 / tan((cam.fov / 2 * M_PI / 180));
 	cam.origin = origin;
