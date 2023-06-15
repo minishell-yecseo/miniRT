@@ -60,7 +60,7 @@ int	cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
 	if (discriminant < 0)
 		return (0);
 	root = (-half_b - sqrt(discriminant)) / a;
-	if (root < rec->tmin || rec->tmax < root)
+	//if (root < rec->tmin || rec->tmax < root)
 	{
 		root = (-half_b + sqrt(discriminant)) / a;
 		if (root < rec->tmin || rec->tmax < root)
@@ -198,7 +198,12 @@ int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
 			is_hit = 1;
 			rec->color = objs[i].color;
 			rec->tmax = rec->t;
-			if (objs[i].checker.is_checker == 0)
+			if (objs[i].is_texture == 1)
+			{
+				int color = objs[i].texture.data[objs[i].texture.w * (int)(rec->v * objs[i].texture.h) + (int)(rec->u * objs[i].texture.w)];
+				rec->albedo = get_vec_color(color);
+			}
+			else if (objs[i].checker.is_checker == 0)
 				rec->albedo = objs[i].color;
 			else
 			{

@@ -8,7 +8,7 @@ int	shadow(t_object *objs, t_ray r, t_light light, t_vector point)
 	r.origin = vec_add(point, vec_mul(vec_sub(light.origin, point), 0.01));
 	r.dir = vec_unit(vec_sub(light.origin, point));
 	rec.tmax = vec_len(vec_sub(light.origin, point));
-	rec.tmin = 0.00000000001;
+	rec.tmin = EPSILON;
 
 	if (is_hit(objs, r, &rec))
 		return (1);	
@@ -31,7 +31,8 @@ t_vector	light_get(t_object *objs, t_ray r, t_hit_rec *rec, t_light light)
 		return (vector(0, 0, 0));
 	}
 	light_dir = vec_unit(vec_sub(light.origin, rec->point));
-	k = fmax(vec_dot(rec->normal, light_dir) * (0.5 + 1 / vec_len(vec_sub(light.origin, rec->point))), 0.0);
+	k = fmax(vec_dot(rec->normal, light_dir), 0.0);
+	//k = fmax(vec_dot(rec->normal, light_dir) * (1 / vec_len(vec_sub(light.origin, rec->point))), 0.0);
 	diffuse = vec_mul(light.color, k);
 
 	v = vec_unit(vec_mul(r.dir, -1));
@@ -60,7 +61,7 @@ t_vector	lighting(t_object *objs, t_ray r, t_hit_rec *rec)
 		else if (lights[i].type == light)
 		{
 			get_light = light_get(objs, r, rec, lights[i]);
-			light_color = vec_add(light_color, get_light);
+			light_color = vec_add(light_color, get_light);          
 		}
 		i++;
 	}
