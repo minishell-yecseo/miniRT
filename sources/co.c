@@ -2,6 +2,25 @@
 
 int	co_side(t_object *co, t_ray r, t_hit_rec *rec);
 int	co_cap(t_object *co, t_ray r, t_hit_rec *rec);
+int	is_in_cam(t_object *co, t_ray r)
+{
+	t_vector	cl;
+	t_vector	o_norm;
+	double		h_prime;
+	double		r_prime;
+	double		r_p_max;
+
+	cl = vec_sub(r.origin, co->center);
+	h_prime = vec_dot(cl, co->norm);
+	if (h_prime > co->height || h_prime < 0.0)
+		return (0);
+	o_norm = vec_cross(cl, co->norm);
+	r_prime = vec_len(o_norm);
+	r_p_max = (co->radius * (co->height - h_prime)) / co->height;
+	if (r_prime > r_p_max)
+		return (0);
+	return (1);
+}
 
 int	hit_co(t_object *co, t_ray r, t_hit_rec *rec)
 {
@@ -52,6 +71,7 @@ int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
 	double		c;
 	double		discriminant;
 	double		root;
+	int		in_cam;
 
 	H = vec_add(co->center, vec_mul(co->norm, co->height));
 	w = vec_sub(r.origin, H);
@@ -63,9 +83,15 @@ int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
 	discriminant = half_b * half_b - a * c;
 	if (discriminant < 0.0)
 		return (0);
-	root = (-half_b - (sqrt(discriminant))) / a;
+	in_cam = is_in_cam(co, r);
+	if (in_cam)
+		root = (-half_b + (sqrt(discriminant))) / a;
+	else
+		root = (-half_b - (sqrt(discriminant))) / a;
 	if (root < rec->tmin || rec->tmax < root)
 	{
+		if (in_cam)
+			return (0);
 		root = (-half_b + sqrt(discriminant)) / a;
 		if (root < rec->tmin || rec->tmax < root)
 			return (0);
