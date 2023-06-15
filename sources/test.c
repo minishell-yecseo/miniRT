@@ -9,10 +9,10 @@ t_vector ray_color(t_object *objs, t_ray r, t_hit_rec *rec)
 		return lighting(objs, r, rec); //return (vec_mul(vec_add(rec->normal, vector(1, 1, 1)), 0.5));
 
 	//sky
-	double t;
-    t_vector	unit_direction = vec_unit(r.dir);
-    t = 0.5 * (unit_direction.y + 1);
-	return vec_add(vec_mul(vector(1, 1, 1), (1 - t)), vec_mul(vector(0.5, 0.7, 1), t));
+	//double t;
+    //t_vector	unit_direction = vec_unit(r.dir);
+    //t = 0.5 * (unit_direction.y + 1);
+	//return vec_add(vec_mul(vector(1, 1, 1), (1 - t)), vec_mul(vector(0.5, 0.7, 1), t));
 	return vector(0,0,0);
 }
 
@@ -98,7 +98,7 @@ void	set_light(t_light *lights)
 	lights[0].ratio = 0;
 
 	lights[1].type = light;
-	lights[1].origin = vector(10, 0, -5);
+	lights[1].origin = vector(4, 0, -5);
 	lights[1].ratio = 1;
 	lights[1].color = vector(1, 1, 1);
 
@@ -122,7 +122,7 @@ void	test(t_img *img, t_vars *vars)
 
 	rec.tmin = 0.00000001;
 
-	cam = camera(vector(10, 0, -5), vector(-1, 0, 0), 100);
+	cam = camera(vector(7, 0, -5), vector(-1, 0, 0), 100);
 	mlx_clear_window(vars->mlx, vars->win);
 
 	set_two_spheres(objs);
