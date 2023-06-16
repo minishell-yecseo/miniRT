@@ -109,7 +109,7 @@ int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
 	if (fabs(vec_len(HP)) < EPSILON || fabs(vec_len(QP)) < EPSILON)
 		rec->normal = co->norm;
 	else
-		rec->normal = vec_unit(vec_unit(vec_cross(HP, vec_cross(HP, QP))));
+		rec->normal = vec_unit(vec_cross(HP, vec_cross(HP, QP)));
 	set_face_normal(r, rec);
 	return (1);
 }

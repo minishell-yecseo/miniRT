@@ -60,7 +60,7 @@ int cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
 	if (discriminant < 0)
 		return (0);
 	root = (-half_b - sqrt(discriminant)) / a;
-	// if (root < rec->tmin || rec->tmax < root)
+	if (root < rec->tmin || rec->tmax < root)
 	{
 		root = (-half_b + sqrt(discriminant)) / a;
 		if (root < rec->tmin || rec->tmax < root)
