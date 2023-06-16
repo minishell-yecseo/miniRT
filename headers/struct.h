@@ -13,6 +13,11 @@ typedef struct s_color
 typedef struct s_img
 {
 	void	*image;
+	
+	int		*data;
+	int		h;
+	int		w;
+	
 	int		bits_per_pixel;
 	int		size_len;
 	int		endian;
@@ -81,7 +86,9 @@ typedef struct s_object
 	t_vector			color;
 	double				radius;
 	double				height;
+	int					is_texture;
 	t_checker			checker;
+	t_img				texture;
 }	t_object;
 
 //light
