@@ -89,6 +89,7 @@ typedef struct s_object
 	int					is_texture;
 	t_checker			checker;
 	t_img				texture;
+	t_img				bump;
 }	t_object;
 
 //light
@@ -107,6 +108,7 @@ typedef struct s_light
 }	t_light;
 
 //hit_rec
+
 typedef struct s_hit_rec
 {
 	t_vector	point;

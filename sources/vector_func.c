@@ -123,3 +123,12 @@ t_vector	vec2_mul(t_vector vec1, t_vector vec2)
 	vec.z = vec1.z * vec2.z;
 	return (vec);
 }
+
+t_vector	vec_up(t_vector vec)
+{
+	if (vec.x == 0 && vec.y == 1 && vec.z == 0)
+		return (vector(0, 0, 1));
+	else if (vec.x == 0 && vec.y == -1 && vec.z == 0)
+		return (vector(0, 0, -1));
+	return (vector(0, 1, 0));
+}

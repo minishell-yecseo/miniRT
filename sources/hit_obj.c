@@ -1,7 +1,7 @@
 #include "miniRT.h"
 #include <math.h>
 
-void	set_face_normal(t_ray r, t_hit_rec *rec)
+void set_face_normal(t_ray r, t_hit_rec *rec)
 {
 	rec->front_face = vec_dot(r.dir, rec->normal) < 0;
 	if (rec->front_face)
@@ -10,32 +10,32 @@ void	set_face_normal(t_ray r, t_hit_rec *rec)
 		rec->normal = vec_mul(rec->normal, -1);
 }
 
-t_vector	get_cy_norm(t_object *cy, t_vector at_point, double h)
+t_vector get_cy_norm(t_object *cy, t_vector at_point, double h)
 {
-    t_vector	hit_center;
-    t_vector	normal;
+	t_vector hit_center;
+	t_vector normal;
 
-    hit_center = vec_add(cy->center, vec_mul(cy->norm, h));
-    normal = vec_sub(at_point, hit_center);
+	hit_center = vec_add(cy->center, vec_mul(cy->norm, h));
+	normal = vec_sub(at_point, hit_center);
 
-    return (vec_unit(normal));
+	return (vec_unit(normal));
 }
 
-int	cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
+int cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 {
-	double	numrator;
-	double	denominator;
-	double	root;
+	double numrator;
+	double denominator;
+	double root;
 
 	denominator = vec_dot(r.dir, vec_unit(cy->norm));
-	if (fabs(denominator) < EPSILON )
+	if (fabs(denominator) < EPSILON)
 		return (0);
 	numrator = vec_dot(vec_sub(c, r.origin), vec_unit(cy->norm));
 	root = numrator / denominator;
 	if (root < rec->tmin || root > rec->tmax)
 		return (0);
-	t_vector	P = vec_add(r.origin, vec_mul(r.dir, root));
-	double		pc = vec_len(vec_sub(P, c));
+	t_vector P = vec_add(r.origin, vec_mul(r.dir, root));
+	double pc = vec_len(vec_sub(P, c));
 	if (pc > cy->radius || pc < 0.0)
 		return (0);
 	rec->t = root;
@@ -45,13 +45,13 @@ int	cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 	return (1);
 }
 
-int	cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
+int cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
 {
-	double	a;
-	double	half_b;
-	double	c;
-	double	discriminant;
-	double	root;
+	double a;
+	double half_b;
+	double c;
+	double discriminant;
+	double root;
 
 	a = vec_len_square(vec_cross(r.dir, cy->norm));
 	half_b = vec_dot(vec_cross(r.dir, cy->norm), vec_cross(vec_sub(r.origin, cy->center), cy->norm));
@@ -60,15 +60,15 @@ int	cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
 	if (discriminant < 0)
 		return (0);
 	root = (-half_b - sqrt(discriminant)) / a;
-	//if (root < rec->tmin || rec->tmax < root)
+	// if (root < rec->tmin || rec->tmax < root)
 	{
 		root = (-half_b + sqrt(discriminant)) / a;
 		if (root < rec->tmin || rec->tmax < root)
 			return (0);
 	}
 
-	t_vector	P = vec_add(r.origin, vec_mul(r.dir, root));
-	double		qc = vec_dot(vec_sub(P, cy->center), cy->norm);
+	t_vector P = vec_add(r.origin, vec_mul(r.dir, root));
+	double qc = vec_dot(vec_sub(P, cy->center), cy->norm);
 	if (qc > cy->height || qc < 0.0)
 		return (0);
 	rec->t = root;
@@ -79,12 +79,12 @@ int	cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
 	return (1);
 }
 
-int	hit_cy(t_object *cy, t_ray r, t_hit_rec *rec)
+int hit_cy(t_object *cy, t_ray r, t_hit_rec *rec)
 {
-	int	is_hit;
+	int is_hit;
 
 	is_hit = 0;
-	t_vector	H = vec_add(cy->center, vec_mul(vec_unit(cy->norm), cy->height));
+	t_vector H = vec_add(cy->center, vec_mul(vec_unit(cy->norm), cy->height));
 	if (cy_cap(cy, r, rec, cy->center))
 	{
 		is_hit = 1;
@@ -100,14 +100,14 @@ int	hit_cy(t_object *cy, t_ray r, t_hit_rec *rec)
 	return (0);
 }
 
-int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
+int hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
 {
-	double	numrator;
-	double	denominator;
-	double	root;
+	double numrator;
+	double denominator;
+	double root;
 
 	denominator = vec_dot(r.dir, pl->norm);
-	if (fabs(denominator) < EPSILON )
+	if (fabs(denominator) < EPSILON)
 		return (0);
 	numrator = vec_dot(vec_sub(pl->center, r.origin), pl->norm);
 	root = numrator / denominator;
@@ -131,15 +131,15 @@ int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
 	return (1);
 }
 
-int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
+int hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
 {
-	t_vector	oc;
-	double		a;
-	double		half_b;
-	double		c;
-	double		discriminant;
-	double		sqrtd;
-	double		root;
+	t_vector oc;
+	double a;
+	double half_b;
+	double c;
+	double discriminant;
+	double sqrtd;
+	double root;
 
 	oc = vec_sub(r.origin, sp->center);
 	a = vec_len_square(r.dir);
@@ -148,7 +148,7 @@ int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
 	discriminant = half_b * half_b - a * c;
 	if (discriminant < 0)
 		return (0);
-	
+
 	sqrtd = sqrt(discriminant);
 	root = (-half_b - sqrtd) / a;
 	if (root < rec->tmin || rec->tmax < root)
@@ -160,19 +160,19 @@ int	hit_sphere(t_object *sp, t_ray r, t_hit_rec *rec)
 	rec->t = root;
 	rec->point = ray_at(r, root);
 	rec->normal = vec_mul(vec_sub(rec->point, sp->center), 1 / (sp->radius));
-	
+
 	t_vector norm = rec->normal;
-	
+
 	rec->u = (atan2(-norm.z, norm.x) + M_PI) / (2 * M_PI);
 	rec->v = acos(-norm.y) / M_PI;
 
-	//rec->u = 1 - ((atan2(rec->point.x, rec->point.z)) / (2 * M_PI) + 0.5);
-	//rec->v = 1 - acos(rec->point.y / sp->radius) / M_PI;
+	// rec->u = 1 - ((atan2(rec->point.x, rec->point.z)) / (2 * M_PI) + 0.5);
+	// rec->v = 1 - acos(rec->point.y / sp->radius) / M_PI;
 	set_face_normal(r, rec);
 	return (1);
 }
 
-int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
+int hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
 {
 	if (obj->type == sp)
 		return (hit_sphere(obj, r, rec));
@@ -185,13 +185,13 @@ int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
 	return (0);
 }
 
-int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
+int is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
 {
-	int	is_hit;
-	int	i = 0;
+	int is_hit;
+	int i = 0;
 
 	is_hit = 0;
-	while(objs[i].type != -1)
+	while (objs[i].type != -1)
 	{
 		if (hit_obj(&objs[i], r, rec))
 		{
@@ -200,8 +200,21 @@ int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
 			rec->tmax = rec->t;
 			if (objs[i].is_texture == 1)
 			{
-				int color = objs[i].texture.data[objs[i].texture.w * (int)(rec->v * objs[i].texture.h) + (int)(rec->u * objs[i].texture.w)];
+				//texture
+				int color = objs[i].texture.data[objs[i].texture.w * (int)((1 - rec->v) * objs[i].texture.h) + (int)(rec->u * objs[i].texture.w)];
 				rec->albedo = get_vec_color(color);
+
+				//bump map
+				color = objs[i].bump.data[objs[i].bump.w * (int)((1 - rec->v) * objs[i].bump.h) + (int)(rec->u * objs[i].bump.w)];
+				t_vector normal = vec_sub(vec_mul(get_vec_color(color), 2), vector(1, 1, 1));
+				t_vector bump = vector(0, 0, 0);
+				t_vector t = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
+				t_vector b = vec_unit(vec_cross(t, rec->normal));
+
+				bump.x = t.x * normal.x + b.x * normal.y + rec->normal.x * normal.z;
+				bump.y = t.y * normal.x + b.y * normal.y + rec->normal.y * normal.z;
+				bump.x = t.z * normal.x + b.z * normal.y + rec->normal.z * normal.z;
+				rec->normal = bump;	
 			}
 			else if (objs[i].checker.is_checker == 0)
 				rec->albedo = objs[i].color;
