@@ -21,6 +21,37 @@ t_vector get_cy_norm(t_object *cy, t_vector at_point, double h)
 	return (vec_unit(normal));
 }
 
+int	hit_ci(t_object *ci, t_ray r, t_hit_rec *rec)
+{
+	//ci->center, ci->norm, ci->radius
+	//1. ci->norm 과 P의 내적이 0인가?
+	//2. CP벡터의 크기가 radius랑 일치하는가?
+	t_vector	cl;
+	t_vector	p;
+	double		numrator;
+	double		denominator;
+	double		root;
+	double		r_prime;
+
+	denominator = vec_dot(ci->norm, r.dir);
+	if (fabs(denominator) < EPSILON)
+		return (0);
+	cl = vec_sub(ci->center, r.origin);
+	numrator = vec_dot(cl, ci->norm);
+	root = numrator / denominator;
+	p = ray_at(r, root);
+	r_prime = vec_len(vec_sub(p, ci->center));
+	if (fabs(r_prime - ci->radius) > ci->height)
+		return (0);
+	if (root < rec->tmin || root > rec->tmax)
+		return (0);
+	rec->t = root;
+	rec->tmax = root;
+	rec->point = p;
+	rec->normal = ci->norm;
+	return (1);
+}
+
 int cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 {
 	double numrator;
@@ -182,6 +213,8 @@ int hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
 		return (hit_cy(obj, r, rec));
 	else if (obj->type == co)
 		return (hit_co(obj, r, rec));
+	else if (obj->type == ci)
+		return (hit_ci(obj, r, rec));
 	return (0);
 }
 
