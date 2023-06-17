@@ -5,8 +5,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-//# include "../mlx/mlx.h"
 # include "mlx.h"
+# include "get_next_line.h"
 # include "struct.h"
 # include "vector.h"
 # include "ray.h"
