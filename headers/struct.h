@@ -125,4 +125,13 @@ typedef struct s_hit_rec
 	t_light		*lights;
 }	t_hit_rec;
 
+typedef struct s_scene
+{
+	int		objs_number;
+	int		lights_number;
+	t_camera	camera;
+	t_objs		*objs;
+	t_light		*lights;
+}	t_scene;
+
 #endif
