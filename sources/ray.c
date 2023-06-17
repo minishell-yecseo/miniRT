@@ -35,7 +35,5 @@ t_camera	camera(t_vector origin, t_vector direction, double fov)
 	tmp = vec_sub(tmp, vec_mul(cam.right, (float)(WIDTH / 2)));
 	tmp = vec_sub(tmp, vec_mul(cam.up, (float)(HEIGHT / 2)));
 	cam.lower_left_corner = tmp;
-
-	printf("lower left corner : %f %f %f\n", cam.lower_left_corner.x, cam.lower_left_corner.y, cam.lower_left_corner.z);
 	return (cam);
 }
