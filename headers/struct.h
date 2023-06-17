@@ -75,7 +75,8 @@ enum object_type
 	sp,
 	pl,
 	cy,
-	co
+	co,
+	ci
 };
 
 typedef struct s_object
