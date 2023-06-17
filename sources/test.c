@@ -143,11 +143,11 @@ void test(t_img *img, t_vars *vars)
 	set_light(lights);
 
 	t_img texture;
-	texture.image = mlx_xpm_file_to_image(vars->mlx, "./test.xpm", &texture.w, &texture.h);
+	texture.image = mlx_xpm_file_to_image(vars->mlx, "./images/test.xpm", &texture.w, &texture.h);
 	texture.data = (int *)mlx_get_data_addr(texture.image, &texture.bits_per_pixel, &texture.size_len, &texture.endian);
 
 	t_img bump;
-	bump.image = mlx_xpm_file_to_image(vars->mlx, "./test.xpm", &bump.w, &bump.h);
+	bump.image = mlx_xpm_file_to_image(vars->mlx, "./images/test.xpm", &bump.w, &bump.h);
 	bump.data = (int *)mlx_get_data_addr(bump.image, &bump.bits_per_pixel, &bump.size_len, &bump.endian);
 
 	objs[0].texture = texture;

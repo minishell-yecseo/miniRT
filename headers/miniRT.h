@@ -26,4 +26,9 @@ void	test(t_img *img, t_vars *vars);
 int	hit_cylinder(t_object *cy, t_ray *ray, t_hit_rec *rec);
 t_vector	get_vec_color(int color);
 
+int	check_args(int argc, char **argv, t_scene *scene);
+void	error_print(char *msg);
+
+int	ft_strlen(char *str);
+
 #endif

@@ -8,7 +8,8 @@ SRC_DIR		= sources/
 
 SRC			= main.c paint.c key_hook.c vector_func.c ray.c test.c \
 				hit_obj.c light.c co.c \
-				get_next_line.c get_next_line_utils.c
+				get_next_line.c get_next_line_utils.c\
+				args.c utils.c
 SRC_BONUS	= #bonus files
 
 SRCS		= $(addprefix $(SRC_DIR), $(SRC))
