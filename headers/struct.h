@@ -44,7 +44,6 @@ enum e_surface_type
 	TEXTURE
 };
 
-//surface
 typedef struct s_surface
 {
 	enum e_surface_type	type;
@@ -55,6 +54,19 @@ typedef struct s_surface
 	t_img			texture;
 	t_img			bump;
 }	t_surface;
+
+//formula
+typedef struct s_formula
+{
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+	double	sqrtd;
+	double	root;
+	double	numrator;
+	double	denominator;
+}	t_formula;
 
 //for ray, camera
 typedef struct	s_ray
