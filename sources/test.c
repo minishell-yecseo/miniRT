@@ -43,70 +43,85 @@ int test_color(t_vector color)
 
 void set_two_spheres(t_object *objs)
 {
-	// objs[0].type = sp;
-	// objs[0].center = vector(0, 0, -3);
-	// objs[0].color = vector(0, 0, 0);
-	// objs[0].norm = vector(0, 2, 0.1);
-	// objs[0].radius = 1;
-	// objs[0].checker.is_checker = 1;
-	// objs[0].checker.color1 = vector(0, 0, 0);
-	// objs[0].checker.color1 = vector(1, 1, 1);
-	// objs[0].checker.x = 2;
-	// objs[0].checker.y = 2;
-
-	// objs[1].type = -1;
-
-	// objs[0].type = pl;
-	// objs[0].center = vector(0, -10, 0);
-	// objs[0].color = vector(1, 1, 1);
-	// objs[0].norm = vec_unit(vector(0, 1, 0));
-	// objs[0].checker.is_checker = 1;
-	// objs[0].checker.color1 = vector(0, 0, 0);
-	// objs[0].checker.color1 = vector(1, 1, 1);
-	// objs[0].checker.x = 2;
-	// objs[0].checker.y = 2;
-
 	objs[0].type = sp;
-	objs[0].center = vector(0, 0, -1);
-	objs[0].color = vector(0, 1, 0);
-	objs[0].radius = 1;
+	objs[0].center = vector(0, 0, 0);
+	objs[0].color = vector(1, 1, 1);
+	objs[0].norm = vec_unit(vector(0, 1, 0));
+	objs[0].height = 3;
+	objs[0].radius = 2;
 	objs[0].checker.is_checker = 0;
 	objs[0].is_texture = 1;
-	// objs[1].checker.color1 = vector(0, 0, 0);
-	// objs[1].checker.color1 = vector(1, 1, 1);
-	// objs[1].checker.x = 16;
-	// objs[1].checker.y = 8;
 
-	objs[1].type = -1;
-	objs[2].center = vector(1, 0, -5);
-	objs[2].color = vector(1, 0, 1);
-	objs[2].radius = 1;
+	objs[1].type = ci;
+	objs[1].center = vector(0, 0, 0);
+	objs[1].color = vec_unit(vector(51, 0, 25));
+	objs[1].norm = vec_unit(vector(0, 1, 0));
+	objs[1].checker.is_checker = 0;
+	objs[1].is_texture = 0;
+	objs[1].radius = 4;
+	objs[1].height = 0.05;
 
-	objs[3].type = pl;
-	objs[3].center = vector(0, 0, -15);
-	objs[3].color = vector(1, 1, 0.7);
-	objs[3].norm = vector(0, 0, 1);
+	objs[2].type = ci;
+	objs[2].center = vector(0, 0, 0);
+	objs[2].color = vec_unit(vector(53, 25, 0));
+	objs[2].norm = vec_unit(vector(0.3, 1, 0));
+	objs[2].checker.is_checker = 0;
+	objs[2].is_texture = 0;
+	objs[2].radius = 4;
+	objs[2].height = 0.05;
 
-	objs[4].type = -1;
+	objs[3].type = ci;
+	objs[3].center = vector(0, 0, 0);
+	objs[3].color = vec_unit(vector(1, 1, 1));
+	objs[3].norm = vec_unit(vector(-0.8, 1, 0));
+	objs[3].checker.is_checker = 0;
+	objs[3].is_texture = 0;
+	objs[3].radius = 4;
+	objs[3].height = 0.05;
+
+	objs[4].type = ci;
+	objs[4].center = vector(0, 0, 0);
+	objs[4].color = vector(0.1, 0.1, 0.1);
+	objs[4].norm = vec_unit(vector(-0.3, 1, 0.1));
+	objs[4].checker.is_checker = 0;
+	objs[4].is_texture = 0;
+	objs[4].radius = 10;
+	objs[4].height = 0.5;
+
+	objs[5].type = ci;
+	objs[5].center = vector(0, 0, 0);
+	objs[5].color = vector(0.1, 0.1, 0.1);
+	objs[5].norm = vec_unit(vector(-0.3, 1, 0.1));
+	objs[5].checker.is_checker = 0;
+	objs[5].is_texture = 0;
+	objs[5].radius = 9;
+	objs[5].height = 0.05;
+
+	objs[6].type = -1;
 }
 
 void set_light(t_light *lights)
 {
 	lights[0].type = ambient;
 	lights[0].color = vector(1, 1, 1);
-	lights[0].ratio = 0.2;
+	lights[0].ratio = 0.5;
 
 	lights[1].type = light;
-	lights[1].origin = vector(0, 5, 4);
-	lights[1].ratio = 0.3;
-	lights[1].color = vector(1, 1, 1);
+	lights[1].origin = vector(-5, 5, 0);
+	lights[1].ratio = 0.2;
+	lights[1].color = vector(1, 0, 0);
 
-	lights[2].type = -1;
-	lights[2].origin = vector(-1, 0, -1);
+	lights[2].type = light;
+	lights[2].origin = vector(4, 4, 5);
 	lights[2].ratio = 1;
-	lights[2].color = vector(1, 1, 1);
+	lights[2].color = vector(0, 0, 1);
 
-	lights[3].type = -1;
+	lights[3].type = light;
+	lights[3].origin = vector(0, 0, 7);
+	lights[3].ratio = 1;
+	lights[3].color = vector(1, 1, 1);
+
+	lights[4].type = -1;
 }
 
 void test(t_img *img, t_vars *vars)
@@ -121,18 +136,18 @@ void test(t_img *img, t_vars *vars)
 
 	rec.tmin = 0.00000001;
 
-	cam = camera(vector(1, 0, 1), vec_unit(vector(-0.5, 0, -1)), 100);
+	cam = camera(vector(0, 3, 15), vec_unit(vector(0, -0.2, -1)), 80);
 	mlx_clear_window(vars->mlx, vars->win);
 
 	set_two_spheres(objs);
 	set_light(lights);
 
 	t_img texture;
-	texture.image = mlx_xpm_file_to_image(vars->mlx, "./basketball.xpm", &texture.w, &texture.h);
+	texture.image = mlx_xpm_file_to_image(vars->mlx, "./test.xpm", &texture.w, &texture.h);
 	texture.data = (int *)mlx_get_data_addr(texture.image, &texture.bits_per_pixel, &texture.size_len, &texture.endian);
 
 	t_img bump;
-	bump.image = mlx_xpm_file_to_image(vars->mlx, "./basketball_bump.xpm", &bump.w, &bump.h);
+	bump.image = mlx_xpm_file_to_image(vars->mlx, "./test.xpm", &bump.w, &bump.h);
 	bump.data = (int *)mlx_get_data_addr(bump.image, &bump.bits_per_pixel, &bump.size_len, &bump.endian);
 
 	objs[0].texture = texture;
