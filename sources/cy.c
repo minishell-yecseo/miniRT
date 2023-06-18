@@ -1,13 +1,5 @@
 #include "miniRT.h"
 
-typedef struct s_formula
-{
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
-} t_formula;
-
 int	cylinder_upper_cap(t_vector center, t_object *cy, t_ray *ray, t_hit_rec *rec)
 {
 	double	numrator;
