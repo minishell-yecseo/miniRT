@@ -42,7 +42,7 @@ void	paint(t_img *img, int x, int y, int color)
 
 	addr = mlx_get_data_addr(img->image, &img->bits_per_pixel, \
 			&img->size_len, &img->endian);
-	tmp = addr + ((HEIGHT - y) * img->size_len);
+	tmp = addr + ((HEIGHT - 1- y) * img->size_len);
 	tmp += x * (img->bits_per_pixel / 8);
 	*(unsigned int *) tmp = color;
 }

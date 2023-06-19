@@ -56,22 +56,24 @@ t_vector	lighting(t_object *objs, t_ray r, t_hit_rec *rec)
 {
 	t_vector	light_color;
 	t_vector	one_light;
+	t_light		*lights;
 	double		ratio;
 	int			i;
 
 	light_color = vector(0, 0, 0);
+	lights = rec->lights;
 	i = 0;
-	while (rec->lights[i].type != -1)
+	while (lights[i].type != -1)
 	{
-		ratio = rec->lights[i].ratio;
-		if (rec->lights[i].type == ambient)
+		ratio = lights[i].ratio;
+		if (lights[i].type == E_AMBIENT)
 		{
-			one_light = vec_mul(rec->lights[i].color, ratio);
-			light_color = vec_add(light_color, one_light);
+			one_light = vec_mul(lights[i].color, ratio);
+			light_color = vec_add(light_color, vec_mul(lights[i].color, lights[i].ratio));
 		}
-		else if (rec->lights[i].type == light)
+		else if (lights[i].type == E_LIGHT)
 		{
-			one_light = light_get(objs, r, rec, rec->lights[i]);
+			one_light = light_get(objs, r, rec, lights[i]);
 			light_color = vec_add(light_color, vec_mul(one_light, ratio));
 		}
 		i++;
