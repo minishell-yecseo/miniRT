@@ -3,6 +3,60 @@
 #include "object.h"
 #include "light.h"
 
+t_vector ray_color(t_object *objs, t_ray r, t_hit_rec *rec);
+t_vector get_vec_color(int color);
+t_vector get_vec_color(int color);
+int test_color(t_vector color);
+
+void test(t_img *img, t_vars *vars)
+{
+	int		x;
+	int		y;
+	int		color;
+	t_camera	cam;
+	t_hit_rec	rec;
+
+	cam = (vars->scene).camera;
+	rec.tmin = 0.00000001;
+
+	//// OLD TEST CODES
+	/*
+	cam = camera(vector(0, 3, 15), vec_unit(vector(0, -0.2, -1)), 80);
+	set_two_spheres(objs);
+	set_light(lights);
+
+	t_img texture;
+	texture.image = mlx_xpm_file_to_image(vars->mlx, "./images/test.xpm", &texture.w, &texture.h);
+	texture.data = (int *)mlx_get_data_addr(texture.image, &texture.bits_per_pixel, &texture.size_len, &texture.endian);
+
+	t_img bump;
+	bump.image = mlx_xpm_file_to_image(vars->mlx, "./images/test.xpm", &bump.w, &bump.h);
+	bump.data = (int *)mlx_get_data_addr(bump.image, &bump.bits_per_pixel, &bump.size_len, &bump.endian);
+
+	objs[0].texture = texture;
+	objs[0].bump = bump;
+	rec.lights = lights;
+	*/
+
+	rec.lights = (vars->scene).lights;
+	mlx_clear_window(vars->mlx, vars->win);
+	y = HEIGHT - 1;
+	while (--y >= 0)
+	{
+		x = -1;
+		while (++x < WIDTH)
+		{
+			rec.tmax = REC_TMAX;
+			double u = (double)x;
+			double v = (double)y;
+			t_ray r = ray(cam.origin, vec_unit(vec_sub(vec_add(vec_mul(cam.right, u), vec_add(cam.lower_left_corner, vec_mul(cam.up, v))), cam.origin)));
+			t_vector color = ray_color((vars->scene).objs, r, &rec);
+			paint(img, x, y, test_color(color));
+		}
+	}
+	mlx_put_image_to_window(vars->mlx, vars->win, img->image, 0, 0);
+}
+
 t_vector ray_color(t_object *objs, t_ray r, t_hit_rec *rec)
 {
 	if (is_hit(objs, r, rec))
@@ -40,7 +94,7 @@ int test_color(t_vector color)
 	ret = ((int)(255.999 * color.x) << 16) + ((int)(255.999 * color.y) << 8) + (int)(255.999 * color.z);
 	return (ret);
 }
-
+/*
 void set_two_spheres(t_object *objs)
 {
 	objs[0].type = sp;
@@ -123,49 +177,4 @@ void set_light(t_light *lights)
 
 	lights[4].type = -1;
 }
-
-void test(t_img *img, t_vars *vars)
-{
-	int x;
-	int y;
-	int color;
-	t_camera cam;
-	t_object objs[100];
-	t_light lights[100];
-	t_hit_rec rec;
-
-	rec.tmin = 0.00000001;
-
-	cam = camera(vector(0, 3, 15), vec_unit(vector(0, -0.2, -1)), 80);
-	mlx_clear_window(vars->mlx, vars->win);
-
-	set_two_spheres(objs);
-	set_light(lights);
-
-	t_img texture;
-	texture.image = mlx_xpm_file_to_image(vars->mlx, "./test.xpm", &texture.w, &texture.h);
-	texture.data = (int *)mlx_get_data_addr(texture.image, &texture.bits_per_pixel, &texture.size_len, &texture.endian);
-
-	t_img bump;
-	bump.image = mlx_xpm_file_to_image(vars->mlx, "./test.xpm", &bump.w, &bump.h);
-	bump.data = (int *)mlx_get_data_addr(bump.image, &bump.bits_per_pixel, &bump.size_len, &bump.endian);
-
-	objs[0].texture = texture;
-	objs[0].bump = bump;
-	rec.lights = lights;
-	y = HEIGHT - 1;
-	while (--y >= 0)
-	{
-		x = -1;
-		while (++x < WIDTH)
-		{
-			rec.tmax = 1.7976931348623158e+308;
-			double u = (double)x;
-			double v = (double)y;
-			t_ray r = ray(cam.origin, vec_unit(vec_sub(vec_add(vec_mul(cam.right, u), vec_add(cam.lower_left_corner, vec_mul(cam.up, v))), cam.origin)));
-			t_vector color = ray_color(objs, r, &rec);
-			paint(img, x, y, test_color(color));
-		}
-	}
-	mlx_put_image_to_window(vars->mlx, vars->win, img->image, 0, 0);
-}
+*/
