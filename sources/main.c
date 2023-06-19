@@ -1,15 +1,20 @@
 #include "miniRT.h"
 
+void	v(void)
+{
+	system("leaks --list -- $PPID");
+}
+
 int	main(int argc, char **argv)
 {
 	t_vars	vars;
-	t_scene	scene;
 
+	atexit(v);
 	// argument checking
-	if (!check_args(argc, argv, &scene))
-		return (0);
-	// mlx setting
 	vars.mlx = mlx_init();
+	if (!check_args(argc, argv, &vars))
+		exit(0);
+	// mlx setting
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "miniRT");
 	vars.img.image = mlx_new_image(vars.mlx, WIDTH, HEIGHT);
 

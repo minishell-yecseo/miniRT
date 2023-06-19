@@ -54,11 +54,9 @@ t_vector	lighting(t_object *objs, t_ray r, t_hit_rec *rec)
 	int i = 0;
 	while (lights[i].type != -1)
 	{
-		if (lights[i].type == ambient)
-		{
+		if (lights[i].type == E_AMBIENT)
 			light_color = vec_add(light_color, vec_mul(lights[i].color, lights[i].ratio));
-		}
-		else if (lights[i].type == light)
+		else if (lights[i].type == E_LIGHT)
 		{
 			get_light = light_get(objs, r, rec, lights[i]);
 			light_color = vec_add(light_color, vec_mul(get_light, lights[i].ratio));          

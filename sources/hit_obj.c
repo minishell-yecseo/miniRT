@@ -220,8 +220,11 @@ int hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
 
 int is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
 {
-	int is_hit;
-	int i = 0;
+	t_surface	surface;
+	t_img		texture;
+	t_img		bump;
+	int 		is_hit;
+	int 		i = 0;
 
 	is_hit = 0;
 	while (objs[i].type != -1)
@@ -229,39 +232,46 @@ int is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
 		if (hit_obj(&objs[i], r, rec))
 		{
 			is_hit = 1;
-			rec->color = objs[i].color;
+			surface = objs[i].surface;
+			texture = surface.texture;
+			bump = surface.bump;
+			rec->color = surface.color;
 			rec->tmax = rec->t;
-			if (objs[i].is_texture == 1)
+			if (surface.type == COLOR)
+				rec->albedo = surface.color;
+			else if (surface.type == TEXTURE)
 			{
 				//texture
-				int color = objs[i].texture.data[objs[i].texture.w * (int)((1 - rec->v) * objs[i].texture.h) + (int)(rec->u * objs[i].texture.w)];
+				//int color = objs[i].texture.data[objs[i].texture.w * (int)((1 - rec->v) * objs[i].texture.h) \
+				+ (int)(rec->u * objs[i].texture.w)];
+				int	color;
+
+				color = texture.data[texture.w * (int)((1 - rec->v) * texture.h) + (int)(rec->u * texture.w)];
 				rec->albedo = get_vec_color(color);
 
 				//bump map
-				color = objs[i].bump.data[objs[i].bump.w * (int)((1 - rec->v) * objs[i].bump.h) + (int)(rec->u * objs[i].bump.w)];
+			//	color = objs[i].bump.data[objs[i].bump.w * (int)((1 - rec->v) * objs[i].bump.h) + (int)(rec->u * objs[i].bump.w)];
+				color = bump.data[bump.w * (int)((1 - rec->v) * bump.h) + (int)(rec->u * bump.w)];
+
 				t_vector normal = vec_sub(vec_mul(get_vec_color(color), 2), vector(1, 1, 1));
-				t_vector bump = vector(0, 0, 0);
+				t_vector tmp = vector(0, 0, 0);
 				t_vector t = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
 				t_vector b = vec_unit(vec_cross(t, rec->normal));
 
-				bump.x = t.x * normal.x + b.x * normal.y + rec->normal.x * normal.z;
-				bump.y = t.y * normal.x + b.y * normal.y + rec->normal.y * normal.z;
-				bump.x = t.z * normal.x + b.z * normal.y + rec->normal.z * normal.z;
-				rec->normal = bump;	
+				tmp.x = t.x * normal.x + b.x * normal.y + rec->normal.x * normal.z;
+				tmp.y = t.y * normal.x + b.y * normal.y + rec->normal.y * normal.z;
+				tmp.x = t.z * normal.x + b.z * normal.y + rec->normal.z * normal.z;
+				rec->normal = tmp;	
 			}
-			else if (objs[i].checker.is_checker == 0)
-				rec->albedo = objs[i].color;
 			else
 			{
-				if (((int)floor(rec->u * objs[i].checker.x) + (int)floor(rec->v * objs[i].checker.y)) % 2 == 0)
-					rec->albedo = objs[i].checker.color1;
+				if (((int)floor(rec->u * surface.x) + (int)floor(rec->v * surface.y)) % 2 == 0)
+					rec->albedo = surface.color;
 				else
-				{
-					rec->albedo = objs[i].checker.color2;
-				}
+					rec->albedo = surface.color2;
 			}
 		}
 		i++;
 	}
-	return is_hit;
+	return (is_hit);
 }

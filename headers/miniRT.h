@@ -26,9 +26,42 @@ void	test(t_img *img, t_vars *vars);
 int	hit_cylinder(t_object *cy, t_ray *ray, t_hit_rec *rec);
 t_vector	get_vec_color(int color);
 
-int	check_args(int argc, char **argv, t_scene *scene);
+int	check_args(int argc, char **argv, t_vars *vars);
 void	error_print(char *msg);
+int	save_contents(int fd, t_vars *vars);
+int	save_line(t_vars *vars, char **split, int *flags);
+int	save_ambient_light(t_vars *vars, char **split, int *flags);
+int	save_lights(t_vars *vars, char **split);
+int	save_camera(t_vars *vars, char **split, int *flags);
+int	save_objs(t_vars *vars, char **split);
+int	is_obj_line(char *str);
+int	save_sp(t_vars *vars, char **split);
+int	save_pl(t_vars *vars, char **split);
+int	save_cy(t_vars *vars, char **split);
+int	save_co(t_vars *vars, char **split);
+int	save_ci(t_vars *vars, char **splt);
+int	get_split_idx(int obj_type, char **split, int *ret);
+int	save_objs_surface(t_vars *vars, t_object *obj, char **split);
+int	save_objs_color(t_object *obj, char **split);
+int	save_objs_checker(t_object *obj, char **split);
+int	save_objs_texture(t_vars *vars, t_object *obj, char **split);
 
+int	check_color_range(t_vector *color);
+int	check_norm_range(t_vector *norm);
+
+int	ft_atoi_stat(char *str, int *stat);
+double	ft_atof_stat(const char *str, int *status);
+t_vector	ft_atovec_stat(char *str, int *status);
+int	ft_atoi(const char *str);
+int             ft_ctype(char c);
+
+char	**ft_split(char const *s, char c);
+void	free_split(char **split);
 int	ft_strlen(char *str);
+int	ft_memcmp(const void *s1, const void *s2, size_t n);
+int	len_max(char *str1, char *str2);
+void	*ft_memset(void *b, int c, size_t len);
+int	split_len(char **split);
+size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize);
 
 #endif
