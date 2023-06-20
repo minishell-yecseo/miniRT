@@ -69,7 +69,7 @@ t_vector	lighting(t_object *objs, t_ray r, t_hit_rec *rec)
 		if (lights[i].type == E_AMBIENT)
 		{
 			one_light = vec_mul(lights[i].color, ratio);
-			light_color = vec_add(light_color, vec_mul(lights[i].color, lights[i].ratio));
+			light_color = vec_add(light_color, vec_mul(lights[i].color, ratio));
 		}
 		else if (lights[i].type == E_LIGHT)
 		{

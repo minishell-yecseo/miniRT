@@ -28,9 +28,9 @@ int	get_color(t_vars *vars, double x, double y)
 	int	b;
 
 	ret = 0x00000000;
-	r = (int) (255 * (x / (WIDTH - 1)));
-	g = (int) (255 * (y / (HEIGHT - 1)));
-	b = (int) (255 * 0.25);
+	r = (int)(255 * (x / (WIDTH - 1)));
+	g = (int)(255 * (y / (HEIGHT - 1)));
+	b = (int)(255 * 0.25);
 	ret = (r << 16) + (g << 8) + b;
 	return (ret);
 }
@@ -42,7 +42,7 @@ void	paint(t_img *img, int x, int y, int color)
 
 	addr = mlx_get_data_addr(img->image, &img->bits_per_pixel, \
 			&img->size_len, &img->endian);
-	tmp = addr + ((HEIGHT - 1- y) * img->size_len);
+	tmp = addr + ((HEIGHT - 1 - y) * img->size_len);
 	tmp += x * (img->bits_per_pixel / 8);
 	*(unsigned int *) tmp = color;
 }

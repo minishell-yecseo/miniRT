@@ -17,7 +17,7 @@ void test(t_img *img, t_vars *vars)
 	t_hit_rec	rec;
 
 	cam = (vars->scene).camera;
-	rec.tmin = 0.00000001;
+	rec.tmin = EPSILON;
 
 	//// OLD TEST CODES
 	/*
@@ -47,9 +47,7 @@ void test(t_img *img, t_vars *vars)
 		while (++x < WIDTH)
 		{
 			rec.tmax = REC_TMAX;
-			double u = (double)x;
-			double v = (double)y;
-			t_ray r = ray(cam.origin, vec_unit(vec_sub(vec_add(vec_mul(cam.right, u), vec_add(cam.lower_left_corner, vec_mul(cam.up, v))), cam.origin)));
+			t_ray r = ray(cam.origin, vec_unit(vec_sub(vec_add(vec_mul(cam.right, (double)x), vec_add(cam.lower_left_corner, vec_mul(cam.up, (double)y))), cam.origin)));
 			t_vector color = ray_color((vars->scene).objs, r, &rec);
 			paint(img, x, y, test_color(color));
 		}
