@@ -37,19 +37,6 @@ typedef struct s_vector
 	double	z;
 }	t_vector;
 
-//formula
-typedef struct s_formula
-{
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
-	double	sqrtd;
-	double	root;
-	double	numrator;
-	double	denominator;
-}	t_formula;
-
 enum e_surface_type
 
 {
