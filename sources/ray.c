@@ -2,7 +2,7 @@
 
 t_ray	ray(t_vector origin, t_vector dir)
 {
-	t_ray new;
+	t_ray	new;
 
 	new.origin = origin;
 	new.dir = dir;
@@ -19,8 +19,8 @@ t_vector	ray_at(t_ray ray, double t)
 
 t_camera	get_camera(t_vector origin, t_vector direction, double fov)
 {
-	t_camera cam;
-	t_vector tmp;
+	t_camera	cam;
+	t_vector	tmp;
 
 	cam.fov = fov;
 	cam.focal_len = (float)WIDTH / 2 / tan((cam.fov / 2 * M_PI / 180));
@@ -31,7 +31,7 @@ t_camera	get_camera(t_vector origin, t_vector direction, double fov)
 	else
 		cam.right = vec_cross(cam.dir, vector(0, 0, -1));
 	cam.up = vec_unit(vec_cross(cam.right, cam.dir));
-    	tmp = vec_add(cam.origin, vec_mul(cam.dir, cam.focal_len));
+	tmp = vec_add(cam.origin, vec_mul(cam.dir, cam.focal_len));
 	tmp = vec_sub(tmp, vec_mul(cam.right, (float)(WIDTH / 2)));
 	tmp = vec_sub(tmp, vec_mul(cam.up, (float)(HEIGHT / 2)));
 	cam.lower_left_corner = tmp;
