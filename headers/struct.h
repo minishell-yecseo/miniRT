@@ -48,12 +48,12 @@ enum e_surface_type
 typedef struct s_surface
 {
 	enum e_surface_type	type;
-	int			x;
-	int			y;
-	t_vector		color;
-	t_vector		color2;
-	t_img			texture;
-	t_img			bump;
+	int					x;
+	int					y;
+	t_vector			color;
+	t_vector			color2;
+	t_img				texture;
+	t_img				bump;
 }	t_surface;
 
 //formula
