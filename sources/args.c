@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "args.h"
 
 int	check_args(int argc, char **argv, t_vars *vars)
 {
@@ -59,6 +59,8 @@ int	save_contents(int fd, t_vars *vars)
 			return (0);
 		line = get_next_line(fd);
 	}
+	if (flags[0] == 0 || flags[1] == 0)
+		return (0);
 	return (1);
 }
 
@@ -454,14 +456,4 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 	surface.bump = bump;
 	obj->surface = surface;
 	return (1);
-}
-
-void	error_print(char *msg)
-{
-	int	len;
-
-	len = ft_strlen(msg);
-	if (!len)
-		return ;
-	write(2, msg, len);
 }

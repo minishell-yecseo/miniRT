@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "utils.h"
 
 int	len_max(char *str1, char *str2)
 {
