@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "utils.h"
 
 int			ft_ctype(char c);
 static void	ft_atoi_util(int sign, char *str, int *res, int *stat);

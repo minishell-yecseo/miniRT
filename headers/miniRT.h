@@ -12,6 +12,7 @@
 # include "ray.h"
 # include "object.h"
 # include "light.h"
+# include "utils.h"
 
 # define WIDTH 1200
 # define HEIGHT 800
@@ -50,20 +51,6 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split);
 int	check_color_range(t_vector *color);
 int	check_norm_range(t_vector *norm);
 
-int	ft_atoi_stat(char *str, int *stat);
-double	ft_atof_stat(const char *str, int *status);
-t_vector	ft_atovec_stat(char *str, int *status);
-int	ft_atoi(const char *str);
-int             ft_ctype(char c);
-
-char	**ft_split(char const *s, char c);
-void	free_split(char **split);
-int	ft_strlen(char *str);
-int	ft_memcmp(const void *s1, const void *s2, size_t n);
-int	len_max(char *str1, char *str2);
-void	*ft_memset(void *b, int c, size_t len);
-int	split_len(char **split);
-size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize);
 int	height_check(t_object *obj, t_ray r, t_formula f, t_hit_rec *rec);
 
 #endif

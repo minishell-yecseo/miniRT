@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "utils.h"
 
 static int	atovec_util(char **split, t_vector *ret);
 

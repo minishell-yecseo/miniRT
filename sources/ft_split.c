@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "utils.h"
 
 static int	mall_check(char *tmp, char **res);
 static int	w_num(char *s, char sep);

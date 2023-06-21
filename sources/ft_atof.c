@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "utils.h"
 
 static int	get_dot_idx(const char *str);
 static int	is_double(char *str);
