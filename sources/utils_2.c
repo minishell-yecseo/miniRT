@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "utils.h"
 
 int	check_color_range(t_vector *color)
 {

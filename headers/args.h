@@ -1,7 +1,6 @@
 #ifndef ARGS_H
 # define ARGS_H
 
-# include <unistd.h>
 # include <fcntl.h>
 # include "get_next_line.h"
 # include "mlx.h"
@@ -28,8 +27,5 @@ int	save_objs_surface(t_vars *vars, t_object *obj, char **split);
 int	save_objs_color(t_object *obj, char **split);
 int	save_objs_checker(t_object *obj, char **split);
 int	save_objs_texture(t_vars *vars, t_object *obj, char **split);
-
-int	check_color_range(t_vector *color);
-int	check_norm_range(t_vector *norm);
 
 #endif

@@ -2,6 +2,7 @@
 # define UTILS_H
 
 # include <stdlib.h>
+# include <unistd.h>
 # include "vector.h"
 
 int			ft_atoi_stat(char *str, int *stat);
@@ -18,6 +19,10 @@ int			len_max(char *str1, char *str2);
 void		*ft_memset(void *b, int c, size_t len);
 int			split_len(char **split);
 size_t		ft_strlcpy(char *dest, const char *src, size_t dstsize);
+
+int			check_color_range(t_vector *color);
+int			check_norm_range(t_vector *norm);
+
 void		error_print(char *msg);
 
 #endif
