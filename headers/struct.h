@@ -4,6 +4,7 @@
 # define OBJ_MAX 10001
 # define CAM 0
 # define AMBIENT 1
+# define LIGHT 2
 # define UINT_MAX 2147483647
 # define REC_TMAX 1.7976931348623158e+308
 # define EPSILON 1.11e-16
