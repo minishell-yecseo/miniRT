@@ -6,13 +6,17 @@ CFLAGS		= #-Wall -Wextra -Werror
 
 SRC_DIR		= sources/
 
-SRC			= main_bonus.c paint.c key_hook.c vector_func.c ray.c raytracing.c \
-				hit_obj.c light.c co.c vector_func2.c vector_func3.c\
-				get_next_line.c get_next_line_utils.c ft_split.c \
-				args_m.c utils.c utils_2.c ft_atoi.c ft_atof.c ft_atovec.c \
-				cy.c pl.c sp.c
+SRC			= main_m.c paint.c key_hook.c vector_func.c ray.c raytracing.c \
+			  hit_obj.c light.c vector_func2.c vector_func3.c\
+			  get_next_line.c get_next_line_utils.c ft_split.c \
+			  args_m.c utils.c utils_2.c ft_atoi.c ft_atof.c ft_atovec.c \
+			  cy.c pl.c sp.c co.c
 
-SRC_BONUS	= #bonus files
+SRC_BONUS	= main.c paint.c key_hook.c vector_func.c ray.c raytracing.c \
+			  hit_obj.c light.c co.c vector_func2.c vector_func3.c\
+			  get_next_line.c get_next_line_utils.c ft_split.c \
+			  args.c utils.c utils_2.c ft_atoi.c ft_atof.c ft_atovec.c \
+			  cy.c pl.c sp.c
 
 SRCS		= $(addprefix $(SRC_DIR), $(SRC))
 SRCS_BONUS	= $(addprefix $(SRC_DIR), $(SRC_BONUS))
@@ -20,7 +24,7 @@ SRCS_BONUS	= $(addprefix $(SRC_DIR), $(SRC_BONUS))
 OBJS_MAND	= $(SRCS:c=o)
 OBJS_BONUS	= $(SRCS_BONUS:c=o)
 
-INC			= -I./headers -Imlx
+INC			= -I./headers -I.mlx
 MLX			= -L./mlx -lmlx -framework OpenGL -framework Appkit
 
 all: $(NAME)
@@ -31,7 +35,7 @@ bonus : $(BONUS)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(BONUS) : $(OBJS_BONUS)
-	$(CC) $(CFLAGS) $(INC) $(MXL) $^ -o $@
+	$(CC) $(CFLAGS) $(INC) $(MLX) $^ -o $@
 
 $(NAME): $(OBJS_MAND)
 	$(CC) $(CFLAGS) $(INC) $(MLX) $^ -o $@
