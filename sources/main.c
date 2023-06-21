@@ -9,7 +9,7 @@ int	main(int argc, char **argv)
 {
 	t_vars	vars;
 
-	atexit(v);
+	//atexit(v);
 	// argument checking
 	vars.mlx = mlx_init();
 	if (!check_args(argc, argv, &vars))
