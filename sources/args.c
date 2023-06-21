@@ -431,6 +431,8 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 	int		bump_fd;
 
 	surface.type = TEXTURE;
+	if (!check_file_expand(split[2], ".xpm") || !check_file_expand(split[3], ".xpm"))
+		return (0);
 	texture_fd = open(split[2], O_RDONLY);
 	if (!ft_memcmp(split[3], "default", len_max(split[3], "default")))
 		bump_fd = 0;
