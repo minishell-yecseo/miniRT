@@ -10,16 +10,13 @@ int	check_args(int argc, char **argv, t_vars *vars)
 		error_print("miniRT: please input one scene file path\n");
 		return (0);
 	} 
-	// 1. check if file is available
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 	{
 		error_print("miniRT: open file error\n");
 		return (0);
 	}
-	// 2. check if contents are valid
-	//    - and if it's valid, set scene
-	if (!save_contents(fd, vars))
+	if (!check_file_expand(argv[1], ".rt") || !save_contents(fd, vars))
 	{
 		error_print("miniRT: file format error\n");
 		close(fd);

@@ -16,7 +16,7 @@ int	check_args(int argc, char **argv, t_scene *scene)
 		error_print("miniRT: open file error\n");
 		return (0);
 	}
-	if (!save_contents(fd, scene))
+	if (!check_file_expand(argv[1], ".rt") || !save_contents(fd, scene))
 	{
 		error_print("miniRT: file format error\n");
 		close(fd);

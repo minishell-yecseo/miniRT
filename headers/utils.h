@@ -24,5 +24,6 @@ int			check_color_range(t_vector *color);
 int			check_norm_range(t_vector *norm);
 
 void		error_print(char *msg);
+int			check_file_expand(char *path, char *expand);
 
 #endif
