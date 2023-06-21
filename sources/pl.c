@@ -32,3 +32,29 @@ int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
 	set_face_normal(r, rec);
 	return (1);
 }
+
+int	hit_ci(t_object *ci, t_ray r, t_hit_rec *rec)
+{
+	t_vector	cl;
+	t_vector	p;
+	t_formula	f;
+	double		r_prime;
+
+	f.denominator = vec_dot(ci->norm, r.dir);
+	if (fabs(f.denominator) < EPSILON)
+		return (0);
+	cl = vec_sub(ci->center, r.origin);
+	f.numrator = vec_dot(cl, ci->norm);
+	f.root = f.numrator / f.denominator;
+	p = ray_at(r, f.root);
+	r_prime = vec_len(vec_sub(p, ci->center));
+	if (fabs(r_prime - ci->radius) > ci->height)
+		return (0);
+	if (f.root < rec->tmin || f.root > rec->tmax)
+		return (0);
+	rec->t = f.root;
+	rec->tmax = f.root;
+	rec->point = p;
+	rec->normal = ci->norm;
+	return (1);
+}

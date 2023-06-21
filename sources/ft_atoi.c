@@ -1,6 +1,6 @@
 #include "miniRT.h"
 
-int		ft_ctype(char c);
+int			ft_ctype(char c);
 static void	ft_atoi_util(int sign, char *str, int *res, int *stat);
 static int	is_number(char *str);
 
@@ -62,7 +62,7 @@ static void	ft_atoi_util(int sign, char *str, int *res, int *stat)
 		}
 		str++;
 	}
-	if ((sign && tmp > UINT_MAX) || (sign < 0 && (tmp - 1> UINT_MAX)))
+	if ((sign && tmp > UINT_MAX) || (sign < 0 && (tmp - 1 > UINT_MAX)))
 	{
 		*stat = 0;
 		return ;

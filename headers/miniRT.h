@@ -11,6 +11,7 @@
 # include "vector.h"
 # include "ray.h"
 # include "object.h"
+# include "light.h"
 
 # define WIDTH 1200
 # define HEIGHT 800
@@ -22,7 +23,7 @@ void	paint(t_img *img, int x, int y, int color);
 int		destroy_window(t_vars *vars);
 int		key_hook_esc(int keycode, t_vars *vars);
 
-void	test(t_img *img, t_vars *vars);
+void	drawing(t_img *img, t_vars *vars);
 int	hit_cylinder(t_object *cy, t_ray *ray, t_hit_rec *rec);
 t_vector	get_vec_color(int color);
 
@@ -63,5 +64,6 @@ int	len_max(char *str1, char *str2);
 void	*ft_memset(void *b, int c, size_t len);
 int	split_len(char **split);
 size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize);
+int	height_check(t_object *obj, t_ray r, t_formula f, t_hit_rec *rec);
 
 #endif

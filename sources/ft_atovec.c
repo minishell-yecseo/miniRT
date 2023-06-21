@@ -5,7 +5,7 @@ static int	atovec_util(char **split, t_vector *ret);
 t_vector	ft_atovec_stat(char *str, int *status)
 {
 	t_vector	ret;
-	char	**split;
+	char		**split;
 
 	ret = vector(0, 0, 0);
 	split = ft_split(str, ',');
