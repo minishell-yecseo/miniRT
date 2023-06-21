@@ -140,6 +140,7 @@ typedef struct s_hit_rec
 	double		u;
 	double		v;
 	t_light		*lights;
+	enum e_object_type	type;
 }	t_hit_rec;
 
 typedef struct s_scene

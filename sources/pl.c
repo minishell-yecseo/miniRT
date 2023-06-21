@@ -5,13 +5,16 @@ void	get_plane_uv(t_hit_rec *rec, t_object *pl)
 	t_vector	u;
 	t_vector	v;
 
-	if (vec_len(vec_cross(pl->norm, vector(0, 1, 0))))
-		u = vec_unit(vec_cross(pl->norm, vector(0, 1, 0)));
-	else
-		u = vec_unit(vec_cross(pl->norm, vector(0, 0, -1)));
-	v = vec_unit(vec_cross(u, pl->norm));
+	u = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
+	v = vec_unit(vec_cross(u, rec->normal));
 	rec->u = fmod(vec_dot(rec->point, u), 1);
 	rec->v = fmod(vec_dot(rec->point, v), 1);
+	if (rec->u < 0)
+		rec->u = 1 + rec->u;
+	if (rec->v < 0)
+		rec->v = 1 + rec->v;
+	//rec->u = rec->u / (double)pl->surface.texture.w;
+	//rec->v = rec->v / (double)pl->surface.texture.h;
 }
 
 int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
