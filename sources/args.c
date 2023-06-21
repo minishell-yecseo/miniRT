@@ -9,7 +9,7 @@ int	check_args(int argc, char **argv, t_vars *vars)
 	{
 		error_print("miniRT: please input one scene file path\n");
 		return (0);
-	}
+	} 
 	// 1. check if file is available
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
@@ -433,15 +433,23 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 
 	surface.type = TEXTURE;
 	texture_fd = open(split[2], O_RDONLY);
-	bump_fd = open(split[3], O_RDONLY);
+	if (!ft_memcmp(split[3], "default", len_max(split[3], "default")))
+		bump_fd = 0;
+	else
+		bump_fd = open(split[3], O_RDONLY);
 	close(texture_fd);
 	close(bump_fd);
 	if (texture_fd < 0 || bump_fd < 0)
 		return (0);
 	texture.image = mlx_xpm_file_to_image(vars->mlx, split[2], &texture.w, &texture.h);
 	texture.data = (int *)mlx_get_data_addr(texture.image, &texture.bits_per_pixel, &texture.size_len, &texture.endian);
-	bump.image = mlx_xpm_file_to_image(vars->mlx, split[3], &bump.w, &bump.h);
-	bump.data = (int *)mlx_get_data_addr(bump.image, &bump.bits_per_pixel, &bump.size_len, &bump.endian);
+	if (bump_fd > 0)
+	{
+		bump.image = mlx_xpm_file_to_image(vars->mlx, split[3], &bump.w, &bump.h);
+		bump.data = (int *)mlx_get_data_addr(bump.image, &bump.bits_per_pixel, &bump.size_len, &bump.endian);
+	}
+	else if (bump_fd == 0)
+		surface.is_bump = 0;
 	surface.texture = texture;
 	surface.bump = bump;
 	obj->surface = surface;

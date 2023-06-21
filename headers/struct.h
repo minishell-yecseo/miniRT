@@ -39,7 +39,6 @@ typedef struct s_vector
 }	t_vector;
 
 enum e_surface_type
-
 {
 	COLOR,
 	CHECKER,
@@ -51,6 +50,7 @@ typedef struct s_surface
 	enum e_surface_type	type;
 	int					x;
 	int					y;
+	int					is_bump;
 	t_vector			color;
 	t_vector			color2;
 	t_img				texture;
