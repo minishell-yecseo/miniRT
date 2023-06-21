@@ -2,6 +2,7 @@
 
 int	co_side(t_object *co, t_ray r, t_hit_rec *rec);
 int	co_cap(t_object *co, t_ray r, t_hit_rec *rec);
+
 int	is_in_cam(t_object *co, t_ray r)
 {
 	t_vector	cl;
@@ -65,44 +66,33 @@ int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
 {
 	t_vector	H;
 	t_vector	w;
+	t_formula	f;
 	double		m_one;
-	double		a;
-	double		half_b;
-	double		c;
-	double		discriminant;
-	double		root;
-	int		in_cam;
+	int			in_cam;
 
 	H = vec_add(co->center, vec_mul(co->norm, co->height));
 	w = vec_sub(r.origin, H);
 	m_one = (co->radius * co->radius) / vec_len_square(vec_sub(co->center, H)) + 1;
-	a = vec_len_square(r.dir) - (m_one * vec_dot(r.dir, co->norm) * vec_dot(r.dir, co->norm));
-	half_b = vec_dot(r.dir, w) - (m_one * vec_dot(r.dir, co->norm) * vec_dot(w, co->norm));
-	c = vec_len_square(w) - (m_one * (vec_dot(w, co->norm) * vec_dot(w, co->norm)));
-
-	discriminant = half_b * half_b - a * c;
-	if (discriminant < 0.0)
+	f.a = vec_len_square(r.dir) - (m_one * vec_dot(r.dir, co->norm) * vec_dot(r.dir, co->norm));
+	f.b = vec_dot(r.dir, w) - (m_one * vec_dot(r.dir, co->norm) * vec_dot(w, co->norm));
+	f.c = vec_len_square(w) - (m_one * (vec_dot(w, co->norm) * vec_dot(w, co->norm)));
+	f.discriminant = f.b * f.b - f.a * f.c;
+	if (f.discriminant < 0.0)
 		return (0);
 	in_cam = is_in_cam(co, r);
 	if (in_cam)
-		root = (-half_b + (sqrt(discriminant))) / a;
+		f.root = (-f.b + (sqrt(f.discriminant))) / f.a;
 	else
-		root = (-half_b - (sqrt(discriminant))) / a;
-	if (root < rec->tmin || rec->tmax < root)
-	{
-		if (in_cam)
-			return (0);
-		root = (-half_b + sqrt(discriminant)) / a;
-		if (root < rec->tmin || rec->tmax < root)
-			return (0);
-	}
-	t_vector	P = ray_at(r, root);
+		f.root = (-f.b - (sqrt(f.discriminant))) / f.a;
+	if (f.root < rec->tmin || rec->tmax < f.root)
+		return (0);
+	t_vector	P = ray_at(r, f.root);
 	double		test = vec_dot(vec_sub(P, co->center), co->norm);
 	if (test > co->height || test < 0.0)
 		return (0);
-	rec->t = root;
-	rec->point = ray_at(r, root);
-	rec->tmax = root;
+	rec->t = f.root;
+	rec->point = ray_at(r, f.root);
+	rec->tmax = f.root;
 	t_vector	Q = vec_add(co->center, vec_mul(co->norm, test));
 	t_vector	HP = vec_sub(P, H);
 	t_vector	QP = vec_sub(P, Q);

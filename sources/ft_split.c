@@ -85,7 +85,7 @@ static int	mall_check(char	*tmp, char **res)
 
 void	free_split(char **split)
 {
-	int	idx;
+	int		idx;
 	char	*tmp;
 
 	idx = 0;
