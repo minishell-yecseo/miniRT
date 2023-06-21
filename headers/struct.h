@@ -1,6 +1,11 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
+# define OBJ_MAX 10001
+# define CAM 0
+# define AMBIENT 1
+# define UINT_MAX 2147483647
+# define REC_TMAX 1.7976931348623158e+308
 # define EPSILON 1.11e-16
 # define MAX 1.7976931348623158e+308
 
@@ -15,18 +20,15 @@ typedef struct s_color
 typedef struct s_img
 {
 	void	*image;
+	
+	int		*data;
+	int		h;
+	int		w;
+	
 	int		bits_per_pixel;
 	int		size_len;
 	int		endian;
 }			t_img;
-
-typedef struct s_vars
-{
-	void			*mlx;
-	void			*win;
-	t_img			img;
-	struct s_color	color;
-}			t_vars;
 
 //for vector
 typedef struct s_vector
@@ -36,15 +38,37 @@ typedef struct s_vector
 	double	z;
 }	t_vector;
 
-//checker
-typedef struct s_checker
+enum e_surface_type
+
 {
-	int			is_checker;
-	int			x;
-	int			y;
-	t_vector	color1;
-	t_vector	color2;
-}	t_checker;
+	COLOR,
+	CHECKER,
+	TEXTURE
+};
+
+typedef struct s_surface
+{
+	enum e_surface_type	type;
+	int					x;
+	int					y;
+	t_vector			color;
+	t_vector			color2;
+	t_img				texture;
+	t_img				bump;
+}	t_surface;
+
+//formula
+typedef struct s_formula
+{
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+	double	sqrtd;
+	double	root;
+	double	numrator;
+	double	denominator;
+}	t_formula;
 
 //for ray, camera
 typedef struct	s_ray
@@ -67,30 +91,30 @@ typedef struct	s_camera
 }	t_camera;
 
 //for multiple objeects
-enum object_type
+enum e_object_type
 {
 	sp,
 	pl,
 	cy,
-	co
+	co,
+	ci
 };
 
 typedef struct s_object
 {
-	enum object_type	type;
-	t_vector			center;
-	t_vector			norm;
-	t_vector			color;
-	double				radius;
-	double				height;
-	t_checker			checker;
+	enum e_object_type	type;
+	t_surface		surface;
+	t_vector		center;
+	t_vector		norm;
+	double			radius;
+	double			height;
 }	t_object;
 
 //light
 enum light_type
 {
-	ambient,
-	light
+	E_AMBIENT,
+	E_LIGHT
 };
 
 typedef struct s_light
@@ -102,6 +126,7 @@ typedef struct s_light
 }	t_light;
 
 //hit_rec
+
 typedef struct s_hit_rec
 {
 	t_vector	point;
@@ -116,5 +141,58 @@ typedef struct s_hit_rec
 	double		v;
 	t_light		*lights;
 }	t_hit_rec;
+
+typedef struct s_scene
+{
+	int		objs_number;
+	int		lights_number;
+	t_camera	camera;
+	t_object	objs[OBJ_MAX];
+	t_light		lights[OBJ_MAX];
+}	t_scene;
+
+typedef struct s_vars
+{
+	void			*mlx;
+	void			*win;
+	t_img			img;
+	t_scene			scene;
+	struct s_color	color;
+}			t_vars;
+
+/*
+   .rt format
+
+   - surface (1~3) 
+   	* MAND *
+		color
+
+   	* BONUS *
+   		1. color [color]
+		2. checker [color1] [color2]
+		3. texture [texture.xpm] [bump.xpm]
+
+   -objects
+   	identifier surface center ...
+		[Sphere]
+			available token numbers : 5, 6
+			sp surface center diameter
+
+		[Plane]
+			available token numbers : 5, 6
+			pl surface center norm
+
+		[Cylinder]
+			available token number : 7, 8
+			cy surface bottom_center axis diameter height
+
+		[Cone]
+			available token number : 7, 8
+			co surface bottom_center axis diameter height
+
+		[Circle]
+			available token number : 7, 8
+			ci surface center axis diameter width
+*/
 
 #endif
