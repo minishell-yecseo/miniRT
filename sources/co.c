@@ -3,23 +3,49 @@
 int	co_side(t_object *co, t_ray r, t_hit_rec *rec);
 int	co_cap(t_object *co, t_ray r, t_hit_rec *rec);
 
+
+
+void	get_cy_head_uv(t_hit_rec *rec, t_object *cy, int head)
+{
+	t_vector	u;
+	t_vector	v;
+	t_vector	p;
+
+	p = vec_sub(rec->point, cy->center);
+	u = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
+	v = vec_unit(vec_cross(u, rec->normal));
+	rec->u = (atan2(-vec_dot(p, u), vec_dot(p, v)) + M_PI) / (2 * M_PI);
+	if (head == 1)
+		rec->v = 1;
+	else
+		rec->v = 0;
+}
+
 void	get_cy_uv(t_hit_rec *rec, t_object *cy)
 {
 	t_vector	u;
 	t_vector	v;
 	t_vector	p;
 
-	//p = (vec_sub(rec->point, cy->center));
-	//u = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
-	//v = vec_unit(vec_cross(u, rec->normal));
-	//rec->u = 1 - (atan2(p.x, p.z) / (2 * M_PI) + 0.5);
-	//rec->v = fmod(p.y, 1);
-
 	p = vec_sub(rec->point, cy->center);
 	u = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
+	
+	//printf("%f %f %f\n", u.x, u.y, u.z);
+
 	v = vec_unit(vec_cross(u, rec->normal));
 	rec->u = (atan2(-vec_dot(p, u), vec_dot(p, v)) + M_PI) / (2 * M_PI);
 	rec->v = vec_dot(p, cy->norm) / cy->height;
+	////printf("%f\n", rec->u);
+	//double	u;
+	//double	v;
+	//double	theta;
+	//double	phi;
+	//double	size;
+
+	//size = 4;
+	//theta = atan2((rec->point.x - cy->center.x), (rec->point.y - cy->center.y));
+	//u = 1 - (theta / (2 * M_PI) + 0.5);
+	//v = fmod(rec->point.z - cy->center.z, 1);
 }
 
 int	is_in_cam(t_object *co, t_ray r)
@@ -98,7 +124,7 @@ int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
 	f.b = vec_dot(r.dir, w) - (m_one * vec_dot(r.dir, co->norm) * vec_dot(w, co->norm));
 	f.c = vec_len_square(w) - (m_one * (vec_dot(w, co->norm) * vec_dot(w, co->norm)));
 	f.discriminant = f.b * f.b - f.a * f.c;
-	if (f.discriminant < 0.0)
+	if (f.discriminant < EPSILON)
 		return (0);
 	in_cam = is_in_cam(co, r);
 	if (in_cam)
@@ -109,7 +135,7 @@ int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
 		return (0);
 	t_vector	P = ray_at(r, f.root);
 	double		test = vec_dot(vec_sub(P, co->center), co->norm);
-	if (test > co->height || test < 0.0)
+	if (test > co->height || test < EPSILON)
 		return (0);
 	rec->t = f.root;
 	rec->point = ray_at(r, f.root);
