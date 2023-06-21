@@ -3,6 +3,7 @@
 
 int	hit_obj(t_object *obj, t_ray r, t_hit_rec *rec)
 {
+	rec->type = obj->type;
 	if (obj->type == sp)
 		return (hit_sphere(obj, r, rec));
 	else if (obj->type == pl)
@@ -24,7 +25,7 @@ void	get_texture(t_hit_rec *rec, t_img tx, t_img bp, t_surface s)
 	t_vector	t;
 	t_vector	b;
 
-	color = tx.data[tx.w * (int)((1 - rec->v) * tx.h) + (int)(rec->u * tx.w)];
+	color = tx.data[tx.w * (int)((1 - rec->v) * (tx.h - 1)) + (int)(rec->u * tx.w)];
 	rec->albedo = get_vec_color(color);
 	if (s.is_bump != 0)
 	{
@@ -41,9 +42,23 @@ void	get_texture(t_hit_rec *rec, t_img tx, t_img bp, t_surface s)
 	}
 }
 
+void	set_checker_xy(t_surface *s, int x, int y)
+{
+	s->x = x;
+	s->y = y;
+}
+
 void	get_checker(t_hit_rec *rec, t_surface s)
 {
-	if (((int)floor(rec->u * s.x) + (int)floor(rec->v * s.y)) % 2 == 0)
+	if (rec->type == sp)
+		set_checker_xy(&s, 20, 10);
+	else if (rec->type == pl)
+		set_checker_xy(&s, 2, 2);
+	else if (rec->type == cy)
+		set_checker_xy(&s, 16, 8);
+	else if (rec->type == co)
+		set_checker_xy(&s, 26, 5);
+	if (((int)(rec->u * s.x) + (int)(rec->v * s.y)) % 2 == 0)
 		rec->albedo = s.color;
 	else
 		rec->albedo = s.color2;

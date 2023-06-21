@@ -3,6 +3,25 @@
 int	co_side(t_object *co, t_ray r, t_hit_rec *rec);
 int	co_cap(t_object *co, t_ray r, t_hit_rec *rec);
 
+void	get_cy_uv(t_hit_rec *rec, t_object *cy)
+{
+	t_vector	u;
+	t_vector	v;
+	t_vector	p;
+
+	//p = (vec_sub(rec->point, cy->center));
+	//u = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
+	//v = vec_unit(vec_cross(u, rec->normal));
+	//rec->u = 1 - (atan2(p.x, p.z) / (2 * M_PI) + 0.5);
+	//rec->v = fmod(p.y, 1);
+
+	p = vec_sub(rec->point, cy->center);
+	u = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
+	v = vec_unit(vec_cross(u, rec->normal));
+	rec->u = (atan2(-vec_dot(p, u), vec_dot(p, v)) + M_PI) / (2 * M_PI);
+	rec->v = vec_dot(p, cy->norm) / cy->height;
+}
+
 int	is_in_cam(t_object *co, t_ray r)
 {
 	t_vector	cl;
@@ -33,6 +52,8 @@ int	hit_co(t_object *co, t_ray r, t_hit_rec *rec)
 	set_face_normal(r, rec);
 	if (co_side(co, r, rec))
 		is_hit = 1;
+	if (is_hit == 1)
+		get_cy_uv(rec, co);
 	return (is_hit);
 }
 

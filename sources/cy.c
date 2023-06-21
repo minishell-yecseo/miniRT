@@ -92,6 +92,9 @@ int	hit_cy(t_object *cy, t_ray r, t_hit_rec *rec)
 		is_hit = 1;
 	set_face_normal(r, rec);
 	if (is_hit)
+	{
+		get_cy_uv(rec, cy);
 		return (1);
+	}
 	return (0);
 }

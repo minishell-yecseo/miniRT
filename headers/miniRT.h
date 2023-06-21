@@ -65,5 +65,6 @@ void	*ft_memset(void *b, int c, size_t len);
 int	split_len(char **split);
 size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize);
 int	height_check(t_object *obj, t_ray r, t_formula f, t_hit_rec *rec);
+void	get_cy_uv(t_hit_rec *rec, t_object *cy);
 
 #endif
