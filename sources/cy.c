@@ -1,121 +1,118 @@
 #include "miniRT.h"
 
-typedef struct s_formula
+t_vector	get_cy_norm(t_object *cy, t_vector at_point, double h)
 {
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
-} t_formula;
+	t_vector	hit_center;
+	t_vector	normal;
 
-int	cylinder_upper_cap(t_vector center, t_object *cy, t_ray *ray, t_hit_rec *rec)
+	hit_center = vec_add(cy->center, vec_mul(cy->norm, h));
+	normal = vec_sub(at_point, hit_center);
+	return (vec_unit(normal));
+}
+
+int cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 {
-	double	numrator;
-	double	denominator;
-	double	root;
-	double	pc;
+	t_formula	f;
+	t_vector	p;
+	double		pc;
 
-	denominator = vec_dot(ray->dir, cy->norm);
-	if (fabs(denominator) < rec->tmin)
+	f.denominator = vec_dot(r.dir, vec_unit(cy->norm));
+	if (fabs(f.denominator) < EPSILON)
 		return (0);
-	numrator = vec_dot(vec_sub(center, ray->origin), cy->norm);
-	root = numrator / denominator;
-	if (root < rec->tmin || root > rec->tmax)
+	f.numrator = vec_dot(vec_sub(c, r.origin), vec_unit(cy->norm));
+	f.root = f.numrator / f.denominator;
+	if (f.root < rec->tmin || f.root > rec->tmax)
 		return (0);
-	pc = vec_len(vec_sub(vec_add(ray->origin, vec_mul(ray->dir, root)), center));
-	if ((pc * pc) > (cy->radius * cy->radius) || pc < 0.0)
+	p = vec_add(r.origin, vec_mul(r.dir, f.root));
+	pc = vec_len(vec_sub(p, c));
+	if (pc > cy->radius || pc < 0.0)
 		return (0);
-	rec->t = root;
-	rec->point = ray_at(*ray, root);
+	rec->t = f.root;
+	rec->tmax = f.root;
+	rec->point = ray_at(r, f.root);
 	rec->normal = cy->norm;
-	set_face_normal(*ray, rec);
 	return (1);
 }
 
-int	cylinder_lower_cap(t_vector center, t_object *cy, t_ray *ray, t_hit_rec *rec)
+int	cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
 {
-	double	numrator;
-	double	denominator;
-	double	root;
-	double	pc;
+	t_formula	f;
+	t_vector	p;
+	double		qc;
 
-	denominator = vec_dot(ray->dir, cy->norm);
-	if (fabs(denominator) < rec->tmin)
+	f.a = vec_len_square(vec_cross(r.dir, cy->norm));
+	f.b = vec_dot(vec_cross(r.dir, cy->norm), vec_cross(vec_sub(r.origin, cy->center), cy->norm));
+	f.c = vec_len_square(vec_cross(vec_sub(r.origin, cy->center), cy->norm)) - (cy->radius) * (cy->radius);
+	f.discriminant = f.b * f.b - f.a * f.c;
+	if (f.discriminant < 0)
 		return (0);
-	numrator = vec_dot(vec_sub(center, ray->origin), cy->norm);
-	root = numrator / denominator;
-	if (root < rec->tmin || root > rec->tmax)
+	f.root = (-f.b - sqrt(f.discriminant)) / f.a;
+	if (f.root < rec->tmin || rec->tmax < f.root)
+	{
+		f.root = (-f.b + sqrt(f.discriminant)) / f.a;
+		if (f.root < rec->tmin || rec->tmax < f.root)
+			return (0);
+	}
+	p = vec_add(r.origin, vec_mul(r.dir, f.root));
+	qc = vec_dot(vec_sub(p, cy->center), cy->norm);
+	if (qc > cy->height || qc < 0.0)
 		return (0);
-	pc = vec_len(vec_sub(vec_add(ray->origin, vec_mul(ray->dir, root)), center));
-	if ((pc * pc) > (cy->radius * cy->radius) || pc < 0.0)
-		return (0);
-	rec->t = root;
-	rec->point = ray_at(*ray, root);
-	rec->normal = vec_mul(cy->norm, -1);
-	set_face_normal(*ray, rec);
+	rec->t = f.root;
+	rec->tmax = f.root;
+	rec->point = ray_at(r, f.root);
+	rec->normal = get_cy_norm(cy, rec->point, qc);
 	return (1);
 }
 
-int	cylinder_cap(t_object *cy, t_ray *ray, t_hit_rec *rec, double root)
+int	hit_cy(t_object *cy, t_ray r, t_hit_rec *rec)
 {
-	t_vector	PC;
-	t_vector	H;
-	double		condition;
+	t_vector	h;
+	int			is_hit;
 
-	PC = vec_sub(vec_add(ray->origin, vec_mul(ray->dir, root)), cy->center);
-	H = vec_mul(cy->norm, cy->height);
-	condition = vec_dot(PC, H);
-	if (condition < 0.0)
-		return (cylinder_lower_cap(cy->center, cy, ray, rec));
-	if (condition > cy->height)
-		return (cylinder_upper_cap(vec_add(cy->center, vec_mul(cy->norm, cy->height)), cy, ray, rec));
+	is_hit = 0;
+	h = vec_add(cy->center, vec_mul(vec_unit(cy->norm), cy->height));
+	if (cy_cap(cy, r, rec, cy->center))
+	{
+		is_hit = 1;
+		rec->normal = vec_mul(rec->normal, -1);
+	}
+	if (cy_cap(cy, r, rec, h))
+		is_hit = 1;
+	if (cy_side(cy, r, rec))
+		is_hit = 1;
+	set_face_normal(r, rec);
+	if (is_hit)
+		return (1);
 	return (0);
 }
 
-int	cylinder_side(t_formula formula, t_object *cy, t_ray *ray, t_hit_rec *rec)
+int	hit_ci(t_object *ci, t_ray r, t_hit_rec *rec)
 {
-	double	root;
-	double	qc;
+	//ci->center, ci->norm, ci->radius
+	//1. ci->norm 과 P의 내적이 0인가?
+	//2. CP벡터의 크기가 radius랑 일치하는가?
+	t_vector	cl;
+	t_vector	p;
+	double		numrator;
+	double		denominator;
+	double		root;
+	double		r_prime;
 
-	if (formula.discriminant < 0.0)
+	denominator = vec_dot(ci->norm, r.dir);
+	if (fabs(denominator) < EPSILON)
 		return (0);
-	root = (-formula.b - sqrt(formula.discriminant)) / formula.a;
-	if (root < rec->tmin || rec->tmax < root)
-	{
-		root = (-formula.b + sqrt(formula.discriminant)) / formula.a;
-		if (root < rec->tmin || rec->tmax < root)
-			return (0);
-	}
-	qc = vec_dot(vec_sub(vec_add(ray->origin, vec_mul(ray->dir, root)), cy->center), cy->norm);
-	if (qc > cy->height || qc < 0.0)
-		return (cylinder_cap(cy, ray, rec, root));
+	cl = vec_sub(ci->center, r.origin);
+	numrator = vec_dot(cl, ci->norm);
+	root = numrator / denominator;
+	p = ray_at(r, root);
+	r_prime = vec_len(vec_sub(p, ci->center));
+	if (fabs(r_prime - ci->radius) > ci->height)
+		return (0);
+	if (root < rec->tmin || root > rec->tmax)
+		return (0);
 	rec->t = root;
-	rec->point = ray_at(*ray, root);
-	rec->normal = vec_unit(vec_sub(vec_add(cy->center, vec_mul(cy->norm, qc)), \
-	vec_add(ray->origin, vec_mul(ray->dir, root))));
-	set_face_normal(*ray, rec);
+	rec->tmax = root;
+	rec->point = p;
+	rec->normal = ci->norm;
 	return (1);
-}
-
-void	get_cylinder_data(t_formula *formula, t_object *cy, t_ray *ray)
-{
-	t_vector	r_center;
-	double		vh;
-	double		wh;
-
-	r_center = vec_sub(ray->origin, cy->center);
-	vh = vec_dot(ray->dir, vec_unit(vec_mul(cy->norm, cy->height)));
-	wh = vec_dot(r_center, vec_unit(vec_mul(cy->norm, cy->height)));
-	formula->a = vec_dot(ray->dir, ray->dir) - (vh * vh);
-	formula->b = vec_dot(ray->dir, r_center) - (vh * wh);
-	formula->c = vec_dot(r_center, r_center) - (wh * wh) - (cy->radius * cy->radius);
-	formula->discriminant = (formula->b * formula->b) - (formula->a * formula->c);
-}
-
-int	hit_cylinder(t_object *cy, t_ray *ray, t_hit_rec *rec)
-{
-	t_formula	formula;
-
-	get_cylinder_data(&formula, cy, ray);
-	return (cylinder_side(formula, cy, ray, rec));
 }
