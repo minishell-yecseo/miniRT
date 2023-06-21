@@ -9,7 +9,7 @@ int	check_args(int argc, char **argv, t_scene *scene)
 	{
 		error_print("miniRT: please input one scene file path\n");
 		return (0);
-	} 
+	}
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 	{
@@ -30,8 +30,8 @@ int	save_contents(int fd, t_scene *scene)
 {
 	char	**split;
 	char	*line;
-	int	tmp;
-	int	flags[3];//for check Camera, Abmient light, Light
+	int		tmp;
+	int		flags[3];
 
 	ft_memset(flags, 0, sizeof(int) * 3);
 	ft_memset(scene, 0, sizeof(t_scene));
@@ -112,7 +112,7 @@ int	save_lights(t_scene *scene, char **split, int *flags)
 	flags[LIGHT] += 1;
 	light.type = E_LIGHT;
 	status = 1;
-	if (split_len(split) !=3)
+	if (split_len(split) != 3)
 		return (0);
 	light.origin = ft_atovec_stat(split[1], &status);
 	if (!status)
@@ -120,7 +120,7 @@ int	save_lights(t_scene *scene, char **split, int *flags)
 	light.ratio = ft_atof_stat(split[2], &status);
 	if (!status || light.ratio < 0 || light.ratio > 1.0)
 		return (0);
-	light.color = vector(255, 255, 255);//mand에서는 color가 하야니까일단.
+	light.color = vector(255, 255, 255);
 	scene->lights[scene->lights_number] = light;
 	scene->lights_number += 1;
 	return (1);
@@ -202,7 +202,7 @@ int	save_sp(t_scene *scene, char **split)
 int	save_pl(t_scene *scene, char **split)
 {
 	t_object	plane;
-	int		status;
+	int			status;
 
 	status = 1;
 	plane.type = pl;
