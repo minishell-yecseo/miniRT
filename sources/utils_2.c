@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "utils.h"
 
 int	check_color_range(t_vector *color)
 {
@@ -39,4 +39,14 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize)
 		*dest++ = *src++;
 	*dest = 0;
 	return (src_len);
+}
+
+void	error_print(char *msg)
+{
+	int	len;
+
+	len = ft_strlen(msg);
+	if (!len)
+		return ;
+	write(2, msg, len);
 }

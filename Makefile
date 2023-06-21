@@ -6,10 +6,10 @@ CFLAGS		= #-Wall -Wextra -Werror
 
 SRC_DIR		= sources/
 
-SRC			= main.c paint.c key_hook.c vector_func.c ray.c raytracing.c \
+SRC			= main_bonus.c paint.c key_hook.c vector_func.c ray.c raytracing.c \
 				hit_obj.c light.c co.c vector_func2.c vector_func3.c\
 				get_next_line.c get_next_line_utils.c ft_split.c \
-				args.c utils.c utils_2.c ft_atoi.c ft_atof.c ft_atovec.c \
+				args_m.c utils.c utils_2.c ft_atoi.c ft_atof.c ft_atovec.c \
 				cy.c pl.c sp.c
 
 SRC_BONUS	= #bonus files
@@ -34,8 +34,6 @@ $(BONUS) : $(OBJS_BONUS)
 	$(CC) $(CFLAGS) $(INC) $(MXL) $^ -o $@
 
 $(NAME): $(OBJS_MAND)
-	$(MAKE) -C ./mlx
-	cp ./mlx/libmlx.a .
 	$(CC) $(CFLAGS) $(INC) $(MLX) $^ -o $@
 
 clean:

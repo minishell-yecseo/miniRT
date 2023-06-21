@@ -4,10 +4,13 @@
 # define OBJ_MAX 10001
 # define CAM 0
 # define AMBIENT 1
+# define LIGHT 2
 # define UINT_MAX 2147483647
 # define REC_TMAX 1.7976931348623158e+308
 # define EPSILON 1.11e-16
 # define MAX 1.7976931348623158e+308
+# define WIDTH 1200
+# define HEIGHT 800
 
 //for mlx window drawing
 typedef struct s_color
