@@ -34,8 +34,6 @@ $(BONUS) : $(OBJS_BONUS)
 	$(CC) $(CFLAGS) $(INC) $(MXL) $^ -o $@
 
 $(NAME): $(OBJS_MAND)
-	$(MAKE) -C ./mlx
-	cp ./mlx/libmlx.a .
 	$(CC) $(CFLAGS) $(INC) $(MLX) $^ -o $@
 
 clean:
