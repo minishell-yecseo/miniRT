@@ -57,7 +57,7 @@ void	get_checker(t_hit_rec *rec, t_surface s)
 	else if (rec->type == cy)
 		set_checker_xy(&s, 16, 8);
 	else if (rec->type == co)
-		set_checker_xy(&s, 26, 5);
+		set_checker_xy(&s, 14, 8);
 	if (((int)(rec->u * s.x) + (int)(rec->v * s.y)) % 2 == 0)
 		rec->albedo = s.color;
 	else

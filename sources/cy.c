@@ -60,7 +60,7 @@ int	cy_side(t_object *cy, t_ray r, t_hit_rec *rec)
 	f.c = vec_len_square(vec_cross(\
 		vec_sub(r.origin, cy->center), cy->norm)) - (cy->radius) * (cy->radius);
 	f.discriminant = f.b * f.b - f.a * f.c;
-	if (f.discriminant < 0)
+	if (f.discriminant < EPSILON)
 		return (0);
 	f.root = (-f.b - sqrt(f.discriminant)) / f.a;
 	if (f.root < rec->tmin || rec->tmax < f.root)
@@ -83,18 +83,20 @@ int	hit_cy(t_object *cy, t_ray r, t_hit_rec *rec)
 	h = vec_add(cy->center, vec_mul(vec_unit(cy->norm), cy->height));
 	if (cy_cap(cy, r, rec, cy->center))
 	{
-		is_hit = 1;
+		is_hit = 2;
 		rec->normal = vec_mul(rec->normal, -1);
 	}
 	if (cy_cap(cy, r, rec, h))
 		is_hit = 1;
-	if (cy_side(cy, r, rec))
-		is_hit = 1;
-	set_face_normal(r, rec);
 	if (is_hit)
+		get_cy_head_uv(rec, cy, is_hit);
+	if (cy_side(cy, r, rec))
 	{
 		get_cy_uv(rec, cy);
-		return (1);
+		is_hit = 1;
 	}
+	set_face_normal(r, rec);
+	if (is_hit)
+		return (1);
 	return (0);
 }
