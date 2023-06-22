@@ -28,5 +28,6 @@ void		error_print(char *msg);
 int			check_file_expand(char *path, char *expand);
 int			is_white_line(char *line);
 char		*get_whitespaces(void);
+int			comma_number(char *str);
 
 #endif

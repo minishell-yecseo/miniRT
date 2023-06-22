@@ -62,3 +62,18 @@ void	free_split(char **split)
 	}
 	free(split);
 }
+
+int	comma_number(char *str)
+{
+	int	comma_number;
+	int	len;
+
+	comma_number = 0;
+	len = ft_strlen(str);
+	while (len--)
+	{
+		if (*str++ == ',')
+			comma_number++;
+	}
+	return (comma_number);
+}
