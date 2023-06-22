@@ -32,11 +32,13 @@ int	save_contents(int fd, t_scene *scene)
 	char	*line;
 	int		tmp;
 	int		flags[3];
+	char	whitespaces[7];
 
 	ft_memset(flags, 0, sizeof(int) * 3);
 	ft_memset(scene, 0, sizeof(t_scene));
 	ft_memset(&(scene->objs), -1, sizeof(t_object) * (OBJ_MAX));
 	ft_memset(&(scene->lights), -1, sizeof(t_light) * (OBJ_MAX));
+	get_whitespaces(whitespaces);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
@@ -48,7 +50,7 @@ int	save_contents(int fd, t_scene *scene)
 		}
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
-		split = ft_split(line, get_whitespaces());
+		split = ft_split(line, whitespaces);
 		tmp = save_line(scene, split, flags);
 		free(line);
 		free_split(split);
@@ -97,7 +99,7 @@ int	save_ambient_light(t_scene *scene, char **split, int *flags)
 	if (!status || light.ratio < 0 || light.ratio > 1.0)
 		return (0);
 	light.color = ft_atovec_stat(split[2], &status);
-	if (!status || !check_color_range(&light.color))
+	if (!status || !check_color_range(&light.color) || comma_number(split[2]) != 2)
 		return (0);
 	(scene->lights)[scene->lights_number] = light;
 	scene->lights_number += 1;
@@ -115,7 +117,7 @@ int	save_lights(t_scene *scene, char **split, int *flags)
 	if (split_len(split) != 3)
 		return (0);
 	light.origin = ft_atovec_stat(split[1], &status);
-	if (!status)
+	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	light.ratio = ft_atof_stat(split[2], &status);
 	if (!status || light.ratio < 0 || light.ratio > 1.0)
@@ -136,10 +138,10 @@ int	save_camera(t_scene *scene, char **split, int *flags)
 	if (split_len(split) != 4)
 		return (0);
 	camera.origin = ft_atovec_stat(split[1], &status);
-	if (!status)
+	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	camera.dir = ft_atovec_stat(split[2], &status);
-	if (!status || !check_norm_range(&camera.dir))
+	if (!status || !check_norm_range(&camera.dir) || comma_number(split[2]) != 2)
 		return (0);
 	camera.fov = (double) ft_atoi_stat(split[3], &status);
 	if (!status || camera.fov < 0 || camera.fov > 180)
@@ -188,7 +190,7 @@ int	save_sp(t_scene *scene, char **split)
 	if (split_len(split) != 4)
 		return (0);
 	sphere.center = ft_atovec_stat(split[1], &status);
-	if (!status)
+	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	sphere.radius = ft_atof_stat(split[2], &status) / 2.0;
 	if (!status || sphere.radius <= 0)
@@ -209,10 +211,10 @@ int	save_pl(t_scene *scene, char **split)
 	if (split_len(split) != 4)
 		return (0);
 	plane.center = ft_atovec_stat(split[1], &status);
-	if (!status)
+	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	plane.norm = ft_atovec_stat(split[2], &status);
-	if (!status || !check_norm_range(&plane.norm))
+	if (!status || !check_norm_range(&plane.norm) || comma_number(split[2]) != 2)
 		return (0);
 	if (!save_objs_color(&plane, split[3]))
 		return (0);
@@ -230,10 +232,10 @@ int	save_cy(t_scene *scene, char **split)
 	if (split_len(split) != 6)
 		return (0);
 	cylinder.center = ft_atovec_stat(split[1], &status);
-	if (!status)
+	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	cylinder.norm = ft_atovec_stat(split[2], &status);
-	if (!status || !check_norm_range(&cylinder.norm))
+	if (!status || !check_norm_range(&cylinder.norm) || comma_number(split[2]) != 2)
 		return (0);
 	cylinder.radius = ft_atof_stat(split[3], &status) / 2;
 	if (!status || cylinder.radius <= 0)
@@ -255,7 +257,7 @@ int	save_objs_color(t_object *obj, char *color)
 	status = 1;
 	surface.type = COLOR;
 	surface.color = ft_atovec_stat(color, &status);
-	if (!status || !check_color_range(&(surface.color)))
+	if (!status || !check_color_range(&(surface.color)) || comma_number(color) != 2)
 		return (0);
 	obj->surface = surface;
 	return (1);

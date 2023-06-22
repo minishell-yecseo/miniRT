@@ -33,9 +33,8 @@ int	is_white_line(char *line)
 	return (1);
 }
 
-char	*get_whitespaces(void)
+char	*get_whitespaces(char *charset)
 {
-	char	charset[7];
 	char	value;
 	int		idx;
 
@@ -61,4 +60,19 @@ void	free_split(char **split)
 		tmp = split[++idx];
 	}
 	free(split);
+}
+
+int	comma_number(char *str)
+{
+	int	comma_number;
+	int	len;
+
+	comma_number = 0;
+	len = ft_strlen(str);
+	while (len--)
+	{
+		if (*str++ == ',')
+			comma_number++;
+	}
+	return (comma_number);
 }

@@ -32,11 +32,13 @@ int	save_contents(int fd, t_vars *vars)
 	char	*line;
 	int		tmp;
 	int		flags[2];
+	char	whitespaces[7];
 
 	ft_memset(flags, 0, sizeof(int) * 2);
 	ft_memset(&(vars->scene), 0, sizeof(t_scene));
 	ft_memset(&(vars->scene.objs), -1, sizeof(t_object) * (OBJ_MAX));
 	ft_memset(&(vars->scene.lights), -1, sizeof(t_light) * (OBJ_MAX));
+	get_whitespaces(whitespaces);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
@@ -48,7 +50,7 @@ int	save_contents(int fd, t_vars *vars)
 		}
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
-		split = ft_split(line, get_whitespaces());
+		split = ft_split(line, whitespaces);
 		tmp = save_line(vars, split, flags);
 		free(line);
 		free_split(split);
@@ -105,7 +107,7 @@ int	save_ambient_light(t_vars *vars, char **split, int *flags)
 	if (!status || light.ratio < 0 || light.ratio > 1.0)
 		return (0);
 	light.color = ft_atovec_stat(split[2], &status);
-	if (!status || !check_color_range(&light.color))
+	if (!status || !check_color_range(&light.color) || comma_number(split[2]) != 2)
 		return (0);
 	(scene->lights)[scene->lights_number] = light;
 	scene->lights_number += 1;
@@ -125,7 +127,7 @@ int	save_lights(t_vars *vars, char **split)
 	if (split_len(split) != 3 && split_len(split) != 4)
 		return (0);
 	light.origin = ft_atovec_stat(split[1], &status);
-	if (!status)
+	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	light.ratio = ft_atof_stat(split[2], &status);
 	if (!status || light.ratio < 0 || light.ratio > 1.0)
@@ -134,7 +136,7 @@ int	save_lights(t_vars *vars, char **split)
 		light.color = vector(1, 1, 1);
 	else
 		light.color = ft_atovec_stat(split[3], &status);
-	if (!status || !check_color_range(&(light.color)))
+	if (!status || !check_color_range(&(light.color)) || comma_number(split[3]) != 2)
 		return (0);
 	scene->lights[scene->lights_number] = light;
 	scene->lights_number += 1;
@@ -153,10 +155,10 @@ int	save_camera(t_vars *vars, char **split, int *flags)
 		return (0);
 	flags[CAM] = 1;
 	camera.origin = ft_atovec_stat(split[1], &status);
-	if (!status)
+	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	camera.dir = ft_atovec_stat(split[2], &status);
-	if (!status || !check_norm_range(&camera.dir))
+	if (!status || !check_norm_range(&camera.dir) || comma_number(split[2]) != 2)
 		return (0);
 	camera.fov = (double) ft_atoi_stat(split[3], &status);
 	if (!status || camera.fov < 0 || camera.fov > 180)
@@ -217,8 +219,8 @@ int	save_sp(t_vars *vars, char **split)
 		return (0);
 	if (!save_objs_surface(vars, &sphere, split))
 		return (0);
-	sphere.center = ft_atovec_stat(split[split_idx++], &status);
-	if (!status)
+	sphere.center = ft_atovec_stat(split[split_idx], &status);
+	if (!status || comma_number(split[split_idx++]) != 2)
 		return (0);
 	sphere.radius = ft_atof_stat(split[split_idx], &status) / 2.0;
 	if (!status || sphere.radius <= 0)
@@ -241,11 +243,11 @@ int	save_pl(t_vars *vars, char **split)
 		return (0);
 	if (!save_objs_surface(vars, &plane, split))
 		return (0);
-	plane.center = ft_atovec_stat(split[split_idx++], &status);
-	if (!status)
+	plane.center = ft_atovec_stat(split[split_idx], &status);
+	if (!status || comma_number(split[split_idx++]) != 2)
 		return (0);
-	plane.norm = ft_atovec_stat(split[split_idx++], &status);
-	if (!status || !check_norm_range(&plane.norm))
+	plane.norm = ft_atovec_stat(split[split_idx], &status);
+	if (!status || !check_norm_range(&plane.norm) || comma_number(split[split_idx]) != 2)
 		return (0);
 	scene->objs[scene->objs_number] = plane;
 	return (1);
@@ -265,11 +267,11 @@ int	save_cy(t_vars *vars, char **split)
 		return (0);
 	if (!save_objs_surface(vars, &cylinder, split))
 		return (0);
-	cylinder.center = ft_atovec_stat(split[split_idx++], &status);
-	if (!status)
+	cylinder.center = ft_atovec_stat(split[split_idx], &status);
+	if (!status || comma_number(split[split_idx++]) != 2)
 		return (0);
-	cylinder.norm = ft_atovec_stat(split[split_idx++], &status);
-	if (!status || !check_norm_range(&cylinder.norm))
+	cylinder.norm = ft_atovec_stat(split[split_idx], &status);
+	if (!status || !check_norm_range(&cylinder.norm) || comma_number(split[split_idx++]) != 2)
 		return (0);
 	cylinder.radius = ft_atof_stat(split[split_idx++], &status) / 2;
 	if (!status || cylinder.radius <= 0)
@@ -295,11 +297,11 @@ int	save_co(t_vars *vars, char **split)
 		return (0);
 	if (!save_objs_surface(vars, &cone, split))
 		return (0);
-	cone.center = ft_atovec_stat(split[split_idx++], &status);
-	if (!status)
+	cone.center = ft_atovec_stat(split[split_idx], &status);
+	if (!status || comma_number(split[split_idx++]) != 2)
 		return (0);
-	cone.norm = ft_atovec_stat(split[split_idx++], &status);
-	if (!status || !check_norm_range(&cone.norm))
+	cone.norm = ft_atovec_stat(split[split_idx], &status);
+	if (!status || !check_norm_range(&cone.norm) || comma_number(split[split_idx++]) != 2)
 		return (0);
 	cone.radius = ft_atof_stat(split[split_idx++], &status) / 2;
 	if (!status || cone.radius <= 0)
@@ -325,11 +327,11 @@ int	save_ci(t_vars *vars, char **split)
 		return (0);
 	if (!save_objs_surface(vars, &circle, split))
 		return (0);
-	circle.center = ft_atovec_stat(split[split_idx++], &status);
-	if (!status)
+	circle.center = ft_atovec_stat(split[split_idx], &status);
+	if (!status || comma_number(split[split_idx++]) != 2)
 		return (0);
-	circle.norm = ft_atovec_stat(split[split_idx++], &status);
-	if (!status || !check_norm_range(&circle.norm))
+	circle.norm = ft_atovec_stat(split[split_idx], &status);
+	if (!status || !check_norm_range(&circle.norm) || comma_number(split[split_idx++]) != 2)
 		return (0);
 	circle.radius = ft_atof_stat(split[split_idx++], &status) / 2;
 	if (!status || circle.radius <= 0)
@@ -392,7 +394,7 @@ int	save_objs_color(t_object *obj, char **split)
 	status = 1;
 	surface.type = COLOR;
 	surface.color = ft_atovec_stat(split[2], &status);
-	if (!status || !check_color_range(&(surface.color)))
+	if (!status || !check_color_range(&(surface.color)) || comma_number(split[2]) != 2)
 		return (0);
 	obj->surface = surface;
 	return (1);
@@ -408,10 +410,10 @@ int	save_objs_checker(t_object *obj, char **split)
 	status = 1;
 	surface.type = CHECKER;
 	surface.color = ft_atovec_stat(split[2], &status);
-	if (!status || !check_color_range(&(surface.color)))
+	if (!status || !check_color_range(&(surface.color)) || comma_number(split[2]) != 2)
 		return (0);
 	surface.color2 = ft_atovec_stat(split[3], &status);
-	if (!status || !check_color_range(&(surface.color2)))
+	if (!status || !check_color_range(&(surface.color2)) || comma_number(split[3]) != 2)
 		return (0);
 	obj->surface = surface;
 	return (1);
@@ -426,13 +428,15 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 	int			bump_fd;
 
 	surface.type = TEXTURE;
-	if (!check_file_expand(split[2], ".xpm") || !check_file_expand(split[3], ".xpm"))
+	if (!check_file_expand(split[2], ".xpm"))
 		return (0);
 	texture_fd = open(split[2], O_RDONLY);
 	if (!ft_memcmp(split[3], "default", len_max(split[3], "default")))
 		bump_fd = 0;
-	else
+	else if (check_file_expand(split[3], ".xpm"))
 		bump_fd = open(split[3], O_RDONLY);
+	else
+		bump_fd = -1;
 	close(texture_fd);
 	close(bump_fd);
 	if (texture_fd < 0 || bump_fd < 0)

@@ -27,6 +27,7 @@ int			check_norm_range(t_vector *norm);
 void		error_print(char *msg);
 int			check_file_expand(char *path, char *expand);
 int			is_white_line(char *line);
-char		*get_whitespaces(void);
+char		*get_whitespaces(char *charset);
+int			comma_number(char *str);
 
 #endif
