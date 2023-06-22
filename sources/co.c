@@ -67,7 +67,7 @@ int	co_cap(t_object *co, t_ray r, t_hit_rec *rec)
 int	co_side2(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 {
 	t_vector	p;
-	double		test;
+	double		height;
 	t_vector	q;
 	t_vector	hp;
 	t_vector	qp;
@@ -75,16 +75,16 @@ int	co_side2(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 	if (f.root < rec->tmin || rec->tmax < f.root)
 		return (1);
 	p = ray_at(r, f.root);
-	test = vec_dot(vec_sub(p, co->center), co->norm);
-	if (test > co->height || test < EPSILON)
+	height = vec_dot(vec_sub(p, co->center), co->norm);
+	if (height > co->height || height < EPSILON)
 		return (1);
 	rec->t = f.root;
 	rec->point = ray_at(r, f.root);
 	rec->tmax = f.root;
-	q = vec_add(co->center, vec_mul(co->norm, test));
+	q = vec_add(co->center, vec_mul(co->norm, height));
 	hp = vec_sub(p, vec_add(co->center, vec_mul(co->norm, co->height)));
 	qp = vec_sub(p, q);
-	if (fabs(vec_len(hp)) < EPSILON || fabs(vec_len(qp)) < EPSILON)
+	if (vec_len(hp) < EPSILON || vec_len(qp) < EPSILON)
 		rec->normal = co->norm;
 	else
 		rec->normal = vec_unit(vec_cross(hp, vec_cross(hp, qp)));
