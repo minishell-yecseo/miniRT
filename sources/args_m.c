@@ -191,7 +191,7 @@ int	save_sp(t_scene *scene, char **split)
 	if (!status)
 		return (0);
 	sphere.radius = ft_atof_stat(split[2], &status) / 2.0;
-	if (!status || sphere.radius < 0)
+	if (!status || sphere.radius <= 0)
 		return (0);
 	if (!save_objs_color(&sphere, split[3]))
 		return (0);
@@ -236,10 +236,10 @@ int	save_cy(t_scene *scene, char **split)
 	if (!status || !check_norm_range(&cylinder.norm))
 		return (0);
 	cylinder.radius = ft_atof_stat(split[3], &status) / 2;
-	if (!status || cylinder.radius < 0)
+	if (!status || cylinder.radius <= 0)
 		return (0);
 	cylinder.height = ft_atof_stat(split[4], &status);
-	if (!status || cylinder.height < 0)
+	if (!status || cylinder.height <= 0)
 		return (0);
 	if (!save_objs_color(&cylinder, split[5]))
 		return (0);

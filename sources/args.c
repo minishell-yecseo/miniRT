@@ -221,7 +221,7 @@ int	save_sp(t_vars *vars, char **split)
 	if (!status)
 		return (0);
 	sphere.radius = ft_atof_stat(split[split_idx], &status) / 2.0;
-	if (!status || sphere.radius < 0)
+	if (!status || sphere.radius <= 0)
 		return (0);
 	scene->objs[scene->objs_number] = sphere;
 	return (1);
@@ -272,10 +272,10 @@ int	save_cy(t_vars *vars, char **split)
 	if (!status || !check_norm_range(&cylinder.norm))
 		return (0);
 	cylinder.radius = ft_atof_stat(split[split_idx++], &status) / 2;
-	if (!status || cylinder.radius < 0)
+	if (!status || cylinder.radius <= 0)
 		return (0);
 	cylinder.height = ft_atof_stat(split[split_idx++], &status);
-	if (!status || cylinder.height < 0)
+	if (!status || cylinder.height <= 0)
 		return (0);
 	scene->objs[scene->objs_number] = cylinder;
 	return (1);
@@ -302,10 +302,10 @@ int	save_co(t_vars *vars, char **split)
 	if (!status || !check_norm_range(&cone.norm))
 		return (0);
 	cone.radius = ft_atof_stat(split[split_idx++], &status) / 2;
-	if (!status || cone.radius < 0)
+	if (!status || cone.radius <= 0)
 		return (0);
 	cone.height = ft_atof_stat(split[split_idx++], &status);
-	if (!status || cone.height < 0)
+	if (!status || cone.height <= 0)
 		return (0);
 	scene->objs[scene->objs_number] = cone;
 	return (1);
@@ -332,10 +332,10 @@ int	save_ci(t_vars *vars, char **split)
 	if (!status || !check_norm_range(&circle.norm))
 		return (0);
 	circle.radius = ft_atof_stat(split[split_idx++], &status) / 2;
-	if (!status || circle.radius < 0)
+	if (!status || circle.radius <= 0)
 		return (0);
 	circle.height = ft_atof_stat(split[split_idx++], &status);
-	if (!status || circle.height < 0)
+	if (!status || circle.height <= 0)
 		return (0);
 	scene->objs[scene->objs_number] = circle;
 	return (1);
