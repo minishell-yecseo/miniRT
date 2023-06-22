@@ -13,8 +13,6 @@ void	get_plane_uv(t_hit_rec *rec, t_object *pl)
 		rec->u = 1 + rec->u;
 	if (rec->v < 0)
 		rec->v = 1 + rec->v;
-	//rec->u = rec->u / (double)pl->surface.texture.w;
-	//rec->v = rec->v / (double)pl->surface.texture.h;
 }
 
 int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)

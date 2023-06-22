@@ -10,16 +10,11 @@ int	main(int argc, char **argv)
 {
 	t_vars	vars;
 
-	//atexit(v);
-	// argument checking
 	vars.mlx = mlx_init();
 	if (!check_args(argc, argv, &(vars.scene)))
 		exit(0);
-	// mlx setting
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "miniRT");
 	vars.img.image = mlx_new_image(vars.mlx, WIDTH, HEIGHT);
-
-	// drawing
 	drawing(&(vars.img), &vars);
 	mlx_key_hook(vars.win, key_hook_esc, &vars);
 	mlx_hook(vars.win, 17, 0L, destroy_window, &vars);
