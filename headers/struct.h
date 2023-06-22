@@ -30,11 +30,9 @@ typedef struct s_color
 typedef struct s_img
 {
 	void	*image;
-	
 	int		*data;
 	int		h;
 	int		w;
-	
 	int		bits_per_pixel;
 	int		size_len;
 	int		endian;
@@ -81,13 +79,13 @@ typedef struct s_formula
 }	t_formula;
 
 //for ray, camera
-typedef struct	s_ray
+typedef struct s_ray
 {
 	t_vector	origin;
 	t_vector	dir;
 }	t_ray;
 
-typedef struct	s_camera
+typedef struct s_camera
 {
 	double		focal_len;
 	double		fov;
@@ -111,15 +109,15 @@ enum e_object_type
 typedef struct s_object
 {
 	enum e_object_type	type;
-	t_surface		surface;
-	t_vector		center;
-	t_vector		norm;
-	double			radius;
-	double			height;
+	t_surface			surface;
+	t_vector			center;
+	t_vector			norm;
+	double				radius;
+	double				height;
 }	t_object;
 
 //light
-enum light_type
+enum e_light_type
 {
 	E_AMBIENT,
 	E_LIGHT
@@ -127,34 +125,34 @@ enum light_type
 
 typedef struct s_light
 {
-	enum light_type	type;
-	t_vector		origin;
-	t_vector		color;
-	double			ratio;
+	enum e_light_type	type;
+	t_vector			origin;
+	t_vector			color;
+	double				ratio;
 }	t_light;
 
 //hit_rec
 
 typedef struct s_hit_rec
 {
-	t_vector	point;
-	t_vector	normal;
-	double		tmin;
-	double		tmax;
-	double		t;
-	int			front_face;
-	t_vector	color;
-	t_vector	albedo;
-	double		u;
-	double		v;
-	t_light		*lights;
+	t_vector			point;
+	t_vector			normal;
+	double				tmin;
+	double				tmax;
+	double				t;
+	int					front_face;
+	t_vector			color;
+	t_vector			albedo;
+	double				u;
+	double				v;
+	t_light				*lights;
 	enum e_object_type	type;
 }	t_hit_rec;
 
 typedef struct s_scene
 {
-	int		objs_number;
-	int		lights_number;
+	int			objs_number;
+	int			lights_number;
 	t_camera	camera;
 	t_object	objs[OBJ_MAX];
 	t_light		lights[OBJ_MAX];
