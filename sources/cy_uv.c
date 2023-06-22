@@ -21,7 +21,6 @@ void	get_cy_uv(t_hit_rec *rec, t_object *cy)
 	t_vector	u;
 	t_vector	v;
 	t_vector	p;
-	t_vector	p_unit;
 
 	p = vec_sub(rec->point, cy->center);
 	u = vec_unit(vec_cross(cy->norm, vec_up(cy->norm)));

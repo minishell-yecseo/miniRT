@@ -3,7 +3,6 @@
 int	shadow(t_object *objs, t_ray r, t_light light, t_vector point)
 {
 	t_hit_rec	rec;
-	t_ray		ray;
 
 	r.origin = vec_add(point, vec_mul(vec_sub(light.origin, point), 0.01));
 	r.dir = vec_unit(vec_sub(light.origin, point));
@@ -62,7 +61,7 @@ t_vector	lighting(t_object *objs, t_ray r, t_hit_rec *rec)
 	light_color = vector(0, 0, 0);
 	lights = rec->lights;
 	i = 0;
-	while (lights[i].type != -1)
+	while (lights[i].type < 0)
 	{
 		ratio = lights[i].ratio;
 		if (lights[i].type == E_AMBIENT)

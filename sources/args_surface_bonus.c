@@ -35,8 +35,6 @@ int	save_objs_color(t_object *obj, char **split)
 int	save_objs_checker(t_object *obj, char **split)
 {
 	t_surface	surface;
-	t_vector	color1;
-	t_vector	color2;
 	int			status;
 
 	status = 1;
@@ -73,6 +71,8 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 		bump.data = (int *)mlx_get_data_addr(bump.image, \
 					&bump.bits_per_pixel, &bump.size_len, &bump.endian);
 	}
+	else
+		ft_memset(&bump, sizeof(t_img), 1);
 	surface.texture = texture;
 	surface.bump = bump;
 	obj->surface = surface;

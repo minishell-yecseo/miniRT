@@ -13,14 +13,14 @@ void	color_image(t_img *img, t_vars *vars)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			color = get_color(vars, x, y);
+			color = get_color(x, y);
 			paint(img, x, y, color);
 		}
 	}
 	mlx_put_image_to_window(vars->mlx, vars->win, img->image, 0, 0);
 }
 
-int	get_color(t_vars *vars, double x, double y)
+int	get_color(double x, double y)
 {
 	int	ret;
 	int	r;
