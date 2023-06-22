@@ -10,7 +10,7 @@
 # include "utils.h"
 
 int	check_args(int argc, char **argv, t_scene *scene);
-int	save_contents(int fd, t_scene *scene);
+int	save_contents(int fd, t_scene *scene, int *err_line);
 int	save_line(t_scene *scene, char **split, int *flags);
 int	save_ambient_light(t_scene *scene, char **split, int *flags);
 int	save_lights(t_scene *scene, char **split, int *flags);

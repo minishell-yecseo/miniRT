@@ -10,13 +10,13 @@ SRC			= main_m.c paint.c key_hook.c vector_func.c ray.c raytracing.c \
 			  hit_obj.c light.c vector_func2.c vector_func3.c\
 			  get_next_line.c get_next_line_utils.c ft_split.c \
 			  args_m.c utils.c utils_2.c ft_atoi.c ft_atof.c ft_atovec.c \
-			  cy.c pl.c sp.c co.c utils_3.c
+			  cy.c pl.c sp.c co.c utils_3.c utils_4.c
 
 SRC_BONUS	= main.c paint.c key_hook.c vector_func.c ray.c raytracing.c \
 			  hit_obj.c light.c co.c vector_func2.c vector_func3.c\
 			  get_next_line.c get_next_line_utils.c ft_split.c \
 			  args.c utils.c utils_2.c ft_atoi.c ft_atof.c ft_atovec.c \
-			  cy.c pl.c sp.c utils_3.c
+			  cy.c pl.c sp.c utils_3.c utils_4.c
 
 SRCS		= $(addprefix $(SRC_DIR), $(SRC))
 SRCS_BONUS	= $(addprefix $(SRC_DIR), $(SRC_BONUS))

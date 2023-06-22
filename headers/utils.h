@@ -20,6 +20,7 @@ void		*ft_memset(void *b, int c, size_t len);
 int			split_len(char **split);
 size_t		ft_strlcpy(char *dest, const char *src, size_t dstsize);
 void		ft_strncpy(char *dest, char *src, int size);
+char		*ft_itoa(int n);
 
 int			check_color_range(t_vector *color);
 int			check_norm_range(t_vector *norm);
