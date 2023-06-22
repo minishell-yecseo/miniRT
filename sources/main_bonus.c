@@ -1,5 +1,5 @@
 #include "miniRT.h"
-#include "args_m.h"
+#include "args_bonus.h"
 
 void	v(void)
 {
@@ -11,7 +11,7 @@ int	main(int argc, char **argv)
 	t_vars	vars;
 
 	vars.mlx = mlx_init();
-	if (!check_args(argc, argv, &(vars.scene)))
+	if (!check_args(argc, argv, &vars))
 		exit(0);
 	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "miniRT");
 	vars.img.image = mlx_new_image(vars.mlx, WIDTH, HEIGHT);
