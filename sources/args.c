@@ -58,7 +58,7 @@ int	save_contents(int fd, t_vars *vars)
 			return (0);
 		line = get_next_line(fd);
 	}
-	if (flags[0] == 0 || flags[1] == 0)
+	if (flags[0] != 1 || flags[1] != 1)
 		return (0);
 	return (1);
 }
