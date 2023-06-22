@@ -69,7 +69,7 @@ int	save_contents(int fd, t_vars *vars, int *err_line)
 		s.line = get_next_line(fd);
 		*err_line += 1;
 	}
-	return (check_contents_flags(s.flags, 2, err_line));
+	return (check_contents_flags(s.flags, 2));
 }
 
 void	init_contents_flags(int *flags, t_vars *vars, char *whitespaces)

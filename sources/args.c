@@ -78,7 +78,7 @@ int	save_contents(int fd, t_scene *scene, int *err_line)
 		s.line = get_next_line(fd);
 		*err_line += 1;
 	}
-	return ((check_contents_flags(s.flags, 3, err_line)));
+	return ((check_contents_flags(s.flags, 3)));
 }
 
 int	save_line(t_scene *scene, char **split, int *flags)
