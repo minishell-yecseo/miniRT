@@ -43,7 +43,11 @@ static int	is_double(char *str)
 	while (idx < str_len)
 	{
 		if (str[idx] == '.' && dot_flag == 0)
+		{
+			if (idx == 0)
+				return (0);
 			dot_flag++;
+		}
 		else if (str[idx] == '.' && dot_flag > 0)
 			return (0);
 		if (str[idx] != '.' && (str[idx] < '0' || str[idx] > '9'))
