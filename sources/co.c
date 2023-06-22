@@ -3,8 +3,6 @@
 int	co_side(t_object *co, t_ray r, t_hit_rec *rec);
 int	co_cap(t_object *co, t_ray r, t_hit_rec *rec);
 
-
-
 void	get_cy_head_uv(t_hit_rec *rec, t_object *cy, int head)
 {
 	t_vector	u;
@@ -12,8 +10,8 @@ void	get_cy_head_uv(t_hit_rec *rec, t_object *cy, int head)
 	t_vector	p;
 
 	p = vec_sub(rec->point, cy->center);
-	u = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
-	v = vec_unit(vec_cross(u, rec->normal));
+	u = vec_unit(vec_cross(cy->norm, vec_up(cy->norm)));
+	v = vec_unit(vec_cross(u, cy->norm));	
 	rec->u = (atan2(-vec_dot(p, u), vec_dot(p, v)) + M_PI) / (2 * M_PI);
 	if (head == 1)
 		rec->v = 1;
@@ -26,26 +24,13 @@ void	get_cy_uv(t_hit_rec *rec, t_object *cy)
 	t_vector	u;
 	t_vector	v;
 	t_vector	p;
+	t_vector	p_unit;
 
 	p = vec_sub(rec->point, cy->center);
-	u = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
-	
-	//printf("%f %f %f\n", u.x, u.y, u.z);
-
-	v = vec_unit(vec_cross(u, rec->normal));
-	rec->u = (atan2(-vec_dot(p, u), vec_dot(p, v)) + M_PI) / (2 * M_PI);
+	u = vec_unit(vec_cross(cy->norm, vec_up(cy->norm)));
+	v = vec_unit(vec_cross(u, cy->norm));
+	rec->u = (atan2(-1 * vec_dot(p, u), vec_dot(p, v)) + M_PI) * 0.5 * M_1_PI;
 	rec->v = vec_dot(p, cy->norm) / cy->height;
-	////printf("%f\n", rec->u);
-	//double	u;
-	//double	v;
-	//double	theta;
-	//double	phi;
-	//double	size;
-
-	//size = 4;
-	//theta = atan2((rec->point.x - cy->center.x), (rec->point.y - cy->center.y));
-	//u = 1 - (theta / (2 * M_PI) + 0.5);
-	//v = fmod(rec->point.z - cy->center.z, 1);
 }
 
 int	is_in_cam(t_object *co, t_ray r)
