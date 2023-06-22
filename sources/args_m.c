@@ -3,40 +3,17 @@
 int	check_args(int argc, char **argv, t_scene *scene)
 {
 	int		fd;
-	int		line;
-	char	*err_line;
 
-	fd = 0;
 	if (argc != 2)
 	{
-		error_print("miniRT: please input one scene file path\n");
+		error_print("Error\nPlease input one scene file path\n");
 		return (0);
 	}
-	fd = open(argv[1], O_RDONLY);
+	fd = rt_file_check(argv[1]);
 	if (fd < 0)
-	{
-		error_print("miniRT: open file error\n");
 		return (0);
-	}
-	if (!check_file_expand(argv[1], ".rt"))
+	if (!save(fd, scene))
 	{
-		error_print("miniRT: input expand must be '.rt'\n");
-		close(fd);
-		return (0);
-	}
-	line = 0;
-	if (!save_contents(fd, scene, &line))
-	{
-		if (line < 0)
-			error_print("miniRT: Camera, Ambient light, Light number must be one.\n");
-		else
-		{
-			err_line = ft_itoa(line + 1);
-			error_print("miniRT: file format error at line ");
-			error_print(err_line);
-			error_print("\n");
-			free(err_line);
-		}
 		close(fd);
 		return (0);
 	}
@@ -44,46 +21,64 @@ int	check_args(int argc, char **argv, t_scene *scene)
 	return (1);
 }
 
-int	save_contents(int fd, t_scene *scene, int *err_line)
+int	save(int fd, t_scene *scene)
 {
-	char	**split;
-	char	*line;
-	int		tmp;
-	int		flags[3];
-	char	whitespaces[7];
+	int		error_line;
+	char	*a_error_line;
 
+	error_line = 0;
+	if (!save_contents(fd, scene, &error_line))
+	{
+		if (error_line < 0)
+			error_print("Error\nCamera, Ambient light number must be one.\n");
+		else
+		{
+			a_error_line = ft_itoa(error_line + 1);
+			error_print("Error\nFile format error at line ");
+			error_print(a_error_line);
+			error_print("\n");
+			free(a_error_line);
+		}
+		return (0);
+	}
+	return (1);
+}
+
+void	init_contents_flags(int *flags, t_scene *scene, char *whitespaces)
+{
 	ft_memset(flags, 0, sizeof(int) * 3);
 	ft_memset(scene, 0, sizeof(t_scene));
 	ft_memset(&(scene->objs), -1, sizeof(t_object) * (OBJ_MAX));
 	ft_memset(&(scene->lights), -1, sizeof(t_light) * (OBJ_MAX));
 	get_whitespaces(whitespaces);
-	line = get_next_line(fd);
-	while (line != NULL)
+}
+
+int	save_contents(int fd, t_scene *scene, int *err_line)
+{
+	t_save	s;
+
+	init_contents_flags(s.flags, scene, s.whitespaces);
+	s.line = get_next_line(fd);
+	while (s.line != NULL)
 	{
-		if (is_white_line(line))
+		if (is_white_line(s.line))
 		{
-			free(line);
-			line = get_next_line(fd);
+			free(s.line);
+			s.line = get_next_line(fd);
 			*err_line += 1;
 			continue ;
 		}
-		if (line[ft_strlen(line) - 1] == '\n')
-			line[ft_strlen(line) - 1] = '\0';
-		split = ft_split(line, whitespaces);
-		tmp = save_line(scene, split, flags);
-		free(line);
-		free_split(split);
-		if (!tmp)
+		rstrip(s.line);
+		s.split = ft_split(s.line, s.whitespaces);
+		s.tmp = save_line(scene, s.split, s.flags);
+		free(s.line);
+		free_split(s.split);
+		if (!s.tmp)
 			return (0);
-		line = get_next_line(fd);
+		s.line = get_next_line(fd);
 		*err_line += 1;
 	}
-	if (flags[0] != 1 || flags[1] != 1 || flags[2] != 1)
-	{
-		*err_line = -1;
-		return (0);
-	}
-	return (1);
+	return ((check_contents_flags(s.flags, 3, err_line)));
 }
 
 int	save_line(t_scene *scene, char **split, int *flags)
@@ -122,7 +117,8 @@ int	save_ambient_light(t_scene *scene, char **split, int *flags)
 	if (!status || light.ratio < 0 || light.ratio > 1.0)
 		return (0);
 	light.color = ft_atovec_stat(split[2], &status);
-	if (!status || !check_color_range(&light.color) || comma_number(split[2]) != 2)
+	if (!status || !check_color_range(&light.color) \
+		|| comma_number(split[2]) != 2)
 		return (0);
 	(scene->lights)[scene->lights_number] = light;
 	scene->lights_number += 1;
@@ -164,7 +160,8 @@ int	save_camera(t_scene *scene, char **split, int *flags)
 	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	camera.dir = ft_atovec_stat(split[2], &status);
-	if (!status || !check_norm_range(&camera.dir) || comma_number(split[2]) != 2)
+	if (!status || !check_norm_range(&camera.dir) \
+		|| comma_number(split[2]) != 2)
 		return (0);
 	camera.fov = (double) ft_atoi_stat(split[3], &status);
 	if (!status || camera.fov < 0 || camera.fov > 180)
@@ -237,7 +234,8 @@ int	save_pl(t_scene *scene, char **split)
 	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	plane.norm = ft_atovec_stat(split[2], &status);
-	if (!status || !check_norm_range(&plane.norm) || comma_number(split[2]) != 2)
+	if (!status || !check_norm_range(&plane.norm) \
+		|| comma_number(split[2]) != 2)
 		return (0);
 	if (!save_objs_color(&plane, split[3]))
 		return (0);
@@ -258,7 +256,8 @@ int	save_cy(t_scene *scene, char **split)
 	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	cylinder.norm = ft_atovec_stat(split[2], &status);
-	if (!status || !check_norm_range(&cylinder.norm) || comma_number(split[2]) != 2)
+	if (!status || !check_norm_range(&cylinder.norm) \
+		|| comma_number(split[2]) != 2)
 		return (0);
 	cylinder.radius = ft_atof_stat(split[3], &status) / 2;
 	if (!status || cylinder.radius <= 0)
@@ -280,7 +279,8 @@ int	save_objs_color(t_object *obj, char *color)
 	status = 1;
 	surface.type = COLOR;
 	surface.color = ft_atovec_stat(color, &status);
-	if (!status || !check_color_range(&(surface.color)) || comma_number(color) != 2)
+	if (!status || !check_color_range(&(surface.color)) \
+		|| comma_number(color) != 2)
 		return (0);
 	obj->surface = surface;
 	return (1);

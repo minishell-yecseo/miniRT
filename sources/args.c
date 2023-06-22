@@ -3,40 +3,17 @@
 int	check_args(int argc, char **argv, t_vars *vars)
 {
 	int		fd;
-	int		line;
-	char	*err_line;
 
-	fd = 0;
 	if (argc != 2)
 	{
-		error_print("miniRT: please input one scene file path\n");
+		error_print("Error\nPlease input one scene file path\n");
 		return (0);
 	}
-	fd = open(argv[1], O_RDONLY);
+	fd = rt_file_check(argv[1]);
 	if (fd < 0)
-	{
-		error_print("miniRT: open file error\n");
 		return (0);
-	}
-	if (!check_file_expand(argv[1], ".rt"))
+	if (!save(fd, vars))
 	{
-		error_print("miniRT: input expand must be '.rt'\n");
-		close(fd);
-		return (0);
-	}
-	line = 0;
-	if (!save_contents(fd, vars, &line))
-	{
-		if (line < 0)
-			error_print("miniRT: Camera, Ambient light number must be one.\n");
-		else
-		{
-			err_line = ft_itoa(line + 1);
-			error_print("miniRT: file format error at line ");
-			error_print(err_line);
-			error_print("\n");
-			free(err_line);
-		}
 		close(fd);
 		return (0);
 	}
@@ -44,46 +21,64 @@ int	check_args(int argc, char **argv, t_vars *vars)
 	return (1);
 }
 
+int	save(int fd, t_vars *vars)
+{
+	int		error_line;
+	char	*a_error_line;
+
+	error_line = 0;
+	if (!save_contents(fd, vars, &error_line))
+	{
+		if (error_line < 0)
+			error_print("Error\nCamera, Ambient light number must be one.\n");
+		else
+		{
+			a_error_line = ft_itoa(error_line + 1);
+			error_print("Error\nFile format error at line ");
+			error_print(a_error_line);
+			error_print("\n");
+			free(a_error_line);
+		}
+		return (0);
+	}
+	return (1);
+}
+
 int	save_contents(int fd, t_vars *vars, int *err_line)
 {
-	char	**split;
-	char	*line;
-	int		tmp;
-	int		flags[2];
-	char	whitespaces[7];
+	t_save	s;
 
+	init_contents_flags(s.flags, vars, s.whitespaces);
+	s.line = get_next_line(fd);
+	while (s.line != NULL)
+	{
+		if (is_white_line(s.line))
+		{
+			free(s.line);
+			s.line = get_next_line(fd);
+			*err_line += 1;
+			continue ;
+		}
+		rstrip(s.line);
+		s.split = ft_split(s.line, s.whitespaces);
+		s.tmp = save_line(vars, s.split, s.flags);
+		free(s.line);
+		free_split(s.split);
+		if (!s.tmp)
+			return (0);
+		s.line = get_next_line(fd);
+		*err_line += 1;
+	}
+	return (check_contents_flags(s.flags, 2, err_line));
+}
+
+void	init_contents_flags(int *flags, t_vars *vars, char *whitespaces)
+{
 	ft_memset(flags, 0, sizeof(int) * 2);
 	ft_memset(&(vars->scene), 0, sizeof(t_scene));
 	ft_memset(&(vars->scene.objs), -1, sizeof(t_object) * (OBJ_MAX));
 	ft_memset(&(vars->scene.lights), -1, sizeof(t_light) * (OBJ_MAX));
 	get_whitespaces(whitespaces);
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		if (is_white_line(line))
-		{
-			free(line);
-			line = get_next_line(fd);
-			*err_line += 1;
-			continue ;
-		}
-		if (line[ft_strlen(line) - 1] == '\n')
-			line[ft_strlen(line) - 1] = '\0';
-		split = ft_split(line, whitespaces);
-		tmp = save_line(vars, split, flags);
-		free(line);
-		free_split(split);
-		if (!tmp)
-			return (0);
-		line = get_next_line(fd);
-		*err_line += 1;
-	}
-	if (flags[0] != 1 || flags[1] != 1)
-	{
-		*err_line = -1;
-		return (0);
-	}
-	return (1);
 }
 
 int	save_line(t_vars *vars, char **split, int *flags)
@@ -130,7 +125,8 @@ int	save_ambient_light(t_vars *vars, char **split, int *flags)
 	if (!status || light.ratio < 0 || light.ratio > 1.0)
 		return (0);
 	light.color = ft_atovec_stat(split[2], &status);
-	if (!status || !check_color_range(&light.color) || comma_number(split[2]) != 2)
+	if (!status || !check_color_range(&light.color) \
+		|| comma_number(split[2]) != 2)
 		return (0);
 	(scene->lights)[scene->lights_number] = light;
 	scene->lights_number += 1;
@@ -142,7 +138,6 @@ int	save_lights(t_vars *vars, char **split)
 	t_scene		*scene;
 	int			status;
 	t_light		light;
-	t_vector	tmp;
 
 	light.type = E_LIGHT;
 	scene = &(vars->scene);
@@ -159,7 +154,8 @@ int	save_lights(t_vars *vars, char **split)
 		light.color = vector(1, 1, 1);
 	else
 		light.color = ft_atovec_stat(split[3], &status);
-	if (!status || !check_color_range(&(light.color)) || comma_number(split[3]) != 2)
+	if (!status || !check_color_range(&(light.color)) \
+		|| comma_number(split[3]) != 2)
 		return (0);
 	scene->lights[scene->lights_number] = light;
 	scene->lights_number += 1;
@@ -181,7 +177,8 @@ int	save_camera(t_vars *vars, char **split, int *flags)
 	if (!status || comma_number(split[1]) != 2)
 		return (0);
 	camera.dir = ft_atovec_stat(split[2], &status);
-	if (!status || !check_norm_range(&camera.dir) || comma_number(split[2]) != 2)
+	if (!status || !check_norm_range(&camera.dir) \
+		|| comma_number(split[2]) != 2)
 		return (0);
 	camera.fov = (double) ft_atoi_stat(split[3], &status);
 	if (!status || camera.fov < 0 || camera.fov > 180)
@@ -270,7 +267,8 @@ int	save_pl(t_vars *vars, char **split)
 	if (!status || comma_number(split[split_idx++]) != 2)
 		return (0);
 	plane.norm = ft_atovec_stat(split[split_idx], &status);
-	if (!status || !check_norm_range(&plane.norm) || comma_number(split[split_idx]) != 2)
+	if (!status || !check_norm_range(&plane.norm) \
+		|| comma_number(split[split_idx]) != 2)
 		return (0);
 	scene->objs[scene->objs_number] = plane;
 	return (1);
@@ -278,23 +276,21 @@ int	save_pl(t_vars *vars, char **split)
 
 int	save_cy(t_vars *vars, char **split)
 {
-	t_scene		*scene;
 	t_object	cylinder;
 	int			status;
 	int			split_idx;
 
-	scene = &(vars->scene);
 	status = 1;
 	cylinder.type = cy;
-	if (!get_split_idx(cylinder.type, split, &split_idx))
-		return (0);
-	if (!save_objs_surface(vars, &cylinder, split))
+	if (!get_split_idx(cylinder.type, split, &split_idx) || \
+		!save_objs_surface(vars, &cylinder, split))
 		return (0);
 	cylinder.center = ft_atovec_stat(split[split_idx], &status);
 	if (!status || comma_number(split[split_idx++]) != 2)
 		return (0);
 	cylinder.norm = ft_atovec_stat(split[split_idx], &status);
-	if (!status || !check_norm_range(&cylinder.norm) || comma_number(split[split_idx++]) != 2)
+	if (!status || !check_norm_range(&cylinder.norm) \
+		|| comma_number(split[split_idx++]) != 2)
 		return (0);
 	cylinder.radius = ft_atof_stat(split[split_idx++], &status) / 2;
 	if (!status || cylinder.radius <= 0)
@@ -302,18 +298,16 @@ int	save_cy(t_vars *vars, char **split)
 	cylinder.height = ft_atof_stat(split[split_idx++], &status);
 	if (!status || cylinder.height <= 0)
 		return (0);
-	scene->objs[scene->objs_number] = cylinder;
+	(vars->scene).objs[(vars->scene).objs_number] = cylinder;
 	return (1);
 }
 
 int	save_co(t_vars *vars, char **split)
 {
-	t_scene		*scene;
 	t_object	cone;
 	int			status;
 	int			split_idx;
 
-	scene = &(vars->scene);
 	status = 1;
 	cone.type = co;
 	if (!get_split_idx(cone.type, split, &split_idx))
@@ -324,7 +318,8 @@ int	save_co(t_vars *vars, char **split)
 	if (!status || comma_number(split[split_idx++]) != 2)
 		return (0);
 	cone.norm = ft_atovec_stat(split[split_idx], &status);
-	if (!status || !check_norm_range(&cone.norm) || comma_number(split[split_idx++]) != 2)
+	if (!status || !check_norm_range(&cone.norm) \
+		|| comma_number(split[split_idx++]) != 2)
 		return (0);
 	cone.radius = ft_atof_stat(split[split_idx++], &status) / 2;
 	if (!status || cone.radius <= 0)
@@ -332,18 +327,16 @@ int	save_co(t_vars *vars, char **split)
 	cone.height = ft_atof_stat(split[split_idx++], &status);
 	if (!status || cone.height <= 0)
 		return (0);
-	scene->objs[scene->objs_number] = cone;
+	(vars->scene).objs[(vars->scene).objs_number] = cone;
 	return (1);
 }
 
 int	save_ci(t_vars *vars, char **split)
 {
-	t_scene		*scene;
 	t_object	circle;
 	int			status;
 	int			split_idx;
 
-	scene = &(vars->scene);
 	status = 1;
 	circle.type = ci;
 	if (!get_split_idx(circle.type, split, &split_idx))
@@ -354,7 +347,8 @@ int	save_ci(t_vars *vars, char **split)
 	if (!status || comma_number(split[split_idx++]) != 2)
 		return (0);
 	circle.norm = ft_atovec_stat(split[split_idx], &status);
-	if (!status || !check_norm_range(&circle.norm) || comma_number(split[split_idx++]) != 2)
+	if (!status || !check_norm_range(&circle.norm) \
+		|| comma_number(split[split_idx++]) != 2)
 		return (0);
 	circle.radius = ft_atof_stat(split[split_idx++], &status) / 2;
 	if (!status || circle.radius <= 0)
@@ -362,7 +356,7 @@ int	save_ci(t_vars *vars, char **split)
 	circle.height = ft_atof_stat(split[split_idx++], &status);
 	if (!status || circle.height <= 0)
 		return (0);
-	scene->objs[scene->objs_number] = circle;
+	(vars->scene).objs[(vars->scene).objs_number] = circle;
 	return (1);
 }
 
@@ -417,7 +411,8 @@ int	save_objs_color(t_object *obj, char **split)
 	status = 1;
 	surface.type = COLOR;
 	surface.color = ft_atovec_stat(split[2], &status);
-	if (!status || !check_color_range(&(surface.color)) || comma_number(split[2]) != 2)
+	if (!status || !check_color_range(&(surface.color)) \
+		|| comma_number(split[2]) != 2)
 		return (0);
 	obj->surface = surface;
 	return (1);
@@ -433,10 +428,12 @@ int	save_objs_checker(t_object *obj, char **split)
 	status = 1;
 	surface.type = CHECKER;
 	surface.color = ft_atovec_stat(split[2], &status);
-	if (!status || !check_color_range(&(surface.color)) || comma_number(split[2]) != 2)
+	if (!status || !check_color_range(&(surface.color)) \
+		|| comma_number(split[2]) != 2)
 		return (0);
 	surface.color2 = ft_atovec_stat(split[3], &status);
-	if (!status || !check_color_range(&(surface.color2)) || comma_number(split[3]) != 2)
+	if (!status || !check_color_range(&(surface.color2)) \
+		|| comma_number(split[3]) != 2)
 		return (0);
 	obj->surface = surface;
 	return (1);
@@ -447,34 +444,45 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 	t_surface	surface;
 	t_img		texture;
 	t_img		bump;
-	int			texture_fd;
-	int			bump_fd;
 
 	surface.type = TEXTURE;
-	if (!check_file_expand(split[2], ".xpm"))
+	if (!check_texture_files(&surface, split[2], split[3]))
 		return (0);
-	texture_fd = open(split[2], O_RDONLY);
-	if (!ft_memcmp(split[3], "default", len_max(split[3], "default")))
+	texture.image = mlx_xpm_file_to_image(\
+					vars->mlx, split[2], &texture.w, &texture.h);
+	texture.data = (int *)mlx_get_data_addr(texture.image, \
+				&texture.bits_per_pixel, &texture.size_len, &texture.endian);
+	if (surface.is_bump != 0)
+	{
+		bump.image = mlx_xpm_file_to_image(\
+							vars->mlx, split[3], &bump.w, &bump.h);
+		bump.data = (int *)mlx_get_data_addr(bump.image, \
+					&bump.bits_per_pixel, &bump.size_len, &bump.endian);
+	}
+	surface.texture = texture;
+	surface.bump = bump;
+	obj->surface = surface;
+	return (1);
+}
+
+int	check_texture_files(t_surface *surface, char *texture, char *bump)
+{
+	int	texture_fd;
+	int	bump_fd;
+
+	if (!check_file_expand(texture, ".xpm"))
+		return (0);
+	texture_fd = open(texture, O_RDONLY);
+	if (!ft_memcmp(bump, "default", len_max(bump, "default")))
 		bump_fd = 0;
-	else if (check_file_expand(split[3], ".xpm"))
-		bump_fd = open(split[3], O_RDONLY);
+	else if (check_file_expand(bump, ".xpm"))
+		bump_fd = open(bump, O_RDONLY);
 	else
 		bump_fd = -1;
 	close(texture_fd);
 	close(bump_fd);
 	if (texture_fd < 0 || bump_fd < 0)
 		return (0);
-	texture.image = mlx_xpm_file_to_image(vars->mlx, split[2], &texture.w, &texture.h);
-	texture.data = (int *)mlx_get_data_addr(texture.image, &texture.bits_per_pixel, &texture.size_len, &texture.endian);
-	if (bump_fd > 0)
-	{
-		bump.image = mlx_xpm_file_to_image(vars->mlx, split[3], &bump.w, &bump.h);
-		bump.data = (int *)mlx_get_data_addr(bump.image, &bump.bits_per_pixel, &bump.size_len, &bump.endian);
-	}
-	else if (bump_fd == 0)
-		surface.is_bump = 0;
-	surface.texture = texture;
-	surface.bump = bump;
-	obj->surface = surface;
+	surface->is_bump = 0;
 	return (1);
 }
