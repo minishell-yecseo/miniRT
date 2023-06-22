@@ -32,11 +32,13 @@ int	save_contents(int fd, t_vars *vars)
 	char	*line;
 	int		tmp;
 	int		flags[2];
+	char	whitespaces[7];
 
 	ft_memset(flags, 0, sizeof(int) * 2);
 	ft_memset(&(vars->scene), 0, sizeof(t_scene));
 	ft_memset(&(vars->scene.objs), -1, sizeof(t_object) * (OBJ_MAX));
 	ft_memset(&(vars->scene.lights), -1, sizeof(t_light) * (OBJ_MAX));
+	get_whitespaces(whitespaces);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
@@ -48,7 +50,7 @@ int	save_contents(int fd, t_vars *vars)
 		}
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
-		split = ft_split(line, get_whitespaces());
+		split = ft_split(line, whitespaces);
 		tmp = save_line(vars, split, flags);
 		free(line);
 		free_split(split);

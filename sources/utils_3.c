@@ -33,9 +33,8 @@ int	is_white_line(char *line)
 	return (1);
 }
 
-char	*get_whitespaces(void)
+char	*get_whitespaces(char *charset)
 {
-	char	charset[7];
 	char	value;
 	int		idx;
 
