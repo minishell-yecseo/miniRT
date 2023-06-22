@@ -6,6 +6,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include "mlx.h"
+# include "args.h"
 # include "struct.h"
 # include "vector.h"
 # include "ray.h"

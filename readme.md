@@ -47,4 +47,3 @@ BONUS .rt FORMAT GUIDE
     1) sp       texture      images/test.xpm      images/test2.xpm     0,0,0      5
     3) pl       color        255,25,255           0,0,0                0,1.0,0
     4) co       checker      0,0,0                255,255,255          0,0,0      -0,2,1,0       10     20
-
