@@ -9,8 +9,8 @@
 # include "ray.h"
 # include "utils.h"
 
-int	check_args(int argc, char **argv, t_scene *scene);
-int	save(int fd, t_scene *scene);
+int		check_args(int argc, char **argv, t_scene *scene);
+int		save(int fd, t_scene *scene);
 void	init_contents_flags(int *flags, t_scene *scene, char *whitespaces);
 int	save_contents(int fd, t_scene *scene, int *err_line);
 int	save_line(t_scene *scene, char **split, int *flags);
