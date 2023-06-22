@@ -99,6 +99,7 @@ typedef struct s_camera
 //for multiple objeects
 enum e_object_type
 {
+	no,
 	sp,
 	pl,
 	cy,
@@ -119,6 +120,7 @@ typedef struct s_object
 //light
 enum e_light_type
 {
+	NO_LIGHT,
 	E_AMBIENT,
 	E_LIGHT
 };

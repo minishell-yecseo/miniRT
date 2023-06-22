@@ -61,7 +61,7 @@ t_vector	lighting(t_object *objs, t_ray r, t_hit_rec *rec)
 	light_color = vector(0, 0, 0);
 	lights = rec->lights;
 	i = 0;
-	while (lights[i].type < 0)
+	while (lights[i].type != NO_LIGHT)
 	{
 		ratio = lights[i].ratio;
 		if (lights[i].type == E_AMBIENT)

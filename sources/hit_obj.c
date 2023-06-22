@@ -36,7 +36,7 @@ int	is_hit(t_object *objs, t_ray r, t_hit_rec *rec)
 
 	i = 0;
 	is_hit = 0;
-	while (objs[i].type < 0)
+	while (objs[i].type != no)
 	{
 		if (hit_obj(&objs[i], r, rec))
 		{
