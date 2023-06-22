@@ -7,7 +7,7 @@
 # define LIGHT 2
 # define UINT_MAX 2147483647
 # define REC_TMAX 1.7976931348623158e+308
-# define EPSILON 1.1920929E-07
+# define EPSILON 4.94065645841247E-324
 # define MAX 1.7976931348623158e+308
 
 typedef struct s_save

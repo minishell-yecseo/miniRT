@@ -1,7 +1,6 @@
 C 0,0,0 0,0,-1 90
 A 0.2 255,255,255
-L -1,2,0 0.7 255,255,255
+L 0,0,0 1 255,255,255
 
-sp texture ./images/basketball.xpm  images/basketball_bump.xpm   -5,5,0   4
 
-co color 0,255,0 0,0,-10 0,-1,-1 3 4
+sp texture ./images/rock.xpm  ./images/rock_normal.xpm  0,0,-1.5 1
