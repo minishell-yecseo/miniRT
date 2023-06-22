@@ -10,6 +10,15 @@
 # define EPSILON 1.1920929E-07
 # define MAX 1.7976931348623158e+308
 
+typedef struct s_save
+{
+	char	**split;
+	char	*line;
+	int		tmp;
+	int		flags[3];
+	char	whitespaces[7];
+}	t_save;
+
 //for mlx window drawing
 typedef struct s_color
 {
