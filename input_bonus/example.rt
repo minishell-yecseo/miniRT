@@ -1,0 +1,23 @@
+A 0.2 255,255,255
+C 0,4,16 0,0.25,1 90
+L 0,3,6 0.8 255,255,255
+
+sp texture ./input_bonus/milkyway.xpm	default	0,0,0 	50 
+sp texture ./input_bonus/sun.xpm       default	0,0,0 	5 
+ci color 127,127,127 0,0,0 0,-1,0 16 0.05  
+sp texture ./input_bonus/mercury.xpm  default  -8,0,0 	2
+ci color 127,127,127 0,0,0 0,-1,0 18 0.05
+sp texture ./input_bonus/venus.xpm default	  9,0,0 	2 
+ci color 127,127,127  0,0,0 	0,-1,0 	20 	0.05 
+sp texture ./input_bonus/earthmap.xpm 		default  -10,0,0 	2 	
+ci color 127,127,127   0,0,0 0,-1,0 22 0.05 
+sp texture ./input_bonus/mars.xpm default    11,0,0 		2 
+ci color 127,127,127   0,0,0 	0,-1,0 	24 	0.05 
+sp texture 	./input_bonus/jupiter.xpm		default	   -12,0,0 	2 
+ci color 127,127,127 0,0,0	 0,-1,0 	26	 0.05 
+sp texture ./input_bonus/saturn.xpm		default  13,0,0 2 	
+ci color 127,127,127   0,0,0 	0,-1,0 	28 0.05 
+sp texture ./input_bonus/uranus.xpm		default	   -14,0,0 	2 
+ci color 	127,127,127   0,0,0 0,-1,0 	30	 0.05 
+sp texture ./input_bonus/neptune.xpm		default	   15,0,0 	2
+

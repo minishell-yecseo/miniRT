@@ -2,7 +2,7 @@ NAME		= miniRT
 BONUS		= miniRT_bonus
 
 CC			= cc
-CFLAGS		= #-Wall -Wextra -Werror
+CFLAGS		= -g #-Wall -Wextra -Werror
 
 SRC_DIR		= sources/
 
