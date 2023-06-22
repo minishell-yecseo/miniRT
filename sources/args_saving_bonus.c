@@ -5,7 +5,6 @@ int	save_ambient_light(t_vars *vars, char **split, int *flags)
 	t_scene		*scene;
 	t_light		light;
 	int			status;
-	t_vector	color;
 
 	scene = &(vars->scene);
 	status = 1;

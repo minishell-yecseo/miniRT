@@ -4,7 +4,6 @@ int	save_ambient_light(t_scene *scene, char **split, int *flags)
 {
 	t_light		light;
 	int			status;
-	t_vector	color;
 
 	status = 1;
 	flags[AMBIENT] += 1;

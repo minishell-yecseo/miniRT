@@ -5,7 +5,6 @@ int	check_file_expand(char *path, char *expand)
 {
 	int	path_len;
 	int	expand_len;
-	int	dot_idx;
 
 	path_len = ft_strlen(path);
 	expand_len = ft_strlen(expand);

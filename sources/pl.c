@@ -6,7 +6,7 @@ void	get_plane_uv(t_hit_rec *rec, t_object *pl)
 	t_vector	v;
 
 	u = vec_unit(vec_cross(rec->normal, vec_up(rec->normal)));
-	v = vec_unit(vec_cross(u, rec->normal));
+	v = vec_unit(vec_cross(u, pl->norm));
 	rec->u = fmod(vec_dot(rec->point, u), 1);
 	rec->v = fmod(vec_dot(rec->point, v), 1);
 	if (rec->u < 0)
