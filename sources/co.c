@@ -3,36 +3,6 @@
 int	co_side(t_object *co, t_ray r, t_hit_rec *rec);
 int	co_cap(t_object *co, t_ray r, t_hit_rec *rec);
 
-void	get_cy_head_uv(t_hit_rec *rec, t_object *cy, int head)
-{
-	t_vector	u;
-	t_vector	v;
-	t_vector	p;
-
-	p = vec_sub(rec->point, cy->center);
-	u = vec_unit(vec_cross(cy->norm, vec_up(cy->norm)));
-	v = vec_unit(vec_cross(u, cy->norm));	
-	rec->u = (atan2(-vec_dot(p, u), vec_dot(p, v)) + M_PI) / (2 * M_PI);
-	if (head == 1)
-		rec->v = 1;
-	else
-		rec->v = 0;
-}
-
-void	get_cy_uv(t_hit_rec *rec, t_object *cy)
-{
-	t_vector	u;
-	t_vector	v;
-	t_vector	p;
-	t_vector	p_unit;
-
-	p = vec_sub(rec->point, cy->center);
-	u = vec_unit(vec_cross(cy->norm, vec_up(cy->norm)));
-	v = vec_unit(vec_cross(u, cy->norm));
-	rec->u = (atan2(-1 * vec_dot(p, u), vec_dot(p, v)) + M_PI) * 0.5 * M_1_PI;
-	rec->v = vec_dot(p, cy->norm) / cy->height;
-}
-
 int	is_in_cam(t_object *co, t_ray r)
 {
 	t_vector	cl;
@@ -94,44 +64,58 @@ int	co_cap(t_object *co, t_ray r, t_hit_rec *rec)
 	return (1);
 }
 
-int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
+int	co_side2(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 {
-	t_vector	H;
-	t_vector	w;
-	t_formula	f;
-	double		m_one;
-	int			in_cam;
+	t_vector	p;
+	double		height;
+	t_vector	q;
+	t_vector	hp;
+	t_vector	qp;
 
-	H = vec_add(co->center, vec_mul(co->norm, co->height));
-	w = vec_sub(r.origin, H);
-	m_one = (co->radius * co->radius) / vec_len_square(vec_sub(co->center, H)) + 1;
-	f.a = vec_len_square(r.dir) - (m_one * vec_dot(r.dir, co->norm) * vec_dot(r.dir, co->norm));
-	f.b = vec_dot(r.dir, w) - (m_one * vec_dot(r.dir, co->norm) * vec_dot(w, co->norm));
-	f.c = vec_len_square(w) - (m_one * (vec_dot(w, co->norm) * vec_dot(w, co->norm)));
-	f.discriminant = f.b * f.b - f.a * f.c;
-	if (f.discriminant < EPSILON)
-		return (0);
-	in_cam = is_in_cam(co, r);
-	if (in_cam)
-		f.root = (-f.b + (sqrt(f.discriminant))) / f.a;
-	else
-		f.root = (-f.b - (sqrt(f.discriminant))) / f.a;
 	if (f.root < rec->tmin || rec->tmax < f.root)
-		return (0);
-	t_vector	P = ray_at(r, f.root);
-	double		test = vec_dot(vec_sub(P, co->center), co->norm);
-	if (test > co->height || test < EPSILON)
-		return (0);
+		return (1);
+	p = ray_at(r, f.root);
+	height = vec_dot(vec_sub(p, co->center), co->norm);
+	if (height > co->height || height < EPSILON)
+		return (1);
 	rec->t = f.root;
 	rec->point = ray_at(r, f.root);
 	rec->tmax = f.root;
-	t_vector	Q = vec_add(co->center, vec_mul(co->norm, test));
-	t_vector	HP = vec_sub(P, H);
-	t_vector	QP = vec_sub(P, Q);
-	if (fabs(vec_len(HP)) < EPSILON || fabs(vec_len(QP)) < EPSILON)
+	q = vec_add(co->center, vec_mul(co->norm, height));
+	hp = vec_sub(p, vec_add(co->center, vec_mul(co->norm, co->height)));
+	qp = vec_sub(p, q);
+	if (vec_len(hp) < EPSILON || vec_len(qp) < EPSILON)
 		rec->normal = co->norm;
 	else
-		rec->normal = vec_unit(vec_cross(HP, vec_cross(HP, QP)));
+		rec->normal = vec_unit(vec_cross(hp, vec_cross(hp, qp)));
 	set_face_normal(r, rec);
+	return (0);
+}
+
+int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
+{
+	t_vector	h;
+	t_vector	w;
+	t_formula	f;
+	double		m;
+
+	h = vec_add(co->center, vec_mul(co->norm, co->height));
+	w = vec_sub(r.origin, h);
+	m = (co->radius * co->radius) / vec_len_square(vec_sub(co->center, h)) + 1;
+	f.a = vec_len_square(r.dir) - (m * vec_dot(r.dir, co->norm) \
+			* vec_dot(r.dir, co->norm));
+	f.b = vec_dot(r.dir, w) - (m * vec_dot(r.dir, co->norm) \
+		* vec_dot(w, co->norm));
+	f.c = vec_len_square(w) - (m * (vec_dot(w, co->norm) \
+		* vec_dot(w, co->norm)));
+	f.discriminant = f.b * f.b - f.a * f.c;
+	if (f.discriminant < EPSILON)
+		return (0);
+	if (is_in_cam(co, r))
+		f.root = (-f.b + (sqrt(f.discriminant))) / f.a;
+	else
+		f.root = (-f.b - (sqrt(f.discriminant))) / f.a;
+	if (co_side2(r, f, co, rec))
+		return (0);
 	return (1);
 }

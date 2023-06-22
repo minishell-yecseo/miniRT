@@ -37,5 +37,8 @@ int		hit_plane(t_object *pl, t_ray r, t_hit_rec *rec);
 int		hit_cylinder(t_object *cy, t_ray *ray, t_hit_rec *rec);
 void	get_cy_uv(t_hit_rec *rec, t_object *cy);
 void	get_cy_head_uv(t_hit_rec *rec, t_object *cy, int head);
+void	get_texture(t_hit_rec *rec, t_img tx, t_img bp, t_surface s);
+void	set_checker_xy(t_surface *s, int x, int y);
+void	get_checker(t_hit_rec *rec, t_surface s);
 
 #endif

@@ -19,7 +19,6 @@ t_vector	get_diffuse(t_light light, t_hit_rec *rec, t_vector light_dir)
 	double		k;
 
 	k = fmax(vec_dot(rec->normal, light_dir), 0.0);
-	//k = fmax(vec_dot(rec->normal, light_dir) * (1 / vec_len(vec_sub(light.origin, rec->point))), 0.0);
 	return (vec_mul(light.color, k));
 }
 
