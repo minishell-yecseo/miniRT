@@ -48,7 +48,7 @@ int	save_contents(int fd, t_vars *vars)
 		}
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
-		split = ft_split(line, ' ');
+		split = ft_split(line, get_whitespaces());
 		tmp = save_line(vars, split, flags);
 		free(line);
 		free_split(split);

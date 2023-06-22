@@ -32,3 +32,33 @@ int	is_white_line(char *line)
 	}
 	return (1);
 }
+
+char	*get_whitespaces(void)
+{
+	char	charset[7];
+	char	value;
+	int		idx;
+
+	idx = 0;
+	value = 9;
+	while (idx < 5)
+		charset[idx++] = value++;
+	charset[idx++] = 32;
+	charset[idx] = '\0';
+	return (charset);
+}
+
+void	free_split(char **split)
+{
+	int		idx;
+	char	*tmp;
+
+	idx = 0;
+	tmp = *split;
+	while (tmp)
+	{
+		free(tmp);
+		tmp = split[++idx];
+	}
+	free(split);
+}
