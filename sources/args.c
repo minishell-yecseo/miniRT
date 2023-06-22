@@ -2,7 +2,9 @@
 
 int	check_args(int argc, char **argv, t_vars *vars)
 {
-	int	fd;
+	int		fd;
+	int		line;
+	char	*err_line;
 
 	fd = 0;
 	if (argc != 2)
@@ -16,9 +18,25 @@ int	check_args(int argc, char **argv, t_vars *vars)
 		error_print("miniRT: open file error\n");
 		return (0);
 	}
-	if (!check_file_expand(argv[1], ".rt") || !save_contents(fd, vars))
+	if (!check_file_expand(argv[1], ".rt"))
 	{
-		error_print("miniRT: file format error\n");
+		error_print("miniRT: input expand must be '.rt'\n");
+		close(fd);
+		return (0);
+	}
+	line = 0;
+	if (!save_contents(fd, vars, &line))
+	{
+		if (line < 0)
+			error_print("miniRT: Camera, Ambient light number must be one.\n");
+		else
+		{
+			err_line = ft_itoa(line + 1);
+			error_print("miniRT: file format error at line ");
+			error_print(err_line);
+			error_print("\n");
+			free(err_line);
+		}
 		close(fd);
 		return (0);
 	}
@@ -26,7 +44,7 @@ int	check_args(int argc, char **argv, t_vars *vars)
 	return (1);
 }
 
-int	save_contents(int fd, t_vars *vars)
+int	save_contents(int fd, t_vars *vars, int *err_line)
 {
 	char	**split;
 	char	*line;
@@ -46,6 +64,7 @@ int	save_contents(int fd, t_vars *vars)
 		{
 			free(line);
 			line = get_next_line(fd);
+			*err_line += 1;
 			continue ;
 		}
 		if (line[ft_strlen(line) - 1] == '\n')
@@ -57,9 +76,13 @@ int	save_contents(int fd, t_vars *vars)
 		if (!tmp)
 			return (0);
 		line = get_next_line(fd);
+		*err_line += 1;
 	}
 	if (flags[0] != 1 || flags[1] != 1)
+	{
+		*err_line = -1;
 		return (0);
+	}
 	return (1);
 }
 
@@ -69,9 +92,9 @@ int	save_line(t_vars *vars, char **split, int *flags)
 	int		ret;
 
 	scene = &(vars->scene);
-	if (!ft_memcmp(split[0], "A", len_max(split[0], "A")) && !flags[AMBIENT])
+	if (!ft_memcmp(split[0], "A", len_max(split[0], "A")))
 		ret = save_ambient_light(vars, split, flags);
-	else if (!ft_memcmp(split[0], "C", len_max(split[0], "C")) && !flags[CAM])
+	else if (!ft_memcmp(split[0], "C", len_max(split[0], "C")))
 		ret = save_camera(vars, split, flags);
 	else if (!ft_memcmp(split[0], "L", len_max(split[0], "L")))
 	{
@@ -99,7 +122,7 @@ int	save_ambient_light(t_vars *vars, char **split, int *flags)
 
 	scene = &(vars->scene);
 	status = 1;
-	flags[AMBIENT] = 1;
+	flags[AMBIENT] += 1;
 	light.type = E_AMBIENT;
 	if (split_len(split) != 3)
 		return (0);
@@ -153,7 +176,7 @@ int	save_camera(t_vars *vars, char **split, int *flags)
 	status = 1;
 	if (split_len(split) != 4)
 		return (0);
-	flags[CAM] = 1;
+	flags[CAM] += 1;
 	camera.origin = ft_atovec_stat(split[1], &status);
 	if (!status || comma_number(split[1]) != 2)
 		return (0);

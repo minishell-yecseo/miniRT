@@ -10,7 +10,7 @@
 # include "utils.h"
 
 int	check_args(int argc, char **argv, t_vars *vars);
-int	save_contents(int fd, t_vars *vars);
+int	save_contents(int fd, t_vars *vars, int *err_line);
 int	save_line(t_vars *vars, char **split, int *flags);
 int	save_ambient_light(t_vars *vars, char **split, int *flags);
 int	save_lights(t_vars *vars, char **split);
