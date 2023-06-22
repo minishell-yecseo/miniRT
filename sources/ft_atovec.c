@@ -8,7 +8,7 @@ t_vector	ft_atovec_stat(char *str, int *status)
 	char		**split;
 
 	ret = vector(0, 0, 0);
-	split = ft_split(str, ',');
+	split = ft_split(str, ",");
 	if (!split)
 	{
 		*status = 0;

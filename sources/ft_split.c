@@ -1,70 +1,38 @@
 #include "utils.h"
 
 static int	mall_check(char *tmp, char **res);
-static int	w_num(char *s, char sep);
-static int	w_len(char *s, char sep);
+static int	w_num(char *str, char *charset);
+static int	w_size(char *str, char *charset);
+static int	is_sep(char c, char *charset);
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char *str, char *charset)
 {
 	char	**res;
 	char	**tmp;
 
-	res = (char **) malloc(sizeof (char *) * (w_num((char *) s, c) + 1));
+	res = (char **) malloc(sizeof (char *) * (w_num(str, charset) + 1));
 	if (!res)
-		return (0);
+		return (NULL);
 	tmp = res;
-	while (*s)
+	while (*str)
 	{
-		if (!(*s == c))
+		if (!is_sep(*str, charset))
 		{
-			*tmp = (char *) malloc (sizeof (char) * (w_len((char *)s, c) + 1));
+			*tmp = (char *) malloc(sizeof (char) * (w_size(str, charset) + 1));
 			if (!mall_check(*tmp, res))
-				return (0);
-			ft_strlcpy(*tmp, (char *)s, (w_len((char *)s, c) + 1));
-			s += w_len((char *)s, c);
+				return (NULL);
+			ft_strncpy(*tmp, str, w_size(str, charset) + 1);
+			str += w_size(str, charset);
 			tmp++;
 		}
 		else
-			s++;
+			str++;
 	}
-	*tmp = 0;
+	*tmp = NULL;
 	return (res);
 }
 
-static int	w_num(char *s, char sep)
-{
-	int	word_num;
-	int	word_size;
-
-	word_num = 0;
-	while (*s)
-	{
-		word_size = w_len(s, sep);
-		if (word_size > 0)
-		{
-			s += word_size;
-			word_num++;
-		}
-		else
-			s++;
-	}
-	return (word_num);
-}
-
-static int	w_len(char *s, char sep)
-{
-	int	word_size;
-
-	word_size = 0;
-	while (!(*s == sep || *s == 0))
-	{
-		word_size++;
-		s++;
-	}
-	return (word_size);
-}
-
-static int	mall_check(char	*tmp, char **res)
+static int	mall_check(char *tmp, char **res)
 {
 	char	**res_temp;
 
@@ -79,21 +47,48 @@ static int	mall_check(char	*tmp, char **res)
 		free(res);
 		return (0);
 	}
-	else
-		return (1);
+	return (1);
 }
 
-void	free_split(char **split)
+static int	w_num(char *str, char *charset)
 {
-	int		idx;
-	char	*tmp;
+	int	word_num;
+	int	word_size;
 
-	idx = 0;
-	tmp = *split;
-	while (tmp)
+	word_num = 0;
+	while (*str)
 	{
-		free(tmp);
-		tmp = split[++idx];
+		word_size = w_size(str, charset);
+		if (word_size > 0)
+		{
+			str += word_size;
+			word_num++;
+		}
+		else
+			str++;
 	}
-	free(split);
+	return (word_num);
+}
+
+static int	w_size(char *str, char *charset)
+{
+	int	word_size;
+
+	word_size = 0;
+	while (!is_sep(*str++, charset))
+		word_size++;
+	return (word_size);
+}
+
+static int	is_sep(char c, char *charset)
+{
+	if (!charset || c == 0)
+		return (1);
+	while (*charset)
+	{
+		if (*charset == c)
+			return (1);
+		charset++;
+	}
+	return (0);
 }

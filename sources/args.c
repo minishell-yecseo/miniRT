@@ -9,7 +9,7 @@ int	check_args(int argc, char **argv, t_vars *vars)
 	{
 		error_print("miniRT: please input one scene file path\n");
 		return (0);
-	} 
+	}
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 	{
@@ -30,8 +30,8 @@ int	save_contents(int fd, t_vars *vars)
 {
 	char	**split;
 	char	*line;
-	int	tmp;
-	int	flags[2];//for check Camera, Abmient light(in mand)
+	int		tmp;
+	int		flags[2];
 
 	ft_memset(flags, 0, sizeof(int) * 2);
 	ft_memset(&(vars->scene), 0, sizeof(t_scene));
@@ -40,7 +40,7 @@ int	save_contents(int fd, t_vars *vars)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		if (*line == '\n')
+		if (is_white_line(line))
 		{
 			free(line);
 			line = get_next_line(fd);
@@ -48,7 +48,7 @@ int	save_contents(int fd, t_vars *vars)
 		}
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
-		split = ft_split(line, ' ');
+		split = ft_split(line, get_whitespaces());
 		tmp = save_line(vars, split, flags);
 		free(line);
 		free_split(split);
@@ -64,7 +64,7 @@ int	save_contents(int fd, t_vars *vars)
 int	save_line(t_vars *vars, char **split, int *flags)
 {
 	t_scene	*scene;
-	int	ret;
+	int		ret;
 
 	scene = &(vars->scene);
 	if (!ft_memcmp(split[0], "A", len_max(split[0], "A")) && !flags[AMBIENT])
@@ -73,7 +73,7 @@ int	save_line(t_vars *vars, char **split, int *flags)
 		ret = save_camera(vars, split, flags);
 	else if (!ft_memcmp(split[0], "L", len_max(split[0], "L")))
 	{
-		if (scene->lights_number - 1 == OBJ_MAX) // mand 에서는 A, C처럼 바꿔야됨
+		if (scene->lights_number - 1 == OBJ_MAX)
 			return (0);
 		ret = save_lights(vars, split);
 	}
@@ -90,10 +90,9 @@ int	save_line(t_vars *vars, char **split, int *flags)
 
 int	save_ambient_light(t_vars *vars, char **split, int *flags)
 {
-	//A 0.2 255,255,255
-	t_scene	*scene;
-	t_light	light;
-	int	status;
+	t_scene		*scene;
+	t_light		light;
+	int			status;
 	t_vector	color;
 
 	scene = &(vars->scene);
@@ -115,17 +114,15 @@ int	save_ambient_light(t_vars *vars, char **split, int *flags)
 
 int	save_lights(t_vars *vars, char **split)
 {
-	// 맨데는 L 도 한 번만 나와야 됨
-	//L -40.0,50.0,0.0 0.6 10,0,255
 	t_scene		*scene;
-	int		status;
+	int			status;
 	t_light		light;
 	t_vector	tmp;
 
 	light.type = E_LIGHT;
 	scene = &(vars->scene);
 	status = 1;
-	if (split_len(split) !=3 && split_len(split) != 4)
+	if (split_len(split) != 3 && split_len(split) != 4)
 		return (0);
 	light.origin = ft_atovec_stat(split[1], &status);
 	if (!status)
@@ -146,10 +143,9 @@ int	save_lights(t_vars *vars, char **split)
 
 int	save_camera(t_vars *vars, char **split, int *flags)
 {
-	//C -50.0,0,20 0,0,1 70
 	t_scene		*scene;
 	t_camera	camera;
-	int		status;
+	int			status;
 
 	scene = &(vars->scene);
 	status = 1;
@@ -211,8 +207,8 @@ int	save_sp(t_vars *vars, char **split)
 {
 	t_scene		*scene;
 	t_object	sphere;
-	int		status;
-	int		split_idx;
+	int			status;
+	int			split_idx;
 
 	scene = &(vars->scene);
 	status = 1;
@@ -225,7 +221,7 @@ int	save_sp(t_vars *vars, char **split)
 	if (!status)
 		return (0);
 	sphere.radius = ft_atof_stat(split[split_idx], &status) / 2.0;
-	if (!status || sphere.radius < 0)
+	if (!status || sphere.radius <= 0)
 		return (0);
 	scene->objs[scene->objs_number] = sphere;
 	return (1);
@@ -235,8 +231,8 @@ int	save_pl(t_vars *vars, char **split)
 {
 	t_scene		*scene;
 	t_object	plane;
-	int		status;
-	int		split_idx;
+	int			status;
+	int			split_idx;
 
 	scene = &(vars->scene);
 	status = 1;
@@ -259,8 +255,8 @@ int	save_cy(t_vars *vars, char **split)
 {
 	t_scene		*scene;
 	t_object	cylinder;
-	int		status;
-	int		split_idx;
+	int			status;
+	int			split_idx;
 
 	scene = &(vars->scene);
 	status = 1;
@@ -276,10 +272,10 @@ int	save_cy(t_vars *vars, char **split)
 	if (!status || !check_norm_range(&cylinder.norm))
 		return (0);
 	cylinder.radius = ft_atof_stat(split[split_idx++], &status) / 2;
-	if (!status || cylinder.radius < 0)
+	if (!status || cylinder.radius <= 0)
 		return (0);
 	cylinder.height = ft_atof_stat(split[split_idx++], &status);
-	if (!status || cylinder.height < 0)
+	if (!status || cylinder.height <= 0)
 		return (0);
 	scene->objs[scene->objs_number] = cylinder;
 	return (1);
@@ -289,8 +285,8 @@ int	save_co(t_vars *vars, char **split)
 {
 	t_scene		*scene;
 	t_object	cone;
-	int		status;
-	int		split_idx;
+	int			status;
+	int			split_idx;
 
 	scene = &(vars->scene);
 	status = 1;
@@ -306,10 +302,10 @@ int	save_co(t_vars *vars, char **split)
 	if (!status || !check_norm_range(&cone.norm))
 		return (0);
 	cone.radius = ft_atof_stat(split[split_idx++], &status) / 2;
-	if (!status || cone.radius < 0)
+	if (!status || cone.radius <= 0)
 		return (0);
 	cone.height = ft_atof_stat(split[split_idx++], &status);
-	if (!status || cone.height < 0)
+	if (!status || cone.height <= 0)
 		return (0);
 	scene->objs[scene->objs_number] = cone;
 	return (1);
@@ -319,8 +315,8 @@ int	save_ci(t_vars *vars, char **split)
 {
 	t_scene		*scene;
 	t_object	circle;
-	int		status;
-	int		split_idx;
+	int			status;
+	int			split_idx;
 
 	scene = &(vars->scene);
 	status = 1;
@@ -336,10 +332,10 @@ int	save_ci(t_vars *vars, char **split)
 	if (!status || !check_norm_range(&circle.norm))
 		return (0);
 	circle.radius = ft_atof_stat(split[split_idx++], &status) / 2;
-	if (!status || circle.radius < 0)
+	if (!status || circle.radius <= 0)
 		return (0);
 	circle.height = ft_atof_stat(split[split_idx++], &status);
-	if (!status || circle.height < 0)
+	if (!status || circle.height <= 0)
 		return (0);
 	scene->objs[scene->objs_number] = circle;
 	return (1);
@@ -374,7 +370,7 @@ int	get_split_idx(int obj_type, char **split, int *ret)
 int	save_objs_surface(t_vars *vars, t_object *obj, char **split)
 {
 	char	*type;
-	int	status;
+	int		status;
 
 	type = split[1];
 	if (!ft_memcmp(type, "color", len_max(type, "color")))
@@ -391,7 +387,7 @@ int	save_objs_surface(t_vars *vars, t_object *obj, char **split)
 int	save_objs_color(t_object *obj, char **split)
 {
 	t_surface	surface;
-	int		status;
+	int			status;
 
 	status = 1;
 	surface.type = COLOR;
@@ -407,7 +403,7 @@ int	save_objs_checker(t_object *obj, char **split)
 	t_surface	surface;
 	t_vector	color1;
 	t_vector	color2;
-	int		status;
+	int			status;
 
 	status = 1;
 	surface.type = CHECKER;
@@ -423,12 +419,11 @@ int	save_objs_checker(t_object *obj, char **split)
 
 int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 {
-	//save images with mlx functions
 	t_surface	surface;
 	t_img		texture;
 	t_img		bump;
-	int		texture_fd;
-	int		bump_fd;
+	int			texture_fd;
+	int			bump_fd;
 
 	surface.type = TEXTURE;
 	if (!check_file_expand(split[2], ".xpm") || !check_file_expand(split[3], ".xpm"))
