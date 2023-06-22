@@ -9,7 +9,7 @@ ci color 50,50,50 0,0,-15 0,-1,0 16 0.03
 sp texture ./input_bonus/mercury.xpm  default  -8,0,-15 	1
 
 ci color 50,50,50 0,0,-15 0,-1,0 18 0.03
-sp texture ./input_bonus/venus.xpm default	  9,0,-15 	1.2
+sp checker 0,0,0 255,255,255	  9,0,-15 	1.2
 
 ci color 50,50,50  0,0,-15 	0,-1,0 	20 	0.03 
 sp texture ./input_bonus/earthmap.xpm 		default  -10,0,-13 	1.4
