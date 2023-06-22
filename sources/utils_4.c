@@ -79,7 +79,7 @@ void	rstrip(char *str)
 		str[len - 1] = '\0';
 }
 
-int	check_contents_flags(int *flags, int len, int *err_line)
+int	check_contents_flags(int *flags, int len)
 {
 	int	idx;
 

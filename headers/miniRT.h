@@ -16,7 +16,7 @@
 # define HEIGHT 800
 
 void		color_image(t_img *img, t_vars *vars);
-int			get_color(t_vars *vars, double x, double y);
+int			get_color(double x, double y);
 void		paint(t_img *img, int x, int y, int color);
 
 int			destroy_window(t_vars *vars);

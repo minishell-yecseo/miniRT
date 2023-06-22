@@ -33,6 +33,6 @@ char		*get_whitespaces(char *charset);
 int			comma_number(char *str);
 int			rt_file_check(char *path);
 void		rstrip(char *str);
-int			check_contents_flags(int *flags, int len, int *err_line);
+int			check_contents_flags(int *flags, int len);
 
 #endif
