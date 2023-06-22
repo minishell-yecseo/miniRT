@@ -36,4 +36,6 @@ int		hit_ci(t_object *ci, t_ray r, t_hit_rec *rec);
 int		hit_plane(t_object *pl, t_ray r, t_hit_rec *rec);
 int		hit_cylinder(t_object *cy, t_ray *ray, t_hit_rec *rec);
 void	get_cy_uv(t_hit_rec *rec, t_object *cy);
+void	get_cy_head_uv(t_hit_rec *rec, t_object *cy, int head);
+
 #endif
