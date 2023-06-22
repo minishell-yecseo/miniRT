@@ -5,7 +5,7 @@ int	shadow(t_object *objs, t_ray r, t_light light, t_vector point)
 	t_hit_rec	rec;
 	t_ray		ray;
 
-	r.origin = vec_add(point, vec_mul(vec_sub(light.origin, point), 0.01));
+	r.origin = vec_add(point, vec_mul(vec_sub(light.origin, point), 0.001));
 	r.dir = vec_unit(vec_sub(light.origin, point));
 	rec.tmax = vec_len(vec_sub(light.origin, point));
 	rec.tmin = EPSILON;
