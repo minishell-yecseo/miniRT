@@ -50,3 +50,44 @@ static int	get_size(int n)
 	}
 	return (size);
 }
+
+int	rt_file_check(char *path)
+{
+	int	fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+	{
+		error_print("Error\nOpen file error\n");
+		return (-1);
+	}
+	if (!check_file_expand(path, ".rt"))
+	{
+		error_print("Error\nInput file expand must be .rt\n");
+		close(fd);
+		return (-1);
+	}
+	return (fd);
+}
+
+void	rstrip(char *str)
+{
+	int	len;
+
+	len = ft_strlen(str);
+	if (str[len - 1] == '\n')
+		str[len - 1] = '\0';
+}
+
+int	check_contents_flags(int *flags, int len, int *err_line)
+{
+	int	idx;
+
+	idx = 0;
+	while (idx < len)
+	{
+		if (flags[idx++] != 1)
+			return (0);
+	}
+	return (1);
+}

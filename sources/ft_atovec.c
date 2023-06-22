@@ -27,7 +27,7 @@ t_vector	ft_atovec_stat(char *str, int *status)
 
 static int	atovec_util(char **split, t_vector *ret)
 {
-	int	status;
+	int		status;
 	double	x;
 	double	y;
 	double	z;

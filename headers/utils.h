@@ -3,6 +3,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include "vector.h"
 
 int			ft_atoi_stat(char *str, int *stat);
@@ -30,5 +31,8 @@ int			check_file_expand(char *path, char *expand);
 int			is_white_line(char *line);
 char		*get_whitespaces(char *charset);
 int			comma_number(char *str);
+int			rt_file_check(char *path);
+void		rstrip(char *str);
+int			check_contents_flags(int *flags, int len, int *err_line);
 
 #endif
