@@ -41,6 +41,16 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize)
 	return (src_len);
 }
 
+void	ft_strncpy(char *dest, char *src, int size)
+{
+	int	idx;
+
+	idx = 0;
+	while (idx++ + 1 < size)
+		*dest++ = *src++;
+	*dest = 0;
+}
+
 void	error_print(char *msg)
 {
 	int	len;

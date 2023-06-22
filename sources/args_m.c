@@ -9,14 +9,14 @@ int	check_args(int argc, char **argv, t_scene *scene)
 	{
 		error_print("miniRT: please input one scene file path\n");
 		return (0);
-	} 
+	}
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 	{
 		error_print("miniRT: open file error\n");
 		return (0);
 	}
-	if (!save_contents(fd, scene))
+	if (!check_file_expand(argv[1], ".rt") || !save_contents(fd, scene))
 	{
 		error_print("miniRT: file format error\n");
 		close(fd);
@@ -30,8 +30,8 @@ int	save_contents(int fd, t_scene *scene)
 {
 	char	**split;
 	char	*line;
-	int	tmp;
-	int	flags[3];//for check Camera, Abmient light, Light
+	int		tmp;
+	int		flags[3];
 
 	ft_memset(flags, 0, sizeof(int) * 3);
 	ft_memset(scene, 0, sizeof(t_scene));
@@ -40,7 +40,7 @@ int	save_contents(int fd, t_scene *scene)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		if (*line == '\n')
+		if (is_white_line(line))
 		{
 			free(line);
 			line = get_next_line(fd);
@@ -48,7 +48,7 @@ int	save_contents(int fd, t_scene *scene)
 		}
 		if (line[ft_strlen(line) - 1] == '\n')
 			line[ft_strlen(line) - 1] = '\0';
-		split = ft_split(line, ' ');
+		split = ft_split(line, get_whitespaces());
 		tmp = save_line(scene, split, flags);
 		free(line);
 		free_split(split);
@@ -112,7 +112,7 @@ int	save_lights(t_scene *scene, char **split, int *flags)
 	flags[LIGHT] += 1;
 	light.type = E_LIGHT;
 	status = 1;
-	if (split_len(split) !=3)
+	if (split_len(split) != 3)
 		return (0);
 	light.origin = ft_atovec_stat(split[1], &status);
 	if (!status)
@@ -120,7 +120,7 @@ int	save_lights(t_scene *scene, char **split, int *flags)
 	light.ratio = ft_atof_stat(split[2], &status);
 	if (!status || light.ratio < 0 || light.ratio > 1.0)
 		return (0);
-	light.color = vector(255, 255, 255);//mand에서는 color가 하야니까일단.
+	light.color = vector(255, 255, 255);
 	scene->lights[scene->lights_number] = light;
 	scene->lights_number += 1;
 	return (1);
@@ -191,7 +191,7 @@ int	save_sp(t_scene *scene, char **split)
 	if (!status)
 		return (0);
 	sphere.radius = ft_atof_stat(split[2], &status) / 2.0;
-	if (!status || sphere.radius < 0)
+	if (!status || sphere.radius <= 0)
 		return (0);
 	if (!save_objs_color(&sphere, split[3]))
 		return (0);
@@ -202,7 +202,7 @@ int	save_sp(t_scene *scene, char **split)
 int	save_pl(t_scene *scene, char **split)
 {
 	t_object	plane;
-	int		status;
+	int			status;
 
 	status = 1;
 	plane.type = pl;
@@ -236,10 +236,10 @@ int	save_cy(t_scene *scene, char **split)
 	if (!status || !check_norm_range(&cylinder.norm))
 		return (0);
 	cylinder.radius = ft_atof_stat(split[3], &status) / 2;
-	if (!status || cylinder.radius < 0)
+	if (!status || cylinder.radius <= 0)
 		return (0);
 	cylinder.height = ft_atof_stat(split[4], &status);
-	if (!status || cylinder.height < 0)
+	if (!status || cylinder.height <= 0)
 		return (0);
 	if (!save_objs_color(&cylinder, split[5]))
 		return (0);
