@@ -40,7 +40,7 @@ int	save_contents(int fd, t_scene *scene)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		if (*line == '\n')
+		if (is_white_line(line))
 		{
 			free(line);
 			line = get_next_line(fd);

@@ -15,3 +15,20 @@ int	check_file_expand(char *path, char *expand)
 		return (1);
 	return (0);
 }
+
+int	is_white_line(char *line)
+{
+	int	len;
+
+	len = ft_strlen(line);
+	if (!len)
+		return (0);
+	while (len--)
+	{
+		if (ft_ctype(*line) == 3)
+			line++;
+		else
+			return (0);
+	}
+	return (1);
+}
