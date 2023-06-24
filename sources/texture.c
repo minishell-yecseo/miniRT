@@ -11,7 +11,7 @@ void	get_texture(t_hit_rec *rec, t_img tx, t_img bp, t_surface s)
 	color = tx.data[tx.w * (int)((1 - rec->v) * (tx.h - 1)) + \
 			(int)(rec->u * tx.w)];
 	rec->albedo = get_vec_color(color);
-	if (s.is_bump != 0)
+	if (s.is_bump)
 	{
 		color = bp.data[bp.w * (int)((1 - rec->v) * (bp.h - 1)) + \
 				(int)(rec->u * bp.w)];

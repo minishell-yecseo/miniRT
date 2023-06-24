@@ -64,7 +64,7 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 					vars->mlx, split[2], &texture.w, &texture.h);
 	texture.data = (int *)mlx_get_data_addr(texture.image, \
 				&texture.bits_per_pixel, &texture.size_len, &texture.endian);
-	if (surface.is_bump != 0)
+	if (surface.is_bump)
 	{
 		bump.image = mlx_xpm_file_to_image(\
 							vars->mlx, split[3], &bump.w, &bump.h);
@@ -72,7 +72,7 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 					&bump.bits_per_pixel, &bump.size_len, &bump.endian);
 	}
 	else
-		ft_memset(&bump, 1, sizeof(t_img));
+		ft_memset(&bump, 0, sizeof(t_img));
 	surface.texture = texture;
 	surface.bump = bump;
 	obj->surface = surface;
@@ -97,6 +97,6 @@ int	check_texture_files(t_surface *surface, char *texture, char *bump)
 	close(bump_fd);
 	if (texture_fd < 0 || bump_fd < 0)
 		return (0);
-	surface->is_bump = 0;
+	surface->is_bump = bump_fd;
 	return (1);
 }
