@@ -72,7 +72,7 @@ int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
 					&bump.bits_per_pixel, &bump.size_len, &bump.endian);
 	}
 	else
-		ft_memset(&bump, sizeof(t_img), 1);
+		ft_memset(&bump, 1, sizeof(t_img));
 	surface.texture = texture;
 	surface.bump = bump;
 	obj->surface = surface;

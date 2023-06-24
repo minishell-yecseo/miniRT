@@ -76,8 +76,8 @@ void	init_contents_flags(int *flags, t_vars *vars, char *whitespaces)
 {
 	ft_memset(flags, 0, sizeof(int) * 2);
 	ft_memset(&(vars->scene), 0, sizeof(t_scene));
-	ft_memset(&(vars->scene.objs), -1, sizeof(t_object) * (OBJ_MAX));
-	ft_memset(&(vars->scene.lights), -1, sizeof(t_light) * (OBJ_MAX));
+	ft_memset(&(vars->scene.objs), no, sizeof(t_object) * (OBJ_MAX));
+	ft_memset(&(vars->scene.lights), NO_LIGHT, sizeof(t_light) * (OBJ_MAX));
 	get_whitespaces(whitespaces);
 }
 
