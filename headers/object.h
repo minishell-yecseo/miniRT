@@ -34,7 +34,7 @@ void	get_plane_uv(t_hit_rec *rec, t_object *pl);
 void	set_face_normal(t_ray r, t_hit_rec *rec);
 int		hit_ci(t_object *ci, t_ray r, t_hit_rec *rec);
 int		hit_plane(t_object *pl, t_ray r, t_hit_rec *rec);
-int		hit_cylinder(t_object *cy, t_ray *ray, t_hit_rec *rec);
+//int		hit_cylinder(t_object *cy, t_ray *ray, t_hit_rec *rec);
 void	get_cy_uv(t_hit_rec *rec, t_object *cy);
 void	get_cy_head_uv(t_hit_rec *rec, t_object *cy, int head);
 void	get_texture(t_hit_rec *rec, t_img tx, t_img bp, t_surface s);

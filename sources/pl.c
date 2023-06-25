@@ -22,8 +22,8 @@ int	hit_plane(t_object *pl, t_ray r, t_hit_rec *rec)
 	f.denominator = vec_dot(r.dir, pl->norm);
 	if (fabs(f.denominator) < EPSILON)
 		return (0);
-	f.numrator = vec_dot(vec_sub(pl->center, r.origin), pl->norm);
-	f.root = f.numrator / f.denominator;
+	f.numerator = vec_dot(vec_sub(pl->center, r.origin), pl->norm);
+	f.root = f.numerator / f.denominator;
 	if (f.root < rec->tmin || f.root > rec->tmax)
 		return (0);
 	rec->t = f.root;
@@ -45,8 +45,8 @@ int	hit_ci(t_object *ci, t_ray r, t_hit_rec *rec)
 	if (fabs(f.denominator) < EPSILON)
 		return (0);
 	cl = vec_sub(ci->center, r.origin);
-	f.numrator = vec_dot(cl, ci->norm);
-	f.root = f.numrator / f.denominator;
+	f.numerator = vec_dot(cl, ci->norm);
+	f.root = f.numerator / f.denominator;
 	p = ray_at(r, f.root);
 	r_prime = vec_len(vec_sub(p, ci->center));
 	if (fabs(r_prime - ci->radius) > ci->height)

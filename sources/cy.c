@@ -19,8 +19,8 @@ int	cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 	f.denominator = vec_dot(r.dir, vec_unit(cy->norm));
 	if (fabs(f.denominator) < EPSILON)
 		return (0);
-	f.numrator = vec_dot(vec_sub(c, r.origin), vec_unit(cy->norm));
-	f.root = f.numrator / f.denominator;
+	f.numerator = vec_dot(vec_sub(c, r.origin), vec_unit(cy->norm));
+	f.root = f.numerator / f.denominator;
 	if (f.root < rec->tmin || f.root > rec->tmax)
 		return (0);
 	p = vec_add(r.origin, vec_mul(r.dir, f.root));

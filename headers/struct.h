@@ -74,7 +74,7 @@ typedef struct s_formula
 	double	discriminant;
 	double	sqrtd;
 	double	root;
-	double	numrator;
+	double	numerator;
 	double	denominator;
 }	t_formula;
 
