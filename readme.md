@@ -101,6 +101,8 @@ $ ./miniRT_bonus <TEST.rt>
 
 <h1 id="lst5">How to implement Objects</h1>
 
+reference : http://www.illusioncatalyst.com/notes.php
+
 <ul>
 	<li>
 		<details open="open"><summary>Sphere</summary>
