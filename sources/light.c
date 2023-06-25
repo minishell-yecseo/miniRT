@@ -1,4 +1,4 @@
-#include "miniRT.h"
+#include "light.h"
 
 int	shadow(t_object *objs, t_ray r, t_light light, t_vector point)
 {
