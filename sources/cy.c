@@ -23,13 +23,13 @@ int	cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 	f.root = f.numerator / f.denominator;
 	if (f.root < rec->tmin || f.root > rec->tmax)
 		return (0);
-	p = vec_add(r.origin, vec_mul(r.dir, f.root));
+	p = ray_at(r, f.root);
 	pc = vec_len(vec_sub(p, c));
 	if (pc > cy->radius || pc < 0.0)
 		return (0);
 	rec->t = f.root;
 	rec->tmax = f.root;
-	rec->point = ray_at(r, f.root);
+	rec->point = p;
 	rec->normal = cy->norm;
 	return (1);
 }
