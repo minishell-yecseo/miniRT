@@ -39,13 +39,13 @@ int	height_check(t_object *obj, t_ray r, t_formula f, t_hit_rec *rec)
 	t_vector	p;
 	double		qc;
 
-	p = vec_add(r.origin, vec_mul(r.dir, f.root));
+	p = ray_at(r, f.root);
 	qc = vec_dot(vec_sub(p, obj->center), obj->norm);
 	if (qc > obj->height || qc < 0.0)
 		return (1);
 	rec->t = f.root;
 	rec->tmax = f.root;
-	rec->point = ray_at(r, f.root);
+	rec->point = p;
 	rec->normal = get_cy_norm(obj, rec->point, qc);
 	return (0);
 }
