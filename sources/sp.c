@@ -3,9 +3,7 @@
 void	set_face_normal(t_ray r, t_hit_rec *rec)
 {
 	rec->front_face = vec_dot(r.dir, rec->normal) < 0;
-	if (rec->front_face)
-		rec->normal = rec->normal;
-	else
+	if (rec->front_face < 0)
 		rec->normal = vec_mul(rec->normal, -1);
 }
 
