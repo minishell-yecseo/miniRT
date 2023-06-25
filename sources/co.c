@@ -78,7 +78,7 @@ int	co_condition(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 	if (height > co->height || height < 0)
 		return (0);
 	rec->t = f.root;
-	rec->point = ray_at(r, f.root);
+	rec->point = p;
 	rec->tmax = f.root;
 	q = vec_add(co->center, vec_mul(co->norm, height));
 	hp = vec_sub(p, vec_add(co->center, vec_mul(co->norm, co->height)));
