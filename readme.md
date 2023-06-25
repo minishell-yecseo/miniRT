@@ -15,8 +15,9 @@ MINIRT START 2023.05.31.
     <li><a href="#lst8"> Developers </a></li>
   </ol>
 </details>
-<h1></h1>
 
+-------------------------
+<br><br><br><br><br><br>
 
 
 
@@ -33,6 +34,8 @@ MINIRT START 2023.05.31.
 
 ![스크린샷 2023-06-25 오후 6 28 31](https://github.com/minishell-yecseo/miniRT/assets/55090298/83324cdb-0af2-47a9-be70-ffc14e62ac94)
 
+-------------------------
+<br><br><br><br><br><br>
 
 
 
@@ -49,8 +52,9 @@ MINIRT START 2023.05.31.
 <ul>
 	  <li>MiniLibX : https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html</li>
 </ul>
-<h1></h1>
 
+-------------------------
+<br><br><br><br><br><br>
 
 
 
@@ -64,11 +68,12 @@ $ make bonus
 $ ./miniRT_bonus <TEST.rt>
 ```
 
-miniRT_bonus recieve only one *.rt file as an input.
-So, you must write an *.rt file according to the guide below.
-If the file has error, the program should notice you the number of line of the first error.
-<h1></h1>
-
+> miniRT_bonus takes only one *.rt file as an input. 
+> So, you must write an *.rt file according to the guide below. 
+> If the file has error, the program should notice you the number of line of the first error.
+ 
+-------------------------
+<br><br><br><br><br><br>
 
 
 
@@ -80,34 +85,64 @@ If the file has error, the program should notice you the number of line of the f
 	<li>Objects</li>
 	<li>Lights</li>
 </ul>
-<h1></h1>
 
+-------------------------
+<br><br><br><br><br><br>
 
 
 
 
 <h1 id="lst4">How to implement Viewport</h1>
-<h1></h1>
 
+-------------------------
+<br><br><br><br><br><br>
 
 
 
 <h1 id="lst5">How to implement Objects</h1>
-<h1></h1>
 
+<ul>
+	<li>
+		<details open="open"><summary>Sphere</summary>
+			<img src='https://imgur.com/spy7vz4.png'>
+		</details>
+	</li>
+	<li>
+		<details open="open"><summary>Plane</summary>
+			<img src='https://imgur.com/EqMu5iN.png'>
+		</details>
+	</li>
+	<li>
+		<details open="open"><summary>Cylinder</summary>
+			<img src='https://imgur.com/oPHvnFn.png'>
+		</details>
+	</li>
+	<li>
+		<details open="open"><summary>Cone</summary>
+			<img src='https://imgur.com/koekQfR.png'>
+		</details>
+	</li>
+	<li>
+		<details open="open"><summary>Circle</summary>
+			<img src='https://imgur.com/IYw6HqF.png'>
+		</details>
+	</li>
+</ul>
+
+-------------------------
+<br><br><br><br><br><br>
 
 
 
 
 <h1 id="lst6">How to implement Lights</h1>
-<h1></h1>
 
+-------------------------
+<br><br><br><br><br><br>
 
 
 
 <h1 id="lst7">GUIDE for .rt format</h1>
-<h1></h1>
-
 
 BONUS .rt FORMAT GUIDE
 
@@ -163,8 +198,11 @@ Surface consists of type and options.
     3) co       checker      0,0,0                255,255,255          0,0,0      -0,2,1,0       10     20
 
 
-
+-------------------------
+<br><br><br><br><br><br>
 
 
 <h1 id="lst8">Developers</h1>
 <h1></h1>
+
+-------------------------
