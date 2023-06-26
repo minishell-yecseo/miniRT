@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:03:08 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:03:08 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/26 15:51:49 by saseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	rstrip(char *str)
 		str[len - 1] = '\0';
 }
 
-int	check_contents_flags(int *flags, int len)
+int	check_contents_flags(int *flags, int len, int *err_line)
 {
 	int	idx;
 
@@ -99,7 +99,10 @@ int	check_contents_flags(int *flags, int len)
 	while (idx < len)
 	{
 		if (flags[idx++] != 1)
+		{
+			*err_line = -1;
 			return (0);
+		}
 	}
 	return (1);
 }
