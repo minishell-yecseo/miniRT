@@ -26,7 +26,7 @@ SRCS_BONUS	= $(addprefix $(SRC_DIR), $(SRC_BONUS))
 OBJS_MAND	= $(SRCS:c=o)
 OBJS_BONUS	= $(SRCS_BONUS:c=o)
 
-INC			= -I./headers -I.mlx
+INC			= -I./headers -I./mlx
 MLX			= -L./mlx -lmlx -framework OpenGL -framework Appkit
 
 all: $(NAME)

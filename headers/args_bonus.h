@@ -3,7 +3,7 @@
 
 # include <fcntl.h>
 # include "get_next_line.h"
-# include "../mlx/mlx.h"
+# include "mlx.h"
 # include "struct.h"
 # include "vector.h"
 # include "ray.h"

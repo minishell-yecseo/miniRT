@@ -19,17 +19,17 @@ int	cy_cap(t_object *cy, t_ray r, t_hit_rec *rec, t_vector c)
 	f.denominator = vec_dot(r.dir, vec_unit(cy->norm));
 	if (fabs(f.denominator) < EPSILON)
 		return (0);
-	f.numrator = vec_dot(vec_sub(c, r.origin), vec_unit(cy->norm));
-	f.root = f.numrator / f.denominator;
+	f.numerator = vec_dot(vec_sub(c, r.origin), vec_unit(cy->norm));
+	f.root = f.numerator / f.denominator;
 	if (f.root < rec->tmin || f.root > rec->tmax)
 		return (0);
-	p = vec_add(r.origin, vec_mul(r.dir, f.root));
+	p = ray_at(r, f.root);
 	pc = vec_len(vec_sub(p, c));
 	if (pc > cy->radius || pc < 0.0)
 		return (0);
 	rec->t = f.root;
 	rec->tmax = f.root;
-	rec->point = ray_at(r, f.root);
+	rec->point = p;
 	rec->normal = cy->norm;
 	return (1);
 }
@@ -39,13 +39,13 @@ int	height_check(t_object *obj, t_ray r, t_formula f, t_hit_rec *rec)
 	t_vector	p;
 	double		qc;
 
-	p = vec_add(r.origin, vec_mul(r.dir, f.root));
+	p = ray_at(r, f.root);
 	qc = vec_dot(vec_sub(p, obj->center), obj->norm);
 	if (qc > obj->height || qc < 0.0)
 		return (1);
 	rec->t = f.root;
 	rec->tmax = f.root;
-	rec->point = ray_at(r, f.root);
+	rec->point = p;
 	rec->normal = get_cy_norm(obj, rec->point, qc);
 	return (0);
 }

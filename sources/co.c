@@ -1,7 +1,8 @@
 #include "miniRT.h"
 
-int	co_side(t_object *co, t_ray r, t_hit_rec *rec);
-int	co_cap(t_object *co, t_ray r, t_hit_rec *rec);
+static int	co_side(t_object *co, t_ray r, t_hit_rec *rec);
+static int	co_condition(t_ray r, t_formula f, t_object *co, t_hit_rec *rec);
+static int	co_cap(t_object *co, t_ray r, t_hit_rec *rec);
 
 int	is_in_cam(t_object *co, t_ray r)
 {
@@ -40,31 +41,29 @@ int	hit_co(t_object *co, t_ray r, t_hit_rec *rec)
 
 int	co_cap(t_object *co, t_ray r, t_hit_rec *rec)
 {
-	double		denominator;
-	double		numrator;
-	double		root;
+	t_formula	f;
 	double		pc;
-	t_vector	p;
+	t_vector	point;
 
-	denominator = vec_dot(r.dir, co->norm);
-	if (fabs(denominator) < EPSILON)
+	f.denominator = vec_dot(r.dir, co->norm);
+	if (fabs(f.denominator) < EPSILON)
 		return (0);
-	numrator = -vec_dot(vec_sub(r.origin, co->center), co->norm);
-	root = numrator / denominator;
-	if (root < rec->tmin || root > rec->tmax)
+	f.numerator = -vec_dot(vec_sub(r.origin, co->center), co->norm);
+	f.root = f.numerator / f.denominator;
+	if (f.root < rec->tmin || f.root > rec->tmax)
 		return (0);
-	p = ray_at(r, root);
-	pc = vec_len(vec_sub(co->center, p));
+	point = ray_at(r, f.root);
+	pc = vec_len(vec_sub(co->center, point));
 	if (pc > co->radius)
 		return (0);
-	rec->t = root;
-	rec->tmax = root;
-	rec->point = p;
+	rec->t = f.root;
+	rec->tmax = f.root;
+	rec->point = point;
 	rec->normal = vec_mul(co->norm, -1);
 	return (1);
 }
 
-int	co_side2(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
+int	co_condition(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 {
 	t_vector	p;
 	double		height;
@@ -73,13 +72,13 @@ int	co_side2(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 	t_vector	qp;
 
 	if (f.root < rec->tmin || rec->tmax < f.root)
-		return (1);
+		return (0);
 	p = ray_at(r, f.root);
 	height = vec_dot(vec_sub(p, co->center), co->norm);
-	if (height > co->height || height < EPSILON)
-		return (1);
+	if (height > co->height || height < 0)
+		return (0);
 	rec->t = f.root;
-	rec->point = ray_at(r, f.root);
+	rec->point = p;
 	rec->tmax = f.root;
 	q = vec_add(co->center, vec_mul(co->norm, height));
 	hp = vec_sub(p, vec_add(co->center, vec_mul(co->norm, co->height)));
@@ -89,7 +88,7 @@ int	co_side2(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 	else
 		rec->normal = vec_unit(vec_cross(hp, vec_cross(hp, qp)));
 	set_face_normal(r, rec);
-	return (0);
+	return (1);
 }
 
 int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
@@ -115,7 +114,7 @@ int	co_side(t_object *co, t_ray r, t_hit_rec *rec)
 		f.root = (-f.b + (sqrt(f.discriminant))) / f.a;
 	else
 		f.root = (-f.b - (sqrt(f.discriminant))) / f.a;
-	if (co_side2(r, f, co, rec))
+	if (!co_condition(r, f, co, rec))
 		return (0);
 	return (1);
 }
