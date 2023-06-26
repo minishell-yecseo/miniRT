@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:02:11 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:02:11 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/26 18:16:37 by saseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 # define CAM 0
 # define AMBIENT 1
 # define LIGHT 2
-# define UINT_MAX 2147483647
+# define INT_MAX 2147483647
 # define REC_TMAX 1.7976931348623158e+308
 # define EPSILON 4.94065645841247E-324
 # define MAX 1.7976931348623158e+308
+# define PRECISION 6
 
 typedef struct s_save
 {
