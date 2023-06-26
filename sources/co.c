@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:02:42 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 16:26:43 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/26 18:18:54 by saseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ int	co_cap(t_object *co, t_ray r, t_hit_rec *rec)
 	rec->normal = vec_mul(co->norm, -1);
 	return (1);
 }
-
-
 
 int	co_condition(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 {

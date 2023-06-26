@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:02:47 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:02:47 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/26 19:02:18 by saseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,11 @@ static void	ft_atoi_util(int sign, char *str, int *res, int *stat)
 		}
 		str++;
 	}
-	if ((sign && tmp > UINT_MAX) || (sign < 0 && (tmp - 1 > UINT_MAX)))
-	{
-		*stat = 0;
-		return ;
-	}
 	*res = sign * (int) tmp;
+	if (tmp == 0)
+		return ;
+	if ((sign > 0 && tmp > INT_MAX) || (sign < 0 && (tmp - 1 > INT_MAX)))
+		*stat = 0;
 }
 
 static int	is_number(char *str)
