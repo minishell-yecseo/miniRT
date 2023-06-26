@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:02:12 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:02:12 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/26 15:51:47 by saseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ char		*get_whitespaces(char *charset);
 int			comma_number(char *str);
 int			rt_file_check(char *path);
 void		rstrip(char *str);
-int			check_contents_flags(int *flags, int len);
+int			check_contents_flags(int *flags, int len, int *err_line);
 
 #endif
