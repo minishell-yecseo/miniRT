@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:02:46 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:02:46 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/26 15:10:41 by saseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ double	ft_atof_stat(const char *str, int *status)
 {
 	double	ret;
 	int		dot_idx;
-	int		tmp;
+	double	tmp;
 	int		sign;
 
-	tmp = 0;
 	sign = 1;
 	while (ft_ctype(*str) == 3)
 		str++;
@@ -35,12 +34,10 @@ double	ft_atof_stat(const char *str, int *status)
 	}
 	dot_idx = get_dot_idx(str);
 	ret = (double) ft_atoi(str);
-	while (tmp++ < dot_idx)
-		ret *= 10.0;
-	ret += (double) ft_atoi(str + ft_strlen((char *)str) - dot_idx);
+	tmp = (double) ft_atoi(str + ft_strlen((char *)str) - dot_idx);
 	while (dot_idx-- > 0)
-		ret /= 10;
-	return (sign * ret);
+		tmp /= 10;
+	return (sign * (ret + tmp));
 }
 
 static int	is_double(char *str)
