@@ -6,17 +6,12 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:02:59 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:02:59 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/26 16:02:23 by yecnam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include "args.h"
-
-void	v(void)
-{
-	system("leaks --list -- $PPID");
-}
 
 int	main(int argc, char **argv)
 {

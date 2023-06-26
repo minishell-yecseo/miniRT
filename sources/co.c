@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:02:42 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:02:42 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/26 16:26:43 by yecnam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	co_cap(t_object *co, t_ray r, t_hit_rec *rec)
 	return (1);
 }
 
+
+
 int	co_condition(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 {
 	t_vector	p;
@@ -94,7 +96,7 @@ int	co_condition(t_ray r, t_formula f, t_object *co, t_hit_rec *rec)
 	rec->tmax = f.root;
 	q = vec_add(co->center, vec_mul(co->norm, height));
 	hp = vec_sub(p, vec_add(co->center, vec_mul(co->norm, co->height)));
-	qp = vec_sub(p, q);
+	qp = vec_sub(q, p);
 	if (vec_len(hp) < EPSILON || vec_len(qp) < EPSILON)
 		rec->normal = co->norm;
 	else
