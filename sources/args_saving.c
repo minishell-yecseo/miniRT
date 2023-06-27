@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:02:33 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:02:33 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/27 11:32:28 by saseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	save_lights(t_scene *scene, char **split, int *flags)
 	light.ratio = ft_atof_stat(split[2], &status);
 	if (!status || light.ratio < 0 || light.ratio > 1.0)
 		return (0);
-	light.color = vector(255, 255, 255);
+	light.color = vector(1, 1, 1);
 	scene->lights[scene->lights_number] = light;
 	scene->lights_number += 1;
 	return (1);

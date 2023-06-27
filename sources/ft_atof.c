@@ -72,6 +72,8 @@ static int	is_double(char *str, int *sign)
 		str_len--;
 		*sign = -1;
 	}
+	else
+		*sign = 1;
 	return (_is_double(str, str_len));
 }
 
