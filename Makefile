@@ -16,7 +16,8 @@ SRC			= main.c paint.c key_hook.c vector_func.c ray.c raytracing.c \
 SRC_BONUS	= main_bonus.c paint.c key_hook.c vector_func.c ray.c raytracing.c \
 			  hit_obj.c light.c co.c vector_func2.c vector_func3.c\
 			  get_next_line.c get_next_line_utils.c ft_split.c \
-			  args_bonus.c args_objs_bonus.c args_saving_bonus.c args_utils_bonus.c args_surface_bonus.c \
+			  args_bonus.c args_objs_bonus.c args_saving_bonus.c \
+			  args_utils_bonus.c args_surface_bonus.c args_surface_bonus_2.c\
 			  utils.c utils_2.c ft_atoi.c ft_atof.c ft_atovec.c \
 			  cy.c pl.c sp.c utils_3.c utils_4.c texture.c cy_uv.c
 

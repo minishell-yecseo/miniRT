@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:02:34 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:02:34 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/27 14:13:01 by saseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,55 +60,5 @@ int	save_objs_checker(t_object *obj, char **split)
 		|| comma_number(split[3]) != 2)
 		return (0);
 	obj->surface = surface;
-	return (1);
-}
-
-int	save_objs_texture(t_vars *vars, t_object *obj, char **split)
-{
-	t_surface	surface;
-	t_img		texture;
-	t_img		bump;
-
-	surface.type = TEXTURE;
-	if (!check_texture_files(&surface, split[2], split[3]))
-		return (0);
-	texture.image = mlx_xpm_file_to_image(\
-					vars->mlx, split[2], &texture.w, &texture.h);
-	texture.data = (int *)mlx_get_data_addr(texture.image, \
-				&texture.bits_per_pixel, &texture.size_len, &texture.endian);
-	if (surface.is_bump)
-	{
-		bump.image = mlx_xpm_file_to_image(\
-							vars->mlx, split[3], &bump.w, &bump.h);
-		bump.data = (int *)mlx_get_data_addr(bump.image, \
-					&bump.bits_per_pixel, &bump.size_len, &bump.endian);
-	}
-	else
-		ft_memset(&bump, 0, sizeof(t_img));
-	surface.texture = texture;
-	surface.bump = bump;
-	obj->surface = surface;
-	return (1);
-}
-
-int	check_texture_files(t_surface *surface, char *texture, char *bump)
-{
-	int	texture_fd;
-	int	bump_fd;
-
-	if (!check_file_expand(texture, ".xpm"))
-		return (0);
-	texture_fd = open(texture, O_RDONLY);
-	if (!ft_memcmp(bump, "default", len_max(bump, "default")))
-		bump_fd = 0;
-	else if (check_file_expand(bump, ".xpm"))
-		bump_fd = open(bump, O_RDONLY);
-	else
-		bump_fd = -1;
-	close(texture_fd);
-	close(bump_fd);
-	if (texture_fd < 0 || bump_fd < 0)
-		return (0);
-	surface->is_bump = bump_fd;
 	return (1);
 }
