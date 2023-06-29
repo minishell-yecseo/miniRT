@@ -110,6 +110,12 @@ $ ./miniRT_bonus <TEST.rt>
 
 <h1 id="lst5">How to implement Objects</h1>
 
+> For all rays, We can represent a point on a ray with camera's origin, ray direction, and t that decide length of ray. In a mathmatical expression,
+> * O = camera's origin == ray's origin	
+> * v̂  = ray's normalized 3dimension direction vector
+> * t = length from Origin	
+>> P = O + tv̂ 
+
 reference : http://www.illusioncatalyst.com/notes.php
 
 <ul>
