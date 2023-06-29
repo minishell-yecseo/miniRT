@@ -26,7 +26,7 @@ MINIRT START 2023.05.31.
 
 <h1 id="lst0">Scene Examples</h1>
 
-1. scenes/univers.rt
+1. scenes/universe.rt
 
 ![스크린샷 2023-06-25 오후 6 27 20](https://github.com/minishell-yecseo/miniRT/assets/55090298/898965f1-5ece-443e-b805-9b18e381ed98)
 
