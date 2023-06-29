@@ -34,6 +34,15 @@ MINIRT START 2023.05.31.
 
 ![스크린샷 2023-06-25 오후 6 28 31](https://github.com/minishell-yecseo/miniRT/assets/55090298/83324cdb-0af2-47a9-be70-ffc14e62ac94)
 
+3. scenes/snowman.rt
+
+<img width="1312" alt="Screen Shot 2023-06-29 at 1 14 11 PM" src="https://github.com/minishell-yecseo/miniRT/assets/55090298/d9c7ac29-6d42-4ddc-8445-7977a0d41ed4">
+
+4. scenes/among.rt
+
+<img width="1312" alt="Screen Shot 2023-06-29 at 1 14 27 PM" src="https://github.com/minishell-yecseo/miniRT/assets/55090298/57bbd9f6-6c71-4bdd-a392-675f410e1d83">
+
+
 -------------------------
 <br><br><br><br><br><br>
 
