@@ -6,7 +6,7 @@
 /*   By: yecnam <yecnam@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 15:03:05 by yecnam            #+#    #+#             */
-/*   Updated: 2023/06/26 15:03:05 by yecnam           ###   ########.fr       */
+/*   Updated: 2023/06/29 13:04:11 by saseo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	set_face_normal(t_ray r, t_hit_rec *rec)
 {
 	rec->front_face = vec_dot(r.dir, rec->normal) < 0;
-	if (rec->front_face < 0)
+	if (!rec->front_face)
 		rec->normal = vec_mul(rec->normal, -1);
 }
 
